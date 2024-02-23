@@ -1,0 +1,553 @@
+{
+	"info": {
+		"_postman_id": "0d3dcca9-1dc7-4c1f-95af-27ff2e8205b8",
+		"name": "Invoicing App: REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9383366"
+	},
+	"item": [
+		{
+			"name": "Get Users (With Auth)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "joepassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "joe@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"emailAddress\": \"john23@smith.com\",\n  \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User (Existing Email Address) - EXCEEDS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"Joe\",\n  \"lastName\": \"Smith\",\n  \"emailAddress\": \"joe@smith.com\",\n  \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Invoices",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/invoices",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Invoice",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/invoices/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Invoice (Minimum Data)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "joepassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "joe@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client\": \"Google, Inc\",\n    \"invoiceId\": \"1\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"invoiceNumber\":\"1\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"iteamUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": \"\",\n        \"itemDiscount\": \"\"\n    }],\n    \"invoiceTotal\": \"100\",\n    \"invoiceTax\": \"\",\n    \"invoiceDiscount\": \"\",\n    \"userId\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:8888/api/invoices",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Invoice (Minimum Data)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "joepassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "joe@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"client\": \"Digital Ocean LLC\",\n    \"invoiceId\": \"1\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"invoiceNumber\":\"1\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"iteamUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": \"\",\n        \"itemDiscount\": \"\"\n    }],\n    \"invoiceTotal\": \"100\",\n    \"invoiceTax\": \"\",\n    \"invoiceDiscount\": \"\",\n    \"userId\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:8888/api/invoices/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Invoice (With Auth)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "joepassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "joe@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/invoices/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User (Incomplete Data)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Invoice (Incomplete Data)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "joepassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "joe@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "localhost:8888/api/invoices",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Invoice (Incomplete Data)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "joepassword",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "joe@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client\": \"\",\n    \"invoiceId\": \"1\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"invoiceNumber\":\"1\",\n    \"items\": [{}],\n    \"invoiceTotal\": \"\",\n    \"invoiceTax\": \"\",\n    \"invoiceDiscount\": \"\",\n    \"userId\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:8888/api/invoices/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User (Invalid Email Address) - EXCEEDS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Sam\",\n    \"lastName\": \"Smith\",\n    \"emailAddress\": \"sam.com\",\n    \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users (No Auth)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Invoice (No Auth, Incomplete Data)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "localhost:8888/api/invoices",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Invoice (No Auth, Incomplete Data)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "localhost:8888/api/invoices/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Invoice (No Auth)",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/invoices/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
