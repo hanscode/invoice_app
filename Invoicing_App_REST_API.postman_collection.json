@@ -14,12 +14,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "joepassword",
+							"value": "anapassword",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "joe@smith.com",
+							"value": "anita.hayek@gmail.com",
 							"type": "string"
 						}
 					]
@@ -53,7 +53,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"emailAddress\": \"john23@smith.com\",\n  \"password\": \"password\"\n}"
+					"raw": "{\n  \"firstName\": \"Ana\",\n  \"lastName\": \"Hernandez\",\n  \"emailAddress\": \"anita.hayek@gmail.com\",\n  \"password\": \"anapassword\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8888/api/users",
@@ -100,7 +100,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Invoices",
+			"name": "Get Invoices (With Auth)",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -126,6 +126,21 @@
 		{
 			"name": "Get Invoice",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "hans@pricode.io",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -156,12 +171,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "joepassword",
+							"value": "password",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "joe@smith.com",
+							"value": "hans@pricode.io",
 							"type": "string"
 						}
 					]
@@ -175,7 +190,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"client\": \"Google, Inc\",\n    \"invoiceId\": \"1\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"invoiceNumber\":\"1\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"iteamUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": \"\",\n        \"itemDiscount\": \"\"\n    }],\n    \"invoiceTotal\": \"100\",\n    \"invoiceTax\": \"\",\n    \"invoiceDiscount\": \"\",\n    \"userId\": 1\n}"
+					"raw": "{\n    \"invoiceNumber\": \"HA01\",\n    \"customerName\": \"Google, Inc\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"itemUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": null,\n        \"itemDiscount\": null\n    }],\n    \"totalAmount\": 100,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"draft\",\n    \"userId\": 1\n}\n"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices",
@@ -218,7 +233,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"1\",\n    \"client\": \"Digital Ocean LLC\",\n    \"invoiceId\": \"1\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"invoiceNumber\":\"1\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"iteamUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": \"\",\n        \"itemDiscount\": \"\"\n    }],\n    \"invoiceTotal\": \"100\",\n    \"invoiceTax\": \"\",\n    \"invoiceDiscount\": \"\",\n    \"userId\": 1\n}"
+					"raw": "{\n    \"invoiceNumber\":\"HA01\",\n    \"customerName\": \"Google Updated, Inc\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"iteamUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": \"\",\n        \"itemDiscount\": \"\"\n    }],\n    \"totalAmount\": \"100\",\n    \"tax\": \"\",\n    \"discount\": \"\",\n    \"status\": \"draft\",\n    \"userId\": 1\n}"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices/1",
@@ -376,7 +391,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"client\": \"\",\n    \"invoiceId\": \"1\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"invoiceNumber\":\"1\",\n    \"items\": [{}],\n    \"invoiceTotal\": \"\",\n    \"invoiceTax\": \"\",\n    \"invoiceDiscount\": \"\",\n    \"userId\": 1\n}"
+					"raw": "{\n    \"invoiceNumber\":\"HA01\",\n    \"customerName\": \"\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"items\": [{}],\n    \"totalAmount\": \"100\",\n    \"tax\": \"\",\n    \"discount\": \"\",\n    \"status\": \"draft\",\n    \"userId\": 1\n}"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices/1",
