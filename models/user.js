@@ -53,9 +53,9 @@ module.exports = (sequelize) => {
         set(val) {
           if (val) {
             // hash the password with bcrypt.hashSync()
-            const hashedPassword = bcrypt.hashSync(val, 10); 
+            const hashedPassword = bcrypt.hashSync(val, 10);
             // setDataValue() is a Sequelize method used inside setters to update the underlying data value
-            this.setDataValue('password', hashedPassword); 
+            this.setDataValue("password", hashedPassword);
           }
         },
         validate: {
@@ -74,6 +74,13 @@ module.exports = (sequelize) => {
   User.associate = (models) => {
     // Tells Sequelize that a user can be associated with one or more invoices
     User.hasMany(models.Invoice, {
+      foreignKey: {
+        fieldName: "userId",
+        allowNull: false,
+      },
+    });
+    // Tells Sequelize that a user can be associated with one or more customers
+    User.hasMany(models.Customer, {
       foreignKey: {
         fieldName: "userId",
         allowNull: false,
