@@ -63,6 +63,16 @@ const seedCustomers = async () => {
   }
 };
 
+const deleteCustomers = async () => {
+  try {
+    await Customer.destroy({ truncate: true });
+    console.log("Customers deleted successfully");
+  } catch (error) {
+    console.error("Error deleting customers:", error);
+  }
+};
+
 module.exports = {
   up: seedCustomers,
+  down: deleteCustomers,
 };

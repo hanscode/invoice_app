@@ -2,6 +2,12 @@ const { User } = require("../models");
 
 const userData = [
   {
+    firstName: "Hans",
+    lastName: "Steffens",
+    emailAddress: "hans@pricode.io",
+    password: "password",
+  },
+  {
     firstName: "John",
     lastName: "Smith",
     emailAddress: "john23@smith.com",
@@ -24,6 +30,16 @@ const seedUsers = async () => {
   }
 };
 
+const deleteUsers = async () => {
+  try {
+    await User.destroy({ truncate: true });
+    console.log("Users deleted successfully");
+  } catch (error) {
+    console.error("Error deleting users:", error);
+  }
+};
+
 module.exports = {
   up: seedUsers,
+  down: deleteUsers,
 };

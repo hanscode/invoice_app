@@ -86,6 +86,32 @@ const invoiceData = [
     ],
     status: "draft",
   },
+  {
+    issueDate: "2021-04-01",
+    dueDate: "2021-04-30",
+    totalAmount: 4000.0,
+    items: [
+      {
+        description: "Mobile app development",
+        quantity: 4,
+        unitPrice: 1000.0,
+      },
+    ],
+    status: "sent",
+  },
+  {
+    issueDate: "2021-05-01",
+    dueDate: "2021-05-31",
+    totalAmount: 5000.0,
+    items: [
+      {
+        description: "SEO services",
+        quantity: 5,
+        unitPrice: 1000.0,
+      },
+    ],
+    status: "sent",
+  },
 ];
 
 const seedInvoices = async () => {
@@ -119,7 +145,8 @@ const seedInvoices = async () => {
             users[index % users.length].lastName
           ),
           userId: users[Math.floor(Math.random() * users.length)].id,
-          customerId: customers[Math.floor(Math.random() * customers.length)].customerId,
+          customerId:
+            customers[Math.floor(Math.random() * customers.length)].customerId,
         };
       })
     );
@@ -132,6 +159,16 @@ const seedInvoices = async () => {
   }
 };
 
+const deleteInvoices = async () => {
+  try {
+    await Invoice.destroy({ truncate: true });
+    console.log("Invoices deleted successfully");
+  } catch (error) {
+    console.error("Error deleting invoices:", error);
+  }
+};
+
 module.exports = {
   up: seedInvoices,
+  down: deleteInvoices,
 };

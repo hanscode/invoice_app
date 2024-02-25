@@ -67,6 +67,9 @@ module.exports = (sequelize) => {
         name: "customerId",
         allowNull: false,
       },
+      scope: {
+        userId: sequelize.col('Customer.userId') // Only select invoices where the userId matches the userId of the customer
+      }
     });
   };
 
