@@ -28,6 +28,9 @@ module.exports = (sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: {
+          msg: "The email you entered already exists for other customer. Please enter a different email.",
+        },
         validate: {
           notNull: {
             msg: "An email is required",

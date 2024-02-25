@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("./middleware/async-handler");
 const User = require("./models").User;
 const Invoice = require("./models").Invoice;
+const Customer = require("./models").Customer;
 const { authenticateUser } = require("./middleware/auth-user");
 
 // Construct a router instance.
