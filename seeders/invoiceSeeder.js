@@ -1,6 +1,6 @@
 const { Invoice, User, Customer } = require("../models");
-const seedCustomers = require('./customerSeeder'); // Import the customer seeder
-const seedUsers = require('./userSeeder'); // Import the user seeder
+const seedCustomers = require("./customerSeeder"); // Import the customer seeder
+const seedUsers = require("./userSeeder"); // Import the user seeder
 
 // Function to generate a random numeric string
 const generateRandomString = (length) => {
@@ -90,24 +90,39 @@ const invoiceData = [
 
 const seedInvoices = async () => {
   try {
+    // Check if any users exist
+    const existingUsers = await User.count();
+    // Check if any customers exist
+    const existingCustomers = await Customer.count();
 
-    // Seed users and customers first
-     await seedUsers();
-     await seedCustomers();
+    // If no users or customers exist, seed them
+    if (existingUsers === 0 || existingCustomers === 0) {
+      console.log("Seeding users and customers...");
+      // Seed users and customers first
+      await seedUsers.up();
+      await seedCustomers.up();
+    } else {
+      console.log("Users and customers already seeded, skipping...");
+    }
 
     // Get all users and customers from the database
     const users = await User.findAll();
     const customers = await Customer.findAll();
 
     // Iterate over each invoice, generate a unique invoice number with user initials as prefix, and assign a user and customer
-    const invoicesWithAssociations = await Promise.all(invoiceData.map(async (invoice, index) => {
-      return {
-        ...invoice,
-        invoiceNumber: await generateUniqueInvoiceNumber(users[index % users.length].firstName, users[index % users.length].lastName),
-        userId: users[Math.floor(Math.random() * users.length)].id,
-        customerId: customers[Math.floor(Math.random() * customers.length)].id,
-      };
-    }));
+    const invoicesWithAssociations = await Promise.all(
+      invoiceData.map(async (invoice, index) => {
+        return {
+          ...invoice,
+          invoiceNumber: await generateUniqueInvoiceNumber(
+            users[index % users.length].firstName,
+            users[index % users.length].lastName
+          ),
+          userId: users[Math.floor(Math.random() * users.length)].id,
+          customerId: customers[Math.floor(Math.random() * customers.length)].customerId,
+        };
+      })
+    );
 
     // Seed invoices with associations
     await Invoice.bulkCreate(invoicesWithAssociations);
