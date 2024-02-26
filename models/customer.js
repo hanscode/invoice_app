@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true, // Automatically gets converted to SERIAL for postgres
         allowNull: false,
-        unique: true
+        unique: true,
       },
       name: {
         type: DataTypes.STRING,
@@ -29,7 +29,8 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
-          msg: "The email you entered already exists for other customer. Please enter a different email.",
+          msg: "The email you entered already exists for another customer of this user. Please enter a different email.",
+          name: "uniqueEmailPerUser",
         },
         validate: {
           notNull: {
@@ -37,6 +38,20 @@ module.exports = (sequelize) => {
           },
           isEmail: {
             msg: "Please provide a valid email address",
+          },
+          async uniqueEmailPerUser(value) {
+            // Custom validation function to check uniqueness per user
+            const customer = await Customer.findOne({
+              where: {
+                email: value,
+                userId: this.userId, // `this.userId` refers to the userId associated with the current customer
+              },
+            });
+            if (customer) {
+              throw new Error(
+                "The email you entered already exists for another customer of this user. Please enter a different email."
+              );
+            }
           },
         },
       },
@@ -68,8 +83,8 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       scope: {
-        userId: sequelize.col('Customer.userId') // Only select invoices where the userId matches the userId of the customer
-      }
+        userId: sequelize.col("userId"), // Only select invoices where the userId matches the userId of the customer
+      },
     });
   };
 
