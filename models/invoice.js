@@ -1,5 +1,5 @@
 "use strict";
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes, Op } = require("sequelize");
 
 module.exports = (sequelize) => {
   class Invoice extends Model {}
@@ -9,7 +9,27 @@ module.exports = (sequelize) => {
       invoiceNumber: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        validate: {
+          notNull: {
+            msg: "An invoice number is required",
+          },
+          notEmpty: {
+            msg: "Please provide an invoice number",
+          },
+          uniqueInvoiceNumber: async function(value) {
+            // Custom validation function to check uniqueness of invoice number
+            const invoice = await Invoice.findOne({
+              where: {
+                invoiceNumber: value,
+                userId: this.userId, // `this.userId` refers to the userId associated with the current invoice
+                id: { [Op.ne]: this.id } // Exclude the current invoice ID
+              },
+            });
+            if (invoice) {
+              throw new Error("The invoice number you entered already exists");
+            }
+          }
+        },
       },
       customerId: {
         type: DataTypes.INTEGER,
@@ -18,6 +38,10 @@ module.exports = (sequelize) => {
           model: "Customers",
           key: "customerId",
         },
+      },
+      // Virtual property for customerName
+      customerName: {
+        type: DataTypes.STRING,
       },
       issueDate: {
         type: DataTypes.DATEONLY,
@@ -44,7 +68,7 @@ module.exports = (sequelize) => {
             }
             // Perform validation for each element in the array
             value.forEach((item) => {
-              if (!item.description || !item.quantity || !item.unitPrice) {
+              if (!item.description || !item.quantity || !item.price) {
                 throw new Error(
                   "Each item must have at least a description, quantity, and unit price"
                 );

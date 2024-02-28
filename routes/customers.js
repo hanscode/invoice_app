@@ -45,6 +45,8 @@ router.get(
   "/customers/:customerId",
   authenticateUser,
   asyncHandler(async (req, res, next) => {
+    // retrieve the current authenticated user's information from the Request object's `currentUser` property:
+    const user = req.currentUser;
     const customer = await Customer.findOne({
       attributes: [
         "customerId",
@@ -64,7 +66,14 @@ router.get(
       where: { customerId: req.params.customerId },
     });
     if (customer) {
-      res.status(200).json(customer);
+      // Confirming that the currently authenticated user is the owner of the requested customer.
+      const customerOwner = customer.userId;
+      const authenticatedUser = user.id;
+      if (customerOwner === authenticatedUser) {
+       res.status(200).json(customer);
+      } else {
+       res.status(403).json({message: "User is not owner of the requested customer"});
+     }
     } else {
       res.status(404).json({ message: "Customer not found" });
     }

@@ -55,7 +55,7 @@ const invoiceData = [
       {
         description: "WordPress website development",
         quantity: 1,
-        unitPrice: 1000.0,
+        price: 1000.0,
       },
     ],
     status: "draft",
@@ -68,7 +68,7 @@ const invoiceData = [
       {
         description: "UX/UI design",
         quantity: 2,
-        unitPrice: 1000.0,
+        price: 1000.0,
       },
     ],
     status: "draft",
@@ -81,7 +81,7 @@ const invoiceData = [
       {
         description: "React web app development",
         quantity: 3,
-        unitPrice: 1000.0,
+        price: 1000.0,
       },
     ],
     status: "draft",
@@ -94,7 +94,7 @@ const invoiceData = [
       {
         description: "Mobile app development",
         quantity: 4,
-        unitPrice: 1000.0,
+        price: 1000.0,
       },
     ],
     status: "sent",
@@ -107,7 +107,7 @@ const invoiceData = [
       {
         description: "SEO services",
         quantity: 5,
-        unitPrice: 1000.0,
+        price: 1000.0,
       },
     ],
     status: "sent",
@@ -138,6 +138,7 @@ const seedInvoices = async () => {
     // Iterate over each invoice, generate a unique invoice number with user initials as prefix, and assign a user and customer
     const invoicesWithAssociations = await Promise.all(
       invoiceData.map(async (invoice, index) => {
+        const customer = customers[Math.floor(Math.random() * customers.length)];
         return {
           ...invoice,
           invoiceNumber: await generateUniqueInvoiceNumber(
@@ -146,7 +147,8 @@ const seedInvoices = async () => {
           ),
           userId: users[Math.floor(Math.random() * users.length)].id,
           customerId:
-            customers[Math.floor(Math.random() * customers.length)].customerId,
+            customer.customerId,
+          customerName: customer.name,
         };
       })
     );

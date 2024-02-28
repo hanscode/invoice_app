@@ -1,18 +1,17 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Customers', {
       customerId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        unique: true,
         type: Sequelize.INTEGER
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       email: {
         type: Sequelize.STRING,
@@ -47,8 +46,8 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
-    // Drop the Customers table
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Customers');
   }
 };

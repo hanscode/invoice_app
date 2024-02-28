@@ -12,7 +12,6 @@ module.exports = {
       invoiceNumber: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       customerId: {
         type: Sequelize.INTEGER,
@@ -23,6 +22,9 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      customerName: {
+        type: Sequelize.STRING,
       },
       issueDate: {
         type: Sequelize.DATEONLY,

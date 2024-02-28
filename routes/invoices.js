@@ -2,7 +2,7 @@
 
 const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
-const { User, Invoice} = require("../models");
+const { User, Invoice, Customer } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
 
 // Construct a router instance.
@@ -22,7 +22,7 @@ router.get(
       attributes: [
         "id",
         "invoiceNumber",
-        "customerName",
+        "customerId", // Include customerId for fetching customer names.
         "issueDate",
         "dueDate",
         "totalAmount",
@@ -40,7 +40,45 @@ router.get(
       ],
       where: { userId: authenticatedUser.id },
     });
-    res.status(200).json(invoices);
+    // Extract unique customerIds from the fetched invoices
+    const customerIds = invoices.map((invoice) => invoice.customerId);
+
+    // Fetch customer names based on the extracted customerIds
+    const customers = await Customer.findAll({
+      attributes: ["customerId", "name"],
+      where: { customerId: customerIds },
+    });
+
+    // Map customer names to a dictionary for easy lookup
+    const customerNameMap = {};
+    customers.forEach((customer) => {
+      customerNameMap[customer.customerId] = customer.name;
+    });
+
+    // Prepare the response with customer names added to each invoice
+    const responseInvoices = invoices.map((invoice) => ({
+      id: invoice.id,
+      invoiceNumber: invoice.invoiceNumber,
+      customerId: invoice.customerId,
+      // Add customerName based on customerId lookup
+      customerName: customerNameMap[invoice.customerId] || null,
+      issueDate: invoice.issueDate,
+      dueDate: invoice.dueDate,
+      totalAmount: invoice.totalAmount,
+      items: invoice.items,
+      tax: invoice.tax,
+      discount: invoice.discount,
+      status: invoice.status,
+      userId: invoice.userId,
+      user: { 
+        id: invoice.User.id,
+        firstName: invoice.User.firstName,
+        lastName: invoice.User.lastName,
+        emailAddress: invoice.User.emailAddress,
+      }
+    }));
+
+    res.status(200).json(responseInvoices);
   })
 );
 
@@ -53,7 +91,7 @@ router.get(
       attributes: [
         "id",
         "invoiceNumber",
-        "customerName",
+        "customerId",
         "issueDate",
         "dueDate",
         "totalAmount",
@@ -71,8 +109,39 @@ router.get(
       ],
       where: { id: req.params.id },
     });
+    // Extract unique customerId from the fetched invoice
+    const clientId = invoice.customerId;
+
+    // Fetch customer name based on the extracted customerId
+    const customer = await Customer.findOne({
+      attributes: ["customerId", "name"],
+      where: { customerId: clientId },
+    });
+
     if (invoice) {
-      res.status(200).json(invoice);
+      // Prepare the response with customerName added to the invoice
+      const responseInvoice = {
+        id: invoice.id,
+        invoiceNumber: invoice.invoiceNumber,
+        customerId: invoice.customerId,
+        customerName: customer.name, // Add customerName
+        issueDate: invoice.issueDate,
+        dueDate: invoice.dueDate,
+        totalAmount: invoice.totalAmount,
+        items: invoice.items,
+        tax: invoice.tax,
+        discount: invoice.discount,
+        status: invoice.status,
+        userId: invoice.userId,
+        user: { 
+          id: invoice.User.id,
+          firstName: invoice.User.firstName,
+          lastName: invoice.User.lastName,
+          emailAddress: invoice.User.emailAddress,
+        }
+      };
+
+      res.status(200).json(responseInvoice);
     } else {
       res.status(404).json({ message: "Invoice not found" });
     }
@@ -85,7 +154,18 @@ router.post(
   authenticateUser,
   asyncHandler(async (req, res) => {
     try {
-      const invoice = await Invoice.create(req.body);
+      // Fetch customer details based on the provided customerId
+      const customer = await Customer.findByPk(req.body.customerId);
+
+      if (!customer) { // If customer not found, return 400 status code with error message
+        return res.status(400).json({ message: "Customer not found" });
+      } 
+      // Create the invoice with the provided data and customerName
+      const invoice = await Invoice.create({
+        ...req.body,
+        customerName: customer.name, // Include customerName in the invoice
+      });
+
       res
         .status(201)
         .setHeader("Location", `/invoices/${invoice.id}`)
@@ -129,8 +209,16 @@ router.put(
         const authenticatedUser = user.id;
 
         if (invoiceOwner === authenticatedUser) {
-          // update the invoice object from the request body
-          await invoice.update(req.body);
+          // Fetch customer details based on the provided customerId
+          const customer = await Customer.findByPk(req.body.customerId);
+          if (!customer) {
+            return res.status(404).json({ message: "Customer not found" });
+          }
+          // Update the invoice object from the request body, including customerName
+          await invoice.update({
+            ...req.body,
+            customerName: customer.name, // Include customerName in the update
+          });
           // Send status 204 (meaning no content == everything went OK but there's nothing to send back)
           res.status(204).end();
         } else {
