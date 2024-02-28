@@ -14,12 +14,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "anapassword",
+							"value": "password",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "anita.hayek@gmail.com",
+							"value": "hans@pricode.io",
 							"type": "string"
 						}
 					]
@@ -53,7 +53,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"firstName\": \"Ana\",\n  \"lastName\": \"Hernandez\",\n  \"emailAddress\": \"anita.hayek@gmail.com\",\n  \"password\": \"anapassword\"\n}"
+					"raw": "{\n  \"firstName\": \"Ana\",\n  \"lastName\": \"Hernandez\",\n  \"emailAddress\": \"anita.hayek@gmail.com\",\n  \"password\": \"password\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8888/api/users",
@@ -82,7 +82,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"firstName\": \"Joe\",\n  \"lastName\": \"Smith\",\n  \"emailAddress\": \"joe@smith.com\",\n  \"password\": \"password\"\n}"
+					"raw": "{\n  \"firstName\": \"Joe\",\n  \"lastName\": \"Smith\",\n  \"emailAddress\": \"john23@smith.com\",\n  \"password\": \"password\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8888/api/users",
@@ -102,6 +102,21 @@
 		{
 			"name": "Get Invoices (With Auth)",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "hans@pricode.io",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -190,7 +205,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"invoiceNumber\": \"HA01\",\n    \"customerName\": \"Google, Inc\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"items\": [{\n        \"itemID\": \"0\",\n        \"itemDescription\": \"My item description\",\n        \"itemQuantity\": \"2\",\n        \"itemUnitPrice\": \"50\",\n        \"itemAmount\": \"100\",\n        \"itemTax\": null,\n        \"itemDiscount\": null\n    }],\n    \"totalAmount\": 100,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"draft\",\n    \"userId\": 1\n}\n"
+					"raw": "{\n    \"invoiceNumber\": \"JS-1606\",\n    \"customerName\": \"Marketing Done Right, LLC\",\n    \"issueDate\": \"2023-12-10T09:00:00Z\",\n    \"dueDate\": \"2023-12-10T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"SEO Consulting\",\n            \"quantity\": 4,\n            \"price\": 50,\n            \"amount\": 200,\n            \"tax\": null,\n            \"discount\": null\n        },\n        {\n            \"description\": \"Google Ads Campaing\",\n            \"quantity\": 2,\n            \"price\": 100,\n            \"amount\": 200,\n            \"tax\": null,\n            \"discount\": null\n        }\n    ],\n    \"totalAmount\": 400,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"sent\",\n    \"userId\": 1,\n    \"customerId\": 5\n}"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices",
@@ -258,12 +273,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "joepassword",
+							"value": "anapassword",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "joe@smith.com",
+							"value": "anita.hayek@gmail.com",
 							"type": "string"
 						}
 					]
@@ -320,95 +335,6 @@
 			"response": []
 		},
 		{
-			"name": "Create Invoice (Incomplete Data)",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "joepassword",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "joe@smith.com",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{}"
-				},
-				"url": {
-					"raw": "localhost:8888/api/invoices",
-					"host": [
-						"localhost"
-					],
-					"port": "8888",
-					"path": [
-						"api",
-						"invoices"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Invoice (Incomplete Data)",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "joepassword",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "joe@smith.com",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"invoiceNumber\":\"HA01\",\n    \"customerName\": \"\",\n    \"issueDate\": \"2024-01-31T09:00:00Z\",\n    \"dueDate\": \"2024-01-31T09:00:00Z\",\n    \"items\": [{}],\n    \"totalAmount\": \"100\",\n    \"tax\": \"\",\n    \"discount\": \"\",\n    \"status\": \"draft\",\n    \"userId\": 1\n}"
-				},
-				"url": {
-					"raw": "localhost:8888/api/invoices/1",
-					"host": [
-						"localhost"
-					],
-					"port": "8888",
-					"path": [
-						"api",
-						"invoices",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Create User (Invalid Email Address) - EXCEEDS",
 			"request": {
 				"method": "POST",
@@ -438,12 +364,27 @@
 			"response": []
 		},
 		{
-			"name": "Get Users (No Auth)",
+			"name": "Get Customers (With Auth)",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "hans@pricode.io",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8888/api/users",
+					"raw": "http://localhost:8888/api/customers",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -451,94 +392,183 @@
 					"port": "8888",
 					"path": [
 						"api",
-						"users"
+						"customers"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Create Invoice (No Auth, Incomplete Data)",
+			"name": "Create Customer (With Auth)",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "hans@pricode.io",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{}"
-				},
-				"url": {
-					"raw": "localhost:8888/api/invoices",
-					"host": [
-						"localhost"
-					],
-					"port": "8888",
-					"path": [
-						"api",
-						"invoices"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Invoice (No Auth, Incomplete Data)",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{}"
+					"raw": "{\n    \"name\": \"Permalink, Inc\",\n    \"email\": \"billing@permalinkgroup.com\",\n    \"phone\": \"+1 919-555-1234\",\n    \"address\": \"116 Melbourne AVE. SE, Minneapolis, MN 55414\",\n    \"notes\": \"This is a sample customer generated by the seeder\",\n    \"userId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "localhost:8888/api/invoices/1",
+					"raw": "http://localhost:8888/api/customers",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8888",
 					"path": [
 						"api",
-						"invoices",
-						"1"
+						"customers"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete Invoice (No Auth)",
+			"name": "Get Customer (With Auth)",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "hans@pricode.io",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
 				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "localhost:8888/api/invoices/1",
+					"raw": "localhost:8888/api/customers/3",
 					"host": [
 						"localhost"
 					],
 					"port": "8888",
 					"path": [
 						"api",
-						"invoices",
-						"1"
+						"customers",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Customer (Width Auth)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "john23@smith.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Pricode, Inc\",\n    \"email\": \"info@pricode.io\",\n    \"phone\": \"+1 919-555-1234\",\n    \"address\": \"5678 Elm St, Raleigh, NC 27601\",\n    \"notes\": \"This is a sample customer generated by the seeder\",\n    \"userId\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8888/api/customers/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"customers",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Customer (With Auth)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "anita.hayek@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/customers/8",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"customers",
+						"8"
 					]
 				}
 			},
