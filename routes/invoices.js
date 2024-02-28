@@ -70,12 +70,12 @@ router.get(
       discount: invoice.discount,
       status: invoice.status,
       userId: invoice.userId,
-      user: { 
+      user: {
         id: invoice.User.id,
         firstName: invoice.User.firstName,
         lastName: invoice.User.lastName,
         emailAddress: invoice.User.emailAddress,
-      }
+      },
     }));
 
     res.status(200).json(responseInvoices);
@@ -133,12 +133,12 @@ router.get(
         discount: invoice.discount,
         status: invoice.status,
         userId: invoice.userId,
-        user: { 
+        user: {
           id: invoice.User.id,
           firstName: invoice.User.firstName,
           lastName: invoice.User.lastName,
           emailAddress: invoice.User.emailAddress,
-        }
+        },
       };
 
       res.status(200).json(responseInvoice);
@@ -154,12 +154,25 @@ router.post(
   authenticateUser,
   asyncHandler(async (req, res) => {
     try {
+      // retrieve the current authenticated user's information from the Request object's `currentUser` property:
+      const authenticatedUser = req.currentUser;
       // Fetch customer details based on the provided customerId
       const customer = await Customer.findByPk(req.body.customerId);
+      // Extract the customerUserId from the customer object
+      const customerUserId = customer ? customer.userId : null;
 
-      if (!customer) { // If customer not found, return 400 status code with error message
+      if (!customer) {
+        // If customer not found, return 400 status code with error message
         return res.status(400).json({ message: "Customer not found" });
-      } 
+      }
+
+      if (customerUserId !== authenticatedUser.id) {
+        // If the customer does not belong to the authenticated user, return 403 status code with error message
+        return res.status(403).json({
+          message: "Customer does not belong to the authenticated user",
+        });
+      }
+
       // Create the invoice with the provided data and customerName
       const invoice = await Invoice.create({
         ...req.body,
