@@ -2,6 +2,7 @@
 const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
+const path = require('path');
 
 // Routes
 const users = require('./routes/users');
@@ -14,6 +15,9 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 const PORT = process.env.PORT || 8888;
+
+// Priority serve any static files.
+app.use(express.static(path.resolve(__dirname, './client/build')));
 
 // importing db instance of sequlize from model/index.js
 const db = require("./models"); // Accessing all Sequelizes methods and functionality

@@ -86,6 +86,11 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
     });
+    // Tells Sequelize that a user can be associated with one or more payments
+    User.hasMany(models.Payment, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE', // Optionally define the behavior on deletion
+    });
   };
 
   return User;

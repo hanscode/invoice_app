@@ -83,6 +83,11 @@ module.exports = (sequelize) => {
         userId: sequelize.col("userId"), // Only select invoices where the userId matches the userId of the customer
       },
     });
+    // Tells Sequelize that a customer can be associated with one or more payments
+    Customer.hasMany(models.Payment, {
+      foreignKey: 'customerId',
+      onDelete: 'CASCADE', // Optionally define the behavior on deletion
+    });
   };
 
   return Customer;
