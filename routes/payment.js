@@ -22,9 +22,26 @@ router.post(
       // Start a transaction
       transaction = await sequelize.transaction();
 
-      // Update the invoice record to mark it as paid
+      // Update the invoice record to mark it as paid or partially paid
+      const invoice = await Invoice.findByPk(req.params.invoiceId, {
+        transaction,
+      });
+      const totalAmountPaid = await Payment.sum("amountPaid", {
+        where: { invoiceId: req.params.invoiceId },
+        transaction,
+      });
+
+      let status;
+      if (totalAmountPaid >= invoice.totalAmount) {
+        status = "paid";
+      } else if (totalAmountPaid > 0) {
+        status = "partially paid";
+      } else {
+        status = "unpaid";
+      }
+
       await Invoice.update(
-        { status: "paid" },
+        { status },
         { where: { id: req.params.invoiceId }, transaction }
       );
 
@@ -64,8 +81,8 @@ router.post(
         const errors = error.errors.map((err) => err.message);
         res.status(400).json({ errors });
       } else {
-        // Return internal server error for other errors
-        res.status(500).json({ error: "Internal server error" });
+        // Return custom error message for other errors
+        res.status(500).json({ error: "Failed to record invoice payment" });
       }
     }
   })
