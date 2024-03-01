@@ -1,6 +1,54 @@
-import { Link } from "react-router-dom"
+import { useContext, useRef, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
+import ErrorsDisplay from "./ErrorsDisplay";
+import UserContext from "../context/UserContext";
+
+/**
+ * This component provides the "Sign In" screen by rendering a form that allows 
+ * a user to sign in using their existing account information. 
+ * 
+ * The component also renders a "Sign In" button that when clicked signs in the user.
+ * 
+ * @returns UserSign Component.
+ */
 
 const UserSignIn = () => {
+  const { actions } = useContext(UserContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // State
+  const emailAddress = useRef(null);
+  const password = useRef(null);
+  const [errors, setErrors] = useState([]);
+
+  // Event Handlers
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    let from = "/dashboard";
+    if (location.state) {
+      from = location.state.from;
+    }
+
+    const credentials = {
+      emailAddress: emailAddress.current.value,
+      password: password.current.value
+    };
+
+    try {
+      const user = await actions.signIn(credentials);
+      if (user) {
+        navigate(from);
+      } else {
+        setErrors(["Sign-in was unsuccessful"]);
+      }
+    } catch (error) {
+      console.log(error);
+      navigate("/error");
+    }
+  };
+
   return (
     <>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -28,7 +76,8 @@ const UserSignIn = () => {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+          <ErrorsDisplay errors={errors}/>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Email address
@@ -41,6 +90,8 @@ const UserSignIn = () => {
                     autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ref={emailAddress}
+                    defaultValue="" 
                   />
                 </div>
               </div>
@@ -64,6 +115,8 @@ const UserSignIn = () => {
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ref={password} 
+                    defaultValue=""
                   />
                 </div>
               </div>

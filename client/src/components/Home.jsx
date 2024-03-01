@@ -1,12 +1,10 @@
-import HeaderHome from "./layout/home/Header"
-import HeroHome from "./layout/home/Hero"
-import ProductHome from "./layout/home/Product"
+import HeroHome from "./layouts/home/Hero"
+import ProductHome from "./layouts/home/Product"
 
 const Home = () => {
   
   return (
     <>
-    <HeaderHome />
     <HeroHome />
     <ProductHome />
     </>

@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import UserContext from '../../../context/UserContext';
 
 const navigation = [
   { name: 'Pricode', href: 'https://pricode.io' },
@@ -9,6 +10,7 @@ const navigation = [
 
 const HeaderHome = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const { authUser } = useContext(UserContext);
   return (
     <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -40,9 +42,22 @@ const HeaderHome = () => {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="/signin" className="text-sm font-semibold leading-6 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
+            {
+              authUser === null ? (
+                <>
+                  <a href="/signin" className="text-sm font-semibold leading-6 text-gray-900">
+              Sign In <span aria-hidden="true">&rarr;</span>
             </a>
+                </>
+                ) : (
+                  <>
+                    <a href="/signout" className="text-sm font-semibold leading-6 text-gray-900">
+              Sign Out <span aria-hidden="true">&rarr;</span>
+            </a>
+                  </>
+                )
+            }
+            
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
