@@ -1,11 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 
 // Import App components
-import Header from "./components/Header";
-import SubHeader from "./components/SubHeader";
 import Home from "./components/Home";
 import UserSignIn from "./components/UserSignIn";
 import UserSignUp from "./components/UserSignUp";
+import Footer from "./components/Footer";
 
 // Importing the App Error Components
 import UnhandledError from "./components/UnhandledError";
@@ -14,8 +13,6 @@ import NotFound from "./components/NotFound";
 function App() {
   return (
     <>
-      <Header />
-      <SubHeader />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -27,6 +24,7 @@ function App() {
           <Route path="error" element={<UnhandledError />} />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }
