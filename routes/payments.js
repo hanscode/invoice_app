@@ -76,8 +76,8 @@ router.post(
           invoiceId: req.params.invoiceId,
           amountPaid: paymentAmount,
           paymentDate: req.body.paymentDate,
-          userId: authenticatedUser.id, // Assuming userId is retrieved from the authenticated user
-          customerId: invoice.customerId, // Assuming invoice contains customerId
+          userId: authenticatedUser.id, 
+          customerId: invoice.customerId,
         },
         { transaction }
       );
