@@ -8,6 +8,7 @@ const path = require('path');
 const users = require('./routes/users');
 const invoices = require('./routes/invoices');
 const customers = require('./routes/customers');
+const payments = require('./routes/payments');
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -55,6 +56,7 @@ app.get('/', (req, res) => {
 app.use('/api', users);
 app.use('/api', invoices);
 app.use('/api', customers);
+app.use('/api', payments);
 
 // send 404 if no other route matched
 app.use((req, res) => {

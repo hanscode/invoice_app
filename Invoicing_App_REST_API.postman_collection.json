@@ -205,7 +205,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"invoiceNumber\": \"SG-0001\",\n    \"issueDate\": \"2024-02-26T09:00:00Z\",\n    \"dueDate\": \"2024-02-26T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"Web Development\",\n            \"quantity\": 20,\n            \"price\": 50,\n            \"amount\": 1000,\n            \"tax\": null,\n            \"discount\": null\n        },\n        {\n            \"description\": \"Google Ads Campaing\",\n            \"quantity\": 2,\n            \"price\": 100,\n            \"amount\": 200,\n            \"tax\": null,\n            \"discount\": null\n        }\n    ],\n    \"totalAmount\": 1200,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"sent\",\n    \"userId\": 2,\n    \"customerId\": 6\n}"
+					"raw": "{\n    \"invoiceNumber\": \"SG-0002\",\n    \"issueDate\": \"2024-02-26T09:00:00Z\",\n    \"dueDate\": \"2024-02-26T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"Web Development\",\n            \"quantity\": 20,\n            \"price\": 50,\n            \"amount\": 1000,\n            \"tax\": null,\n            \"discount\": null\n        },\n        {\n            \"description\": \"Google Ads Campaing\",\n            \"quantity\": 2,\n            \"price\": 100,\n            \"amount\": 200,\n            \"tax\": null,\n            \"discount\": null\n        }\n    ],\n    \"totalAmount\": 1200,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"sent\",\n    \"userId\": 2,\n    \"customerId\": 6\n}"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices",
@@ -273,12 +273,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "anapassword",
+							"value": "password",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "anita.hayek@gmail.com",
+							"value": "john23@smith.com",
 							"type": "string"
 						}
 					]
@@ -291,7 +291,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8888/api/invoices/4",
+					"raw": "localhost:8888/api/invoices/11",
 					"host": [
 						"localhost"
 					],
@@ -299,7 +299,7 @@
 					"path": [
 						"api",
 						"invoices",
-						"4"
+						"11"
 					]
 				}
 			},
@@ -569,6 +569,185 @@
 						"api",
 						"customers",
 						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Record Payment",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john23@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amountPaid\": 200,\n    \"paymentDate\": \"2021-03-26T09:00:00Z\",\n    \"invoiceId\": 3,\n    \"userId\": 2,\n    \"customerId\": 6\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8888/api/payments/invoice/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"payments",
+						"invoice",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payments",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john23@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/payments/invoice/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"payments",
+						"invoice",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john23@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/payments/invoice/3/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"payments",
+						"invoice",
+						"3",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Payment",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john23@smith.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8888/api/payments/invoice/3/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"payments",
+						"invoice",
+						"3",
+						"3"
 					]
 				}
 			},
