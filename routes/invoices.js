@@ -28,7 +28,8 @@ router.get(
       attributes: [
         "id",
         "invoiceNumber",
-        "customerId", // Include customerId for fetching customer names.
+        "customerId",
+        "customerName",
         "issueDate",
         "dueDate",
         "totalAmount",
@@ -49,44 +50,11 @@ router.get(
       offset,
       limit,
     });
-    // Extract unique customerIds from the fetched invoices
-    const customerIds = invoices.map((invoice) => invoice.customerId);
-
-    // Fetch customer names based on the extracted customerIds
-    const customers = await Customer.findAll({
-      attributes: ["customerId", "name"],
-      where: { customerId: customerIds },
-    });
-
-    // Map customer names to a dictionary for easy lookup
-    const customerNameMap = {};
-    customers.forEach((customer) => {
-      customerNameMap[customer.customerId] = customer.name;
-    });
 
     // Prepare the response with customer names added to each invoice
     const responseInvoices = invoices.map((invoice) => ({
-      id: invoice.id,
-      invoiceNumber: invoice.invoiceNumber,
-      customerId: invoice.customerId,
-      // Add customerName based on customerId lookup
-      customerName: customerNameMap[invoice.customerId] || null,
-      issueDate: invoice.issueDate,
-      dueDate: invoice.dueDate,
-      totalAmount: invoice.totalAmount,
-      dueBalance: invoice.dueBalance,
-      items: invoice.items,
-      tax: invoice.tax,
-      discount: invoice.discount,
-      status: invoice.status,
+      ...invoice.dataValues,
       isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
-      userId: invoice.userId,
-      user: {
-        id: invoice.User.id,
-        firstName: invoice.User.firstName,
-        lastName: invoice.User.lastName,
-        emailAddress: invoice.User.emailAddress,
-      },
     }));
 
     res.status(200).json(responseInvoices);
@@ -103,6 +71,7 @@ router.get(
         "id",
         "invoiceNumber",
         "customerId",
+        "customerName",
         "issueDate",
         "dueDate",
         "totalAmount",
@@ -121,40 +90,13 @@ router.get(
       ],
       where: { id: req.params.id },
     });
-    // Extract unique customerId from the fetched invoice
-    const clientId = invoice.customerId;
-
-    // Fetch customer name based on the extracted customerId
-    const customer = await Customer.findOne({
-      attributes: ["customerId", "name"],
-      where: { customerId: clientId },
-    });
 
     if (invoice) {
-      // Prepare the response with customerName added to the invoice
+      // Prepare the response with isOverdue checker added to the invoice
       const responseInvoice = {
-        id: invoice.id,
-        invoiceNumber: invoice.invoiceNumber,
-        customerId: invoice.customerId,
-        customerName: customer.name, // Add customerName
-        issueDate: invoice.issueDate,
-        dueDate: invoice.dueDate,
-        totalAmount: invoice.totalAmount,
-        dueBalance: invoice.dueBalance,
-        items: invoice.items,
-        tax: invoice.tax,
-        discount: invoice.discount,
-        status: invoice.status,
+        ...invoice.dataValues,
         isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
-        userId: invoice.userId,
-        user: {
-          id: invoice.User.id,
-          firstName: invoice.User.firstName,
-          lastName: invoice.User.lastName,
-          emailAddress: invoice.User.emailAddress,
-        },
       };
-
       res.status(200).json(responseInvoice);
     } else {
       res.status(404).json({ message: "Invoice not found" });
