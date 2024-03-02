@@ -18,6 +18,12 @@ router.get(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const authenticatedUser = req.currentUser;
+
+    // Define pagination parameters
+    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
+    const offset = (page - 1) * limit;
+
     const invoices = await Invoice.findAll({
       attributes: [
         "id",
@@ -26,6 +32,7 @@ router.get(
         "issueDate",
         "dueDate",
         "totalAmount",
+        'dueBalance',
         "items",
         "tax",
         "discount",
@@ -39,6 +46,8 @@ router.get(
         },
       ],
       where: { userId: authenticatedUser.id },
+      offset,
+      limit,
     });
     // Extract unique customerIds from the fetched invoices
     const customerIds = invoices.map((invoice) => invoice.customerId);
@@ -65,10 +74,12 @@ router.get(
       issueDate: invoice.issueDate,
       dueDate: invoice.dueDate,
       totalAmount: invoice.totalAmount,
+      dueBalance: invoice.dueBalance,
       items: invoice.items,
       tax: invoice.tax,
       discount: invoice.discount,
       status: invoice.status,
+      isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
       userId: invoice.userId,
       user: {
         id: invoice.User.id,
@@ -95,6 +106,7 @@ router.get(
         "issueDate",
         "dueDate",
         "totalAmount",
+        "dueBalance",
         "items",
         "tax",
         "discount",
@@ -128,10 +140,12 @@ router.get(
         issueDate: invoice.issueDate,
         dueDate: invoice.dueDate,
         totalAmount: invoice.totalAmount,
+        dueBalance: invoice.dueBalance,
         items: invoice.items,
         tax: invoice.tax,
         discount: invoice.discount,
         status: invoice.status,
+        isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
         userId: invoice.userId,
         user: {
           id: invoice.User.id,

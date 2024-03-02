@@ -70,6 +70,15 @@ router.post(
         { where: { id: req.params.invoiceId }, transaction }
       );
 
+      // Calculate the new dueBalance
+      const newDueBalance = invoice.totalAmount - (totalAmountPaid + paymentAmount);
+
+      // Update the dueBalance attribute in the invoice
+      await Invoice.update(
+        { dueBalance: newDueBalance },
+        { where: { id: req.params.invoiceId }, transaction }
+      );
+
       // Record the payment details
       const payment = await Payment.create(
         {

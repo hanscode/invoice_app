@@ -40,7 +40,7 @@ function App() {
           </Route>
 
           {/** Error routes paths for displaying user-friendly messages when things go wrong. */}
-          <Route path="notfound" element={<NotFound />} />
+          <Route path="notfound" element={<NotFoundWrapper setIs404={setIs404}  />} />
           <Route path="forbidden" element={<Forbidden />} />
           <Route path="error" element={<UnhandledError />} />
           <Route path="*" element={<NotFoundWrapper setIs404={setIs404}  />} />

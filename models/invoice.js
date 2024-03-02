@@ -55,6 +55,9 @@ module.exports = (sequelize) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
+      dueBalance: {
+        type: DataTypes.FLOAT,
+      },
       // Define an array field for storing invoice items
       items: {
         type: DataTypes.ARRAY(DataTypes.JSONB), // Using JSONB for flexibility
@@ -88,9 +91,11 @@ module.exports = (sequelize) => {
       },
       tax: {
         type: DataTypes.FLOAT,
+        defaultValue: 0,
       },
       discount: {
         type: DataTypes.FLOAT,
+        defaultValue: 0,
       },
       status: {
         type: DataTypes.STRING,
@@ -100,6 +105,12 @@ module.exports = (sequelize) => {
     },
     { sequelize }
   );
+
+  Invoice.addHook('beforeCreate', (invoice) => {
+    if (!invoice.dueBalance) {
+      invoice.dueBalance = invoice.totalAmount;
+    }
+  });
 
   Invoice.associate = (models) => {
     // Tells Sequelize that a invoice can be associated with only 1 user
