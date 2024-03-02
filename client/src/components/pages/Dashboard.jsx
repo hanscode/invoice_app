@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import {  Menu, Transition } from '@headlessui/react'
 import {
-  ArrowDownCircleIcon,
+  MinusCircleIcon,
   ArrowPathIcon,
   ArrowUpCircleIcon,
   EllipsisHorizontalIcon,
@@ -17,11 +17,11 @@ const stats = [
   { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
   { name: 'Overdue invoices', value: '$12,787.00', change: '+54.02%', changeType: 'negative' },
   { name: 'Outstanding invoices', value: '$245,988.00', change: '-1.39%', changeType: 'positive' },
-  { name: 'Expenses', value: '$30,156.00', change: '+10.18%', changeType: 'negative' },
 ]
 const statuses = {
   Paid: 'text-green-700 bg-green-50 ring-green-600/20',
   Withdraw: 'text-gray-600 bg-gray-50 ring-gray-500/10',
+  Partial: 'text-amber-700 bg-amber-100 ring-amber-600/10',
   Overdue: 'text-red-700 bg-red-50 ring-red-600/10',
 }
 const days = [
@@ -36,8 +36,8 @@ const days = [
         amount: '$7,600.00 USD',
         tax: '$500.00',
         status: 'Paid',
-        client: 'Reform',
-        description: 'Website redesign',
+        client: 'Marketing Done Right, LLC',
+        description: 'Website redesign.',
         icon: ArrowUpCircleIcon,
       },
       {
@@ -45,10 +45,10 @@ const days = [
         invoiceNumber: '00011',
         href: '#',
         amount: '$10,000.00 USD',
-        status: 'Withdraw',
-        client: 'Tom Cook',
-        description: 'Salary',
-        icon: ArrowDownCircleIcon,
+        status: 'Partial',
+        client: 'Chella Industries, Inc.',
+        description: 'Support and maintenance.',
+        icon: MinusCircleIcon,
       },
       {
         id: 3,
@@ -57,8 +57,8 @@ const days = [
         amount: '$2,000.00 USD',
         tax: '$130.00',
         status: 'Overdue',
-        client: 'Tuple',
-        description: 'Logo design',
+        client: 'The Design Booth, LLC',
+        description: 'Hours for web development.',
         icon: ArrowPathIcon,
       },
     ],
@@ -74,8 +74,8 @@ const days = [
         amount: '$14,000.00 USD',
         tax: '$900.00',
         status: 'Paid',
-        client: 'SavvyCal',
-        description: 'Website redesign',
+        client: '',
+        description: 'Front-end development.',
         icon: ArrowUpCircleIcon,
       },
     ],
@@ -84,19 +84,19 @@ const days = [
 const clients = [
   {
     id: 1,
-    name: 'Tuple',
+    name: 'Storm Guard, LLC',
     imageUrl: 'https://tailwindui.com/img/logos/48x48/tuple.svg',
     lastInvoice: { date: 'December 13, 2022', dateTime: '2022-12-13', amount: '$2,000.00', status: 'Overdue' },
   },
   {
     id: 2,
-    name: 'SavvyCal',
+    name: 'Hidden Forces, LLC',
     imageUrl: 'https://tailwindui.com/img/logos/48x48/savvycal.svg',
     lastInvoice: { date: 'January 22, 2023', dateTime: '2023-01-22', amount: '$14,000.00', status: 'Paid' },
   },
   {
     id: 3,
-    name: 'Reform',
+    name: 'Permalink, Inc.',
     imageUrl: 'https://tailwindui.com/img/logos/48x48/reform.svg',
     lastInvoice: { date: 'January 23, 2023', dateTime: '2023-01-23', amount: '$7,600.00', status: 'Paid' },
   },
@@ -109,7 +109,7 @@ function classNames(...classes) {
 const Dashboard = () => {
   return (
     <>
-        <div className="relative isolate overflow-hidden pt-16">
+        <div className="relative isolate overflow-hidden">
           {/* Secondary navigation */}
           <header className="pb-4 pt-6 sm:pb-6">
             <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
@@ -133,7 +133,7 @@ const Dashboard = () => {
 
           {/* Stats */}
           <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
-            <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
+            <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:px-2 xl:px-0">
               {stats.map((stat, statIdx) => (
                 <div
                   key={stat.name}
@@ -263,11 +263,14 @@ const Dashboard = () => {
                 {clients.map((client) => (
                   <li key={client.id} className="overflow-hidden rounded-xl border border-gray-200">
                     <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                      <img
+                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gray-500">
+                      <span className="text-lg font-medium leading-none text-white">{client.name.charAt(0).toUpperCase()}</span>
+                    </span>
+                      {/**<img
                         src={client.imageUrl}
                         alt={client.name}
                         className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
-                      />
+                />*/}
                       <div className="text-sm font-medium leading-6 text-gray-900">{client.name}</div>
                       <Menu as="div" className="relative ml-auto">
                         <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">

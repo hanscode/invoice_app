@@ -1,5 +1,5 @@
-import HeroHome from "./layouts/home/Hero"
-import ProductHome from "./layouts/home/Product"
+import HeroHome from "./layouts/sections/Hero"
+import ProductHome from "./layouts/sections/Product"
 
 const Home = () => {
   

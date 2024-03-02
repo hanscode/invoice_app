@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../utils/apiHelper";
+import Images from "./Images";
 
 import ErrorsDisplay from "./ErrorsDisplay";
 import UserContext from "../context/UserContext";
@@ -59,12 +60,12 @@ const UserSignUp = () => {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="flex h-dvh flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <a href="/">
             <img
               className="mx-auto h-10 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src={Images.logoDarkBrand}
               alt="Your Company"
             />
           </a>

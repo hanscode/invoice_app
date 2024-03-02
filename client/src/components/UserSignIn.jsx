@@ -1,5 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import Images from "./Images";
 
 import ErrorsDisplay from "./ErrorsDisplay";
 import UserContext from "../context/UserContext";
@@ -26,7 +27,7 @@ const UserSignIn = () => {
   // Event Handlers
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let from = "/dashboard";
+    let from = "/app";
     if (location.state) {
       from = location.state.from;
     }
@@ -51,12 +52,12 @@ const UserSignIn = () => {
 
   return (
     <>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="flex h-dvh flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <a href="/">
             <img
               className="mx-auto h-10 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src={Images.logoDarkBrand}
               alt="Your Company"
             />
             </a>

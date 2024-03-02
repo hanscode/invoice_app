@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import UserContext from "../../../context/UserContext";
+import { PlusIcon } from "@heroicons/react/20/solid";
+
 const HeroHome = () => {
+  const { authUser } = useContext(UserContext);
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -24,12 +29,27 @@ const HeroHome = () => {
               The most amazing and simplest invoice system for real people!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="/signup"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Get started
-              </a>
+              {authUser === null ? (
+                <>
+                  <a
+                    href="/signup"
+                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Get started
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="/app/invoices/new"
+                    className="flex rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    <PlusIcon className="-ml-1.5 h-5 w-5" aria-hidden="true" />
+                    New Invoice
+                  </a>
+                </>
+              )}
+
               {/** <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
               Learn more <span aria-hidden="true">→</span></a> */}
             </div>
