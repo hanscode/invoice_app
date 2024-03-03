@@ -38,20 +38,26 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
+      dueBalance: {
+        type: Sequelize.FLOAT,
+      },
       items: {
         type: Sequelize.ARRAY(Sequelize.JSONB),
         allowNull: false,
         defaultValue: [],
       },
       tax: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
+        defaultValue: 0
       },
       discount: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
+        defaultValue: 0
       },
       status: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: 'draft'
       },
       userId: {
         type: Sequelize.INTEGER,

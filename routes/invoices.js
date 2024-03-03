@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { User, Invoice, Customer } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const { logHistory } = require("../utils/historyLogger");
 
 // Construct a router instance.
 const router = express.Router();
@@ -134,6 +135,8 @@ router.post(
         ...req.body,
         customerName: customer.name, // Include customerName in the invoice
       });
+      // Log history for creating an invoice
+      await logHistory('Created', authenticatedUser.id, invoice.id, null);
 
       res
         .status(201)
@@ -188,6 +191,10 @@ router.put(
             ...req.body,
             customerName: customer.name, // Include customerName in the update
           });
+
+          // Log history for updating an invoice
+          await logHistory('Updated', invoiceOwner, invoice.id, null);
+
           // Send status 204 (meaning no content == everything went OK but there's nothing to send back)
           res.status(204).end();
         } else {

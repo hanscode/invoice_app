@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { Invoice, Payment } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const { logHistory } = require("../utils/historyLogger");
 const { sequelize } = require("../models/index");
 
 // Construct a router instance.
@@ -93,6 +94,9 @@ router.post(
 
       // Commit the transaction if all operations succeed
       await transaction.commit();
+
+      // Log history for recording a payment
+      await logHistory(`Recorded payment of $${payment.amountPaid}`, authenticatedUser.id, invoice.id, payment.id);
 
       // Send response
       res
@@ -258,6 +262,8 @@ router.delete(
 
       await payment.destroy({ transaction });
       await transaction.commit();
+      // Log history for removing a payment
+      await logHistory(`Deleted payment of $${payment.amountPaid} `, authenticatedUser.id, payment.invoiceId, payment.id);
       res
         .status(200)
         .json({ success: true, message: "Payment deleted successfully" });

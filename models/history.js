@@ -1,24 +1,37 @@
-const { DataTypes } = require("sequelize");
+"use strict";
+const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  const History = sequelize.define("History", {
-    invoiceId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+  class History extends Model {}
+  History.init(
+    {
+      action: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      timestamp: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: sequelize.NOW,
+      },
     },
-    userId: {
-      type: DataTypes.INTEGER,
+    { sequelize }
+  );
+
+  History.associate = (models) => {
+    History.belongsTo(models.User, {
+      foreignKey: "userId",
       allowNull: false,
-    },
-    action: {
-      type: DataTypes.STRING,
+    });
+    History.belongsTo(models.Invoice, {
+      foreignKey: "invoiceId",
       allowNull: false,
-    },
-    timestamp: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-  });
+    });
+    History.belongsTo(models.Payment, {
+      foreignKey: "paymentId",
+      allowNull: true,
+    });
+  };
 
   return History;
 };
