@@ -263,7 +263,7 @@ router.delete(
       await payment.destroy({ transaction });
       await transaction.commit();
       // Log history for removing a payment
-      await logHistory(`Deleted payment of $${payment.amountPaid} `, authenticatedUser.id, payment.invoiceId, payment.id);
+      await logHistory(`Deleted payment of $${payment.amountPaid} `, authenticatedUser.id, payment.invoiceId, null);
       res
         .status(200)
         .json({ success: true, message: "Payment deleted successfully" });
