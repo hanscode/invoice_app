@@ -1,9 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { api } from "../../utils/apiHelper";
 import { useNavigate } from "react-router-dom";
-import { PlusIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import {
+  PlusIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/20/solid";
 
 import UserContext from "../../context/UserContext";
+import FormatNumber from "../../utils/FormatNumber";
 
 const statuses = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20",
@@ -32,7 +37,7 @@ const Invoices = () => {
   const { authUser } = useContext(UserContext);
   const [invoices, setInvoices] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(5);
+  const [limit] = useState(7);
   const navigate = useNavigate();
 
   // Fetching the list of invoices from the REST-API when the component is initially rendered.
@@ -40,7 +45,12 @@ const Invoices = () => {
     // Define an asynchronous function `fetchInvoices` and call it immediately
     const fetchInvoices = async () => {
       try {
-        const response = await api(`/invoices?page=${page}&limit=${limit}`, "GET", null, authUser);
+        const response = await api(
+          `/invoices?page=${page}&limit=${limit}`,
+          "GET",
+          null,
+          authUser
+        );
         const jsonData = await response.json();
         if (response.status === 200) {
           setInvoices(jsonData);
@@ -56,33 +66,38 @@ const Invoices = () => {
     fetchInvoices();
   }, [authUser, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
 
-  const newLimit = 5;
   const count = invoices?.totalCount;
   const paginationNumbers = [];
   let buttons;
 
   // A variable called `numOfPages` to calculate the number of pagination pages needed.
-  const numOfPages = Math.ceil(count / newLimit);
+  const numOfPages = Math.ceil(count / limit);
 
-   // A For loop that runs once over the number of pages needed: `numOfPages`.
-   for (let i = 1; i <= numOfPages; i++) {
-
-    if (count > newLimit) {
-       /**
-        * Check If there are more than the limit of books listed per page:
-        * Then create the elements needed to display the pagination buttons and store them in the array `paginationNumbers`.
-        * */ 
-       paginationNumbers.push(i);
+  // A For loop that runs once over the number of pages needed: `numOfPages`.
+  for (let i = 1; i <= numOfPages; i++) {
+    if (count > limit) {
+      /**
+       * Check If there are more than the limit of books listed per page:
+       * Then create the elements needed to display the pagination buttons and store them in the array `paginationNumbers`.
+       * */
+      paginationNumbers.push(i);
     }
- }
+  }
 
- buttons = paginationNumbers;
+  buttons = paginationNumbers;
 
- const handlePage = (page) => {
-  setPage(page);
-};
+  const handlePage = (page) => {
+    setPage(page);
+  };
 
-  
+  const handleNextPage = () => {
+    page === buttons.length ? setPage(page) : setPage(page + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setPage(Math.max(page - 1, 1));
+  };
+
   return (
     <>
       <div className="relative isolate overflow-hidden">
@@ -176,10 +191,11 @@ const Invoices = () => {
                           {invoice.dueDate}
                         </td>
                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                          {invoice.totalAmount}
+                          
+                          $<FormatNumber number={invoice.totalAmount !== null && invoice.totalAmount !== undefined ? invoice.totalAmount : 0} />
                         </td>
                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                          {invoice.dueBalance}
+                        $<FormatNumber number={invoice.dueBalance !== null && invoice.dueBalance !== undefined ? invoice.dueBalance : 0 } />
                         </td>
                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500 flex items-start">
                           <div
@@ -214,34 +230,41 @@ const Invoices = () => {
                   </tbody>
                 </table>
               </div>
-              <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-            {/* Pagination: Previous */}
-            <button
-              href="#"
-              className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              <span className="sr-only">Previous</span>
-              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
-            {/* Pagination: Buttons */}
-            {buttons.map((number) => (
-              <button
-               onClick={() => handlePage(number)}
-                key={number}
-                aria-current="page"
-                className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                {number}
-              </button>
-            ))}
-            {/* Pagination: Next */}
-            <button
-              className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              <span className="sr-only">Next</span>
-              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </nav>
+              <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                <nav
+                  className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                  aria-label="Pagination"
+                >
+                  {/* Pagination: Previous */}
+                  <button
+                    onClick={handlePreviousPage}
+                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  >
+                    <span className="sr-only">Previous</span>
+                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                  {/* Pagination: Buttons */}
+                  {buttons.map((number) => (
+                    <button
+                      onClick={() => handlePage(number)}
+                      key={number}
+                      aria-current="page"
+                      className={`${
+                        page === number
+                          ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                      }`}
+                    >
+                      {number}
+                    </button>
+                  ))}
+                  {/* Pagination: Next */}
+                  <button onClick={handleNextPage} className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                    <span className="sr-only">Next</span>
+                    <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                </nav>
+              </div>
             </div>
           </div>
         )}

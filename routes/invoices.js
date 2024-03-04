@@ -50,6 +50,7 @@ router.get(
       where: { userId: authenticatedUser.id },
       offset,
       limit,
+      order: [["issueDate", "DESC"]],
     });
 
     // Query total count of invoices (without pagination)

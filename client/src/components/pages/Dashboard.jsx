@@ -14,9 +14,9 @@ const secondaryNavigation = [
   { name: 'All-time', href: '#', current: false },
 ]
 const stats = [
-  { name: 'Revenue', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
-  { name: 'Overdue invoices', value: '$12,787.00', change: '+54.02%', changeType: 'negative' },
-  { name: 'Outstanding invoices', value: '$245,988.00', change: '-1.39%', changeType: 'positive' },
+  { name: 'Overdue invoices', value: '$405,091.00', change: '+4.75%', changeType: 'positive' },
+  { name: 'Outstanding invoices', value: '$12,787.00', change: '+54.02%', changeType: 'negative' },
+  { name: 'Paid', value: '$245,988.00', change: '-1.39%', changeType: 'positive' },
 ]
 const statuses = {
   Paid: 'text-green-700 bg-green-50 ring-green-600/20',
