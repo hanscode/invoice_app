@@ -106,13 +106,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "password",
+							"key": "username",
+							"value": "john23@smith.com",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "hans@pricode.io",
+							"key": "password",
+							"value": "password",
 							"type": "string"
 						}
 					]
@@ -145,13 +145,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "password",
+							"key": "username",
+							"value": "john23@smith.com",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "hans@pricode.io",
+							"key": "password",
+							"value": "password",
 							"type": "string"
 						}
 					]
@@ -164,7 +164,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8888/api/invoices/1",
+					"raw": "localhost:8888/api/invoices/7",
 					"host": [
 						"localhost"
 					],
@@ -172,7 +172,7 @@
 					"path": [
 						"api",
 						"invoices",
-						"1"
+						"7"
 					]
 				}
 			},
@@ -205,7 +205,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"invoiceNumber\": \"SG-0002\",\n    \"issueDate\": \"2024-02-26T09:00:00Z\",\n    \"dueDate\": \"2024-02-26T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"Web Development\",\n            \"quantity\": 20,\n            \"price\": 50,\n            \"amount\": 1000,\n            \"tax\": null,\n            \"discount\": null\n        },\n        {\n            \"description\": \"Google Ads Campaing\",\n            \"quantity\": 2,\n            \"price\": 100,\n            \"amount\": 200,\n            \"tax\": null,\n            \"discount\": null\n        }\n    ],\n    \"totalAmount\": 1200,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"sent\",\n    \"userId\": 2,\n    \"customerId\": 6\n}"
+					"raw": "{\n    \"invoiceNumber\": \"SG-0015\",\n    \"issueDate\": \"2024-03-02T09:00:00Z\",\n    \"dueDate\": \"2024-03-26T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"REST API Development\",\n            \"quantity\": 50,\n            \"price\": 50,\n            \"amount\": 3500,\n            \"tax\": 0,\n            \"discount\": 0\n        },\n        {\n            \"description\": \"React.js Front-End Dev\",\n            \"quantity\": 10,\n            \"price\": 100,\n            \"amount\": 1000,\n            \"tax\": 0,\n            \"discount\": 0\n        }\n    ],\n    \"totalAmount\": 4500,\n    \"tax\": 0,\n    \"discount\": 0,\n    \"status\": \"sent\",\n    \"userId\": 2,\n    \"customerId\": 6\n}"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices",
@@ -248,7 +248,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"invoiceNumber\": \"SJ-8524\",\n    \"issueDate\": \"2021-03-01T09:00:00Z\",\n    \"dueDate\": \"2021-03-31T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"React web app development\",\n            \"quantity\": 3,\n            \"price\": 1000,\n            \"amount\": 3000,\n            \"tax\": null,\n            \"discount\": null\n        },\n        {\n            \"description\": \"Google Ads Campaing\",\n            \"quantity\": 2,\n            \"price\": 100,\n            \"amount\": 200,\n            \"tax\": null,\n            \"discount\": null\n        }\n    ],\n    \"totalAmount\": 3200,\n    \"tax\": null,\n    \"discount\": null,\n    \"status\": \"sent\",\n    \"userId\": 2,\n    \"customerId\": 6\n}"
+					"raw": "{\n    \"invoiceNumber\": \"SJ-8525\",\n    \"issueDate\": \"2021-03-01T09:00:00Z\",\n    \"dueDate\": \"2021-05-21T09:00:00Z\",\n    \"items\": [\n        {\n            \"description\": \"React web app development\",\n            \"quantity\": 3,\n            \"price\": 1000,\n            \"amount\": 3000,\n            \"tax\": 0,\n            \"discount\": 0\n        },\n        {\n            \"description\": \"Google Ads Campaing\",\n            \"quantity\": 2,\n            \"price\": 100,\n            \"amount\": 200,\n            \"tax\": 0,\n            \"discount\": 0\n        }\n    ],\n    \"totalAmount\": 3200,\n    \"tax\": 0,\n    \"discount\": 0,\n    \"status\": \"sent\",\n    \"userId\": 2,\n    \"customerId\": 6\n}"
 				},
 				"url": {
 					"raw": "localhost:8888/api/invoices/3",
@@ -291,7 +291,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8888/api/invoices/11",
+					"raw": "localhost:8888/api/invoices/13",
 					"host": [
 						"localhost"
 					],
@@ -299,7 +299,7 @@
 					"path": [
 						"api",
 						"invoices",
-						"11"
+						"13"
 					]
 				}
 			},
@@ -602,7 +602,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"amountPaid\": 200,\n    \"paymentDate\": \"2021-03-26T09:00:00Z\",\n    \"invoiceId\": 3,\n    \"userId\": 2,\n    \"customerId\": 6\n}",
+					"raw": "{\n    \"amountPaid\": 1250,\n    \"paymentDate\": \"2023-12-29T09:00:00Z\",\n    \"invoiceId\": 4,\n    \"userId\": 2,\n    \"customerId\": 4\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -610,7 +610,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8888/api/payments/invoice/3",
+					"raw": "localhost:8888/api/payments/invoice/2",
 					"host": [
 						"localhost"
 					],
@@ -619,7 +619,7 @@
 						"api",
 						"payments",
 						"invoice",
-						"3"
+						"2"
 					]
 				}
 			},
@@ -737,7 +737,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8888/api/payments/invoice/3/3",
+					"raw": "localhost:8888/api/payments/invoice/2/11",
 					"host": [
 						"localhost"
 					],
@@ -746,8 +746,8 @@
 						"api",
 						"payments",
 						"invoice",
-						"3",
-						"3"
+						"2",
+						"11"
 					]
 				}
 			},
