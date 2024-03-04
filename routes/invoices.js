@@ -52,13 +52,18 @@ router.get(
       limit,
     });
 
+    // Query total count of invoices (without pagination)
+    const totalCount = await Invoice.count({
+      where: { userId: authenticatedUser.id }
+    });
+
     // Prepare the response with customer names added to each invoice
     const responseInvoices = invoices.map((invoice) => ({
       ...invoice.dataValues,
       isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
     }));
 
-    res.status(200).json(responseInvoices);
+    res.status(200).json({ invoices: responseInvoices, totalCount });
   })
 );
 
