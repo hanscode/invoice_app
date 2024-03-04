@@ -1,6 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
-import PropTypes from "prop-types";
 
 // Import App components
 import Home from "./components/Home";
@@ -21,11 +19,10 @@ import NotFound from "./components/NotFound";
 import Forbidden from "./components/Forbidden";
 
 function App() {
-  const [is404, setIs404] = useState(false);
 
   return (
     <>
-   <Header hideHeader={is404} />
+   <Header />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,6 +30,7 @@ function App() {
           <Route path="signin" element={<UserSignIn />} />
           <Route path="signup" element={<UserSignUp />} />
           <Route path="signout" element={<UserSignOut />} />
+          {/** Private Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/app" element={<Dashboard />} />
             <Route path='/app/clients' element={<Clients />} />
@@ -40,22 +38,15 @@ function App() {
           </Route>
 
           {/** Error routes paths for displaying user-friendly messages when things go wrong. */}
-          <Route path="notfound" element={<NotFoundWrapper setIs404={setIs404}  />} />
+          <Route path="notfound" element={<NotFound  />} />
           <Route path="forbidden" element={<Forbidden />} />
           <Route path="error" element={<UnhandledError />} />
-          <Route path="*" element={<NotFoundWrapper setIs404={setIs404}  />} />
+          <Route path="*" element={<NotFound  />} />
         </Routes>
       </main>
-      <Footer />
+    <Footer />
     </>
   );
 }
 
 export default App;
-
-const NotFoundWrapper = ({ setIs404 }) => {
-  setIs404(true);
-  return <NotFound />;
-};
-
-NotFoundWrapper.propTypes = { setIs404: PropTypes.func.isRequired };

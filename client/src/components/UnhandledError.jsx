@@ -7,8 +7,7 @@
 const UnhandledError = () => {
   return (
     <>
-      <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
-        <div className="text-center">
+        <div className="text-center grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
           <p className="text-base font-semibold text-indigo-600">
             Unexpected Error
           </p>
@@ -33,7 +32,6 @@ const UnhandledError = () => {
             </a>
           </div>
         </div>
-      </main>
     </>
   );
 };
