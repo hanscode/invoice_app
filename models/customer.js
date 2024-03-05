@@ -61,6 +61,11 @@ module.exports = (sequelize) => {
       notes: {
         type: DataTypes.TEXT,
       },
+      color: {
+        type: DataTypes.STRING, // Assuming color is a string
+        allowNull: false,
+        defaultValue: "rgb(107 114 128 / 1)", // Default color
+      }
     },
     { sequelize }
   );

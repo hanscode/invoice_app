@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { Customer, User } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const { Op } = require("sequelize");
 
 // Construct a router instance.
 const router = express.Router();
@@ -25,6 +26,12 @@ router.get(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const authenticatedUser = req.currentUser;
+
+    // Define pagination parameters
+    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
+    const offset = (page - 1) * limit;
+
     const customers = await Customer.findAll({
       attributes: [
         "customerId",
@@ -34,6 +41,7 @@ router.get(
         "address",
         "notes",
         "userId",
+        "color",
       ],
       include: [
         {
@@ -42,15 +50,16 @@ router.get(
         },
       ],
       where: { userId: authenticatedUser.id },
+      offset,
+      limit,
       order: [["name", "ASC"]],
     });
 
-    // Add a random color to each customer
-    customers.forEach((customer) => {
-      customer.dataValues.color = getRandomColor(randomValue);
+    const totalCount = await Customer.count({
+      where: { userId: authenticatedUser.id }
     });
 
-    res.status(200).json(customers);
+    res.status(200).json({customers, totalCount});
   })
 );
 
@@ -100,7 +109,13 @@ router.post(
   authenticateUser,
   asyncHandler(async (req, res) => {
     try {
-      const customer = await Customer.create(req.body);
+      // Generate a random color for the new customer
+      const color = getRandomColor(randomValue);
+
+      const customer = await Customer.create({
+        ...req.body,
+        color, // Assign the random color
+      });
       res
         .status(201)
         .setHeader("Location", `/customers/${customer.customerId}`)
