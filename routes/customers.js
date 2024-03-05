@@ -8,6 +8,13 @@ const { authenticateUser } = require("../middleware/auth-user");
 // Construct a router instance.
 const router = express.Router();
 
+const randomValue = () => Math.floor(Math.random() * 256);
+
+function getRandomColor(value) {
+  const color = `rgb( ${value()}, ${value()}, ${value()} )`;
+  return color;
+}
+
 /**
  * Customers Routes
  */
@@ -35,7 +42,14 @@ router.get(
         },
       ],
       where: { userId: authenticatedUser.id },
+      order: [["name", "ASC"]],
     });
+
+    // Add a random color to each customer
+    customers.forEach((customer) => {
+      customer.dataValues.color = getRandomColor(randomValue);
+    });
+
     res.status(200).json(customers);
   })
 );

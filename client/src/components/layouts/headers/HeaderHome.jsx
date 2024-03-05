@@ -1,12 +1,13 @@
 import { useState, useContext } from "react";
 import { Dialog } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/outline";
 import UserContext from "../../../context/UserContext";
 import Images from "../../Images";
 
 const navigation = [
-  { name: "Dashboard", href: "/app" },
-  { name: "Account", href: "/app" },
+  { name: "Dashboard", path: "/app" },
+  { name: "Account", path: "/app" },
 ];
 
 const HeaderHome = () => {
@@ -19,14 +20,14 @@ const HeaderHome = () => {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5">
+          <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Satoshi Invoice</span>
             <img
               className="h-10 w-auto"
               src={Images.logoDark}
               alt=""
             />
-          </a>
+          </Link>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -42,30 +43,30 @@ const HeaderHome = () => {
           {authUser === null
             ? ""
             : navigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.path}
                   className="text-sm font-semibold leading-6 text-gray-900"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
         </div>
         <div className="hidden lg:flex gap-4 lg:flex-1 items-center lg:justify-end">
           {authUser === null ? (
             <>
-              <a
-                href="/signin"
+              <Link
+                to="/signin"
                 className="text-sm flex items-center gap-1 font-semibold leading-6 text-gray-900"
               >
                 <ArrowLeftEndOnRectangleIcon className="h-4 w-4" aria-hidden="true" /> Sign In
-              </a>
-              <a
-                href="/signup"
+              </Link>
+              <Link
+                to="/signup"
                 className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Get access <span aria-hidden="true">&rarr;</span>
-              </a>
+              </Link>
             </>
           ) : (
             <>
@@ -119,12 +120,29 @@ const HeaderHome = () => {
                 ))}
               </div>
               <div className="py-6">
+              {authUser === null ? (
+                <>
                 <a
                   href="/signin"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
+                  Sign in
                 </a>
+                <a
+                href="/signup"
+                className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+              >
+                Sign up
+              </a>
+              </>
+              ):(
+                <a
+                  href="/signout"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Sign out
+                </a>
+              )}
               </div>
             </div>
           </div>
