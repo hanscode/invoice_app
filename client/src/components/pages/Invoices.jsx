@@ -62,7 +62,7 @@ const Invoices = () => {
         navigate("/error");
       }
     };
-    // Call fetchInvoices with page and limit parameters
+    // Call fetchInvoices to retrieve the list of invoices.
     fetchInvoices();
   }, [authUser, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
 
@@ -76,10 +76,7 @@ const Invoices = () => {
   // A For loop that runs once over the number of pages needed: `numOfPages`.
   for (let i = 1; i <= numOfPages; i++) {
     if (count > limit) {
-      /**
-       * Check If there are more than the limit of books listed per page:
-       * Then create the elements needed to display the pagination buttons and store them in the array `paginationNumbers`.
-       * */
+      // check if the number of pages is greater than the limit.
       paginationNumbers.push(i);
     }
   }
@@ -104,7 +101,7 @@ const Invoices = () => {
         {/* Secondary navigation */}
         <header className="pb-4 pt-6 sm:pb-6">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
-            <h1 className="text-base font-semibold leading-7 text-gray-900">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
               Invoices
             </h1>
             <a
@@ -178,26 +175,41 @@ const Invoices = () => {
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {invoices.invoices.map((invoice) => (
                       <tr key={invoice.id}>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
                           {invoice.invoiceNumber}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                        <td className="whitespace-nowrap px-2 py-4 text-sm font-medium text-gray-900">
                           {invoice.customerName}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
+                        <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-900">
                           {invoice.issueDate}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                        <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
                           {invoice.dueDate}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                          
-                          $<FormatNumber number={invoice.totalAmount !== null && invoice.totalAmount !== undefined ? invoice.totalAmount : 0} />
+                        <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
+                          $
+                          <FormatNumber
+                            number={
+                              invoice.totalAmount !== null &&
+                              invoice.totalAmount !== undefined
+                                ? invoice.totalAmount
+                                : 0
+                            }
+                          />
                         </td>
-                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                        $<FormatNumber number={invoice.dueBalance !== null && invoice.dueBalance !== undefined ? invoice.dueBalance : 0 } />
+                        <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
+                          $
+                          <FormatNumber
+                            number={
+                              invoice.dueBalance !== null &&
+                              invoice.dueBalance !== undefined
+                                ? invoice.dueBalance
+                                : 0
+                            }
+                          />
                         </td>
-                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500 flex items-start">
+                        <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500 flex items-start">
                           <div
                             className={classNames(
                               statuses[
@@ -217,7 +229,7 @@ const Invoices = () => {
                             {invoice.isOverdue ? "Overdue" : invoice.status}
                           </div>
                         </td>
-                        <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                           <a
                             href="#"
                             className="text-indigo-600 hover:text-indigo-900"
@@ -236,13 +248,16 @@ const Invoices = () => {
                   aria-label="Pagination"
                 >
                   {/* Pagination: Previous */}
-                  <button
-                    onClick={handlePreviousPage}
-                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                  >
-                    <span className="sr-only">Previous</span>
-                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-                  </button>
+                  {buttons.length > 1 && ( // If there is more than one page, render the previous button. Otherwise, don't render it.}
+                    <button
+                      onClick={handlePreviousPage}
+                      className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                    >
+                      <span className="sr-only">Previous</span>
+                      <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  )}
+
                   {/* Pagination: Buttons */}
                   {buttons.map((number) => (
                     <button
@@ -258,11 +273,20 @@ const Invoices = () => {
                       {number}
                     </button>
                   ))}
+
                   {/* Pagination: Next */}
-                  <button onClick={handleNextPage} className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                    <span className="sr-only">Next</span>
-                    <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-                  </button>
+                  {buttons.length > 1 && ( // If there is more than one page, render the next button. Otherwise, don't render it.
+                    <button
+                      onClick={handleNextPage}
+                      className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                    >
+                      <span className="sr-only">Next</span>
+                      <ChevronRightIcon
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  )}
                 </nav>
               </div>
             </div>

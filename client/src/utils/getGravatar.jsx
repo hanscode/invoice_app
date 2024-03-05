@@ -5,5 +5,5 @@ export const getUserAvatarURL = (email) => {
 
   const emailHash = md5(email);
 
-  return `https://www.gravatar.com/avatar/${emailHash}`;
+  return `https://www.gravatar.com/avatar/${emailHash}?d=retro`;
 };
