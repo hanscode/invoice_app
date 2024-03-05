@@ -23,7 +23,7 @@ router.get(
     // Define pagination parameters
     const page = req.query.page ? parseInt(req.query.page, 10) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
-    const offset = (page - 1) * limit;
+    const offset = page ? limit * (page - 1) : 0;
 
     const invoices = await Invoice.findAll({
       attributes: [
@@ -34,7 +34,8 @@ router.get(
         "issueDate",
         "dueDate",
         "totalAmount",
-        'dueBalance',
+        'amountDue',
+        "paid",
         "items",
         "tax",
         "discount",

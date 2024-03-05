@@ -55,7 +55,10 @@ module.exports = (sequelize) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      dueBalance: {
+      amountDue: {
+        type: DataTypes.FLOAT,
+      },
+      paid: {
         type: DataTypes.FLOAT,
       },
       // Define an array field for storing invoice items
@@ -107,8 +110,14 @@ module.exports = (sequelize) => {
   );
 
   Invoice.addHook('beforeCreate', (invoice) => {
-    if (!invoice.dueBalance) {
-      invoice.dueBalance = invoice.totalAmount;
+    if (!invoice.amountDue) {
+      invoice.amountDue = invoice.totalAmount;
+    }
+  });
+
+  Invoice.addHook('beforeCreate', (invoice) => {
+    if (!invoice.paid) {
+      invoice.paid = 0;
     }
   });
 

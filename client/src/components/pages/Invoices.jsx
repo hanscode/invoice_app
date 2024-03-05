@@ -156,7 +156,7 @@ const Invoices = () => {
                         scope="col"
                         className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Due balance
+                        Paid
                       </th>
                       <th
                         scope="col"
@@ -202,9 +202,9 @@ const Invoices = () => {
                           $
                           <FormatNumber
                             number={
-                              invoice.dueBalance !== null &&
-                              invoice.dueBalance !== undefined
-                                ? invoice.dueBalance
+                              invoice.paid !== null &&
+                              invoice.paid !== undefined
+                                ? invoice.paid
                                 : 0
                             }
                           />

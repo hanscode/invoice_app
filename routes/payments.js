@@ -71,12 +71,18 @@ router.post(
         { where: { id: req.params.invoiceId }, transaction }
       );
 
-      // Calculate the new dueBalance
-      const newDueBalance = invoice.totalAmount - (totalAmountPaid + paymentAmount);
+      // Calculate the new amountDue and new amount Paid
+      const newAmountDue = invoice.totalAmount - (totalAmountPaid + paymentAmount);
+      const newAmountPaid = totalAmountPaid + paymentAmount;
 
-      // Update the dueBalance attribute in the invoice
+      // Update the amountDue attribute in the invoice
       await Invoice.update(
-        { dueBalance: newDueBalance },
+        { amountDue: newAmountDue },
+        { where: { id: req.params.invoiceId }, transaction }
+      );
+
+      await Invoice.update(
+        { paid: newAmountPaid },
         { where: { id: req.params.invoiceId }, transaction }
       );
 
