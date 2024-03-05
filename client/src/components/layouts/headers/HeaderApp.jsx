@@ -1,9 +1,16 @@
 import { Fragment, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Link, useLocation } from 'react-router-dom';
 import UserContext from '../../../context/UserContext';
 import { getUserAvatarURL } from '../../../utils/getGravatar';
 import Images from '../../Images';
+
+const navigation = [
+  { name: 'Dashboard', path: '/app' },
+  { name: 'Invoices', path: '/app/invoices' },
+  { name: 'Clients', path: '/app/clients' },
+]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -11,6 +18,7 @@ function classNames(...classes) {
 
 const HeaderApp = () => {
   const { authUser } = useContext(UserContext);
+  const { pathname } = useLocation();
   return (
     <Disclosure as="nav" className="bg-white shadow">
     {({ open }) => (
@@ -31,34 +39,34 @@ const HeaderApp = () => {
             </div>
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex flex-shrink-0 items-center">
-                <a href='/app'>
+                <Link to='/app'>
                 <img
                   className="h-10 w-auto"
                   src={Images.logoDarkBrand}
                   alt="Satoshi Invoice"
                 />
-                </a>
+                </Link>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                <a
-                  href="/app"
-                  className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                >
-                  Dashboard
-                </a>
-                <a
-                  href="/app/invoices"
-                  className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                >
-                  Invoices
-                </a>
-                <a
-                  href="/app/clients"
-                  className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                >
-                  Clients
-                </a>
+                {
+                  navigation.map((item, itemIdx) => (
+                    <Link
+                      key={itemIdx}
+                      to={item.path}
+                      className={classNames(
+                        item.path === pathname
+                          ? 'border-indigo-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
+                      )}
+                      aria-current={item.path === pathname ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </Link>
+                  ))
+                }
+               
               </div>
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
