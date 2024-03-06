@@ -5,8 +5,12 @@ import { PlusIcon } from '@heroicons/react/20/solid'
 const secondaryNavigation = [
   { name: 'Last 7 days', tab: '7days', current: true },
   { name: 'Last 30 days', tab: '30days', current: false },
-  { name: 'All-time', tab: 'all', current: false },
+  // { name: 'All-time', tab: 'all', current: false },
+  { name: 'Current Year', tab: 'currentYear', current: false },
 ]
+
+  let currentDate = new Date();
+  let currentYear = currentDate.getFullYear();
 
 const Dashboard = () => {
   const [filter, setFilter] = useState("7days");
@@ -25,7 +29,7 @@ const Dashboard = () => {
               <div className="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7">
                 {secondaryNavigation.map((item) => (
                   <button key={item.name} onClick={() => handleFilter(item.tab)} className={filter == item.tab ? 'text-indigo-600' : 'text-gray-700 hover:text-indigo-600'}>
-                    {item.name}
+                    {item.name === 'Current Year' ? currentYear : item.name}
                   </button>
                 ))}
               </div>

@@ -1,9 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { FetchInvoices } from "../../../utils/FetchInvoices";
-import calculateTotal from "../../../utils/calculateTotal";
-import calculatePaid from "../../../utils/calculatePaid";
-import calculateOverdue from "../../../utils/calculateOverdue";
-import FormatNumber from "../../../utils/FormatNumber";
+import { FetchInvoices, calculateTotal, calculatePaid, calculateOverdue, FormatNumber } from "../../../utils";
 import UserContext from "../../../context/UserContext";
 import PropTypes from 'prop-types';
 
@@ -24,13 +20,14 @@ const Stats = ({ filter }) => {
       const today = new Date();
 
       if (filter === '7days') {
-        
         today.setDate(today.getDate() - 7);
         filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= today);
       } else if (filter === '30days') {
-        
         today.setDate(today.getDate() - 30);
         filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= today);
+      } else if (filter === 'currentYear') {
+        const currentYear = today.getFullYear();
+        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate).getFullYear() === currentYear);
       }
 
       // Calculate totals

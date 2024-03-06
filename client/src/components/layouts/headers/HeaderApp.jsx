@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useLocation } from 'react-router-dom';
 import UserContext from '../../../context/UserContext';
-import { getUserAvatarURL } from '../../../utils/getGravatar';
+import { getGravatar } from '../../../utils';
 import Images from '../../Images';
 
 const navigation = [
@@ -79,7 +79,7 @@ const HeaderApp = () => {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="h-8 w-8 rounded-full"
-                      src={getUserAvatarURL(authUser.emailAddress)}
+                      src={getGravatar(authUser.emailAddress)}
                       alt=""
                     />
                   </Menu.Button>
