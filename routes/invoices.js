@@ -40,6 +40,8 @@ router.get(
         "tax",
         "discount",
         "status",
+        "createdAt",
+        "updatedAt",
         "userId",
       ],
       include: [
@@ -88,6 +90,8 @@ router.get(
         "tax",
         "discount",
         "status",
+        "createdAt",
+        "updatedAt",
         "userId",
       ],
       include: [

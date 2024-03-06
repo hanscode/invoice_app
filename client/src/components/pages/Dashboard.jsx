@@ -5,8 +5,8 @@ import { PlusIcon } from '@heroicons/react/20/solid'
 const secondaryNavigation = [
   { name: 'Last 7 days', tab: '7days', current: true },
   { name: 'Last 30 days', tab: '30days', current: false },
-  // { name: 'All-time', tab: 'all', current: false },
   { name: 'Current Year', tab: 'currentYear', current: false },
+//{ name: 'All-time', tab: 'all', current: false },
 ]
 
   let currentDate = new Date();

@@ -18,13 +18,15 @@ const Stats = ({ filter }) => {
       const allInvoices = await FetchInvoices(authUser);
       let filteredInvoices = allInvoices;
       const today = new Date();
+      const dateLast7Days = new Date();
+      const dateLast30Days = new Date();
 
       if (filter === '7days') {
-        today.setDate(today.getDate() - 7);
-        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= today);
+        dateLast7Days.setDate(today.getDate() - 7);
+        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= dateLast7Days);
       } else if (filter === '30days') {
-        today.setDate(today.getDate() - 30);
-        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= today);
+        dateLast30Days.setDate(today.getDate() - 30);
+        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= dateLast30Days);
       } else if (filter === 'currentYear') {
         const currentYear = today.getFullYear();
         filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate).getFullYear() === currentYear);

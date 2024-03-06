@@ -1,79 +1,144 @@
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../../../context/UserContext";
+import { FetchInvoices } from "../../../utils";
+
 import { Fragment } from "react";
 import {
-  ArrowDownCircleIcon,
+  MinusCircleIcon,
   ArrowPathIcon,
-  ArrowUpCircleIcon,
+  CheckCircleIcon,
+  PaperAirplaneIcon,
 } from "@heroicons/react/20/solid";
 
 const statuses = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20",
   Withdraw: "text-gray-600 bg-gray-50 ring-gray-500/10",
+  Draft: "text-gray-600 bg-gray-50 ring-gray-500/10",
   Partial: "text-amber-700 bg-amber-100 ring-amber-600/10",
   Overdue: "text-red-700 bg-red-50 ring-red-600/10",
 };
-const days = [
-  {
-    date: "Today",
-    dateTime: "2023-03-22",
-    transactions: [
-      {
-        id: 1,
-        invoiceNumber: "00012",
-        href: "#",
-        amount: "$7,600.00 USD",
-        tax: "$500.00",
-        status: "Paid",
-        client: "Reform",
-        description: "Website redesign",
-        icon: ArrowUpCircleIcon,
-      },
-      {
-        id: 2,
-        invoiceNumber: "00011",
-        href: "#",
-        amount: "$10,000.00 USD",
-        status: "Withdraw",
-        client: "Tom Cook",
-        description: "Salary",
-        icon: ArrowDownCircleIcon,
-      },
-      {
-        id: 3,
-        invoiceNumber: "00009",
-        href: "#",
-        amount: "$2,000.00 USD",
-        tax: "$130.00",
-        status: "Overdue",
-        client: "Tuple",
-        description: "Logo design",
-        icon: ArrowPathIcon,
-      },
-    ],
-  },
-  {
-    date: "Yesterday",
-    dateTime: "2023-03-21",
-    transactions: [
-      {
-        id: 4,
-        invoiceNumber: "00010",
-        href: "#",
-        amount: "$14,000.00 USD",
-        tax: "$900.00",
-        status: "Paid",
-        client: "SavvyCal",
-        description: "Website redesign",
-        icon: ArrowUpCircleIcon,
-      },
-    ],
-  },
-];
+// const days = [
+//   {
+//     date: "Today",
+//     dateTime: "2023-03-22",
+//     transactions: [
+//       {
+//         id: 1,
+//         invoiceNumber: "00012",
+//         href: "#",
+//         amount: "$7,600.00 USD",
+//         tax: "$500.00",
+//         status: "Paid",
+//         client: "Reform",
+//         description: "Website redesign",
+//         icon: ArrowUpCircleIcon,
+//       },
+//       {
+//         id: 2,
+//         invoiceNumber: "00011",
+//         href: "#",
+//         amount: "$10,000.00 USD",
+//         status: "Withdraw",
+//         client: "Tom Cook",
+//         description: "Salary",
+//         icon: ArrowDownCircleIcon,
+//       },
+//       {
+//         id: 3,
+//         invoiceNumber: "00009",
+//         href: "#",
+//         amount: "$2,000.00 USD",
+//         tax: "$130.00",
+//         status: "Overdue",
+//         client: "Tuple",
+//         description: "Logo design",
+//         icon: ArrowPathIcon,
+//       },
+//     ],
+//   },
+//   {
+//     date: "Yesterday",
+//     dateTime: "2023-03-21",
+//     transactions: [
+//       {
+//         id: 4,
+//         invoiceNumber: "00010",
+//         href: "#",
+//         amount: "$14,000.00 USD",
+//         tax: "$900.00",
+//         status: "Paid",
+//         client: "SavvyCal",
+//         description: "Website redesign",
+//         icon: ArrowUpCircleIcon,
+//       },
+//     ],
+//   },
+// ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const RecentActivity = () => {
+  const { authUser } = useContext(UserContext);
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allInvoices = await FetchInvoices(authUser);
+
+        const today = new Date();
+        const yesterday = new Date();
+        const lastWeek = new Date();
+
+        yesterday.setDate(today.getDate() - 1);
+        lastWeek.setDate(today.getDate() - 7);
+
+        const invoicesToday = allInvoices.filter((invoice) => {
+          const invoiceDate = new Date(invoice.updatedAt);
+          return invoiceDate.toDateString() === today.toDateString();
+        });
+
+        const invoicesYesterday = allInvoices.filter((invoice) => {
+          const invoiceDate = new Date(invoice.updatedAt);
+          return invoiceDate.toDateString() === yesterday.toDateString();
+        });
+
+        const invoicesLastWeek = allInvoices.filter((invoice) => {
+          const invoiceDate = new Date(invoice.updatedAt);
+          return invoiceDate >= lastWeek;
+        });
+
+        const recentData = [
+          {
+            date: "Today",
+            dateTime: today.toISOString().split("T")[0],
+            transactions: invoicesToday,
+          },
+          {
+            date: "Yesterday",
+            dateTime: yesterday.toISOString().split("T")[0],
+            transactions: invoicesYesterday,
+          },
+          {
+            date: "Last Week",
+            dateTime: lastWeek.toISOString().split("T")[0],
+            transactions: invoicesLastWeek,
+          },
+        ];
+
+        // Now you can use the 'days' array as needed
+        console.log(recentData);
+        setDays(recentData);
+      } catch (error) {
+        console.error("Error fetching the invoices:", error);
+      }
+    };
+
+    fetchData();
+  }, [authUser]);
+
   return (
     <div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -110,22 +175,48 @@ const RecentActivity = () => {
                       <tr key={transaction.id}>
                         <td className="relative py-5 pr-6">
                           <div className="flex gap-x-6">
-                            <transaction.icon
-                              className="hidden h-6 w-5 flex-none text-gray-400 sm:block"
-                              aria-hidden="true"
-                            />
+                            {transaction.status === "paid" ? (
+                              <CheckCircleIcon
+                                className="hidden h-6 w-5 flex-none text-gray-400 sm:block"
+                                aria-hidden="true"
+                              />
+                            ) : transaction.status === "sent" && !transaction.isOverdue ? (
+                              <PaperAirplaneIcon
+                                className="hidden h-6 w-5 flex-none text-gray-400 sm:block"
+                                aria-hidden="true"
+                              />
+                            ) : transaction.status === "partially paid" && !transaction.isOverdue ? (
+                              <MinusCircleIcon
+                                className="hidden h-6 w-5 flex-none text-gray-400 sm:block"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <ArrowPathIcon
+                                className="hidden h-6 w-5 flex-none text-gray-400 sm:block"
+                                aria-hidden="true"
+                              />
+                            )}
+
                             <div className="flex-auto">
                               <div className="flex items-start gap-x-3">
                                 <div className="text-sm font-medium leading-6 text-gray-900">
-                                  {transaction.amount}
+                                  {transaction.totalAmoun}
                                 </div>
                                 <div
                                   className={classNames(
-                                    statuses[transaction.status],
-                                    "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
+                                    statuses[
+                                        transaction.isOverdue
+                                          ? "Overdue"
+                                          : transaction.status ===
+                                            "partially paid"
+                                          ? "Partial"
+                                          : transaction.status === "paid"
+                                          ? "Paid" : "Draft"
+                                    ],
+                                    "capitalize rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
                                   )}
                                 >
-                                  {transaction.status}
+                                  {transaction.isOverdue ? "overdue" : transaction.status}
                                 </div>
                               </div>
                               {transaction.tax ? (
@@ -140,16 +231,16 @@ const RecentActivity = () => {
                         </td>
                         <td className="hidden py-5 pr-6 sm:table-cell">
                           <div className="text-sm leading-6 text-gray-900">
-                            {transaction.client}
+                            {transaction.customerName}
                           </div>
                           <div className="mt-1 text-xs leading-5 text-gray-500">
-                            {transaction.description}
+                            {transaction.items[0].description}
                           </div>
                         </td>
                         <td className="py-5 text-right">
                           <div className="flex justify-end">
                             <a
-                              href={transaction.href}
+                              href={transaction.id}
                               className="text-sm font-medium leading-6 text-indigo-600 hover:text-indigo-500"
                             >
                               View
@@ -159,7 +250,7 @@ const RecentActivity = () => {
                               </span>
                               <span className="sr-only">
                                 , invoice #{transaction.invoiceNumber},{" "}
-                                {transaction.client}
+                                {transaction.customerName}
                               </span>
                             </a>
                           </div>
