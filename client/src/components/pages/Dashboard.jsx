@@ -1,13 +1,20 @@
+import { useState } from 'react'
 import { Stats, RecentActivity, RecentClients } from '../layouts/sections'
 import { PlusIcon } from '@heroicons/react/20/solid'
 
 const secondaryNavigation = [
-  { name: 'Last 7 days', href: '#', current: true },
-  { name: 'Last 30 days', href: '#', current: false },
-  { name: 'All-time', href: '#', current: false },
+  { name: 'Last 7 days', tab: '7days', current: true },
+  { name: 'Last 30 days', tab: '30days', current: false },
+  { name: 'All-time', tab: 'all', current: false },
 ]
 
 const Dashboard = () => {
+  const [filter, setFilter] = useState("7days");
+  
+  const handleFilter = (filter) => {
+    setFilter(filter);
+  };
+
   return (
     <>
         <div className="relative isolate overflow-hidden">
@@ -17,9 +24,9 @@ const Dashboard = () => {
               <h1 className="text-base font-semibold leading-7 text-gray-900">Cashflow</h1>
               <div className="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7">
                 {secondaryNavigation.map((item) => (
-                  <a key={item.name} href={item.href} className={item.current ? 'text-indigo-600' : 'text-gray-700'}>
+                  <button key={item.name} onClick={() => handleFilter(item.tab)} className={filter == item.tab ? 'text-indigo-600' : 'text-gray-700 hover:text-indigo-600'}>
                     {item.name}
-                  </a>
+                  </button>
                 ))}
               </div>
               <a
@@ -35,7 +42,7 @@ const Dashboard = () => {
 
         <div className="relative mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 border-b border-b-gray-900/10 border-t lg:border-t lg:border-t-gray-900/5">
           {/* Stats */}
-          <Stats />
+          <Stats filter={filter} />
         </div>
 
         <div className="space-y-16 py-16 xl:space-y-20">

@@ -3,8 +3,7 @@ import { api } from "./apiHelper";
 export const FetchInvoices = async (authUser) => {
     let allInvoices = [];
     let currentPage = 1;
-    let totalPages = 1; // Assuming there's at least one page of invoices
-    
+    let totalPages = 1;
     while (currentPage <= totalPages) {
       try {
         const response = await api(`/invoices?page=${currentPage}&limit=10`, "GET", null, authUser);

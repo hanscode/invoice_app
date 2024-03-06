@@ -5,35 +5,46 @@ import calculatePaid from "../../../utils/calculatePaid";
 import calculateOverdue from "../../../utils/calculateOverdue";
 import FormatNumber from "../../../utils/FormatNumber";
 import UserContext from "../../../context/UserContext";
+import PropTypes from 'prop-types';
 
 // Stats component
-const Stats = () => {
+const Stats = ({ filter }) => {
   const { authUser } = useContext(UserContext);
   const [totals, setTotals] = useState(null); // State to store the calculated totals
 
-  // Fetch all invoices and calculate totals when component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const allInvoices = await FetchInvoices(authUser);
-        const userInvoices = allInvoices.filter(invoice => invoice.userId === authUser.id);
+    fetchData(filter);
+  }, [authUser, filter]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const fetchData = async (filter) => {
+    try {
+      // Fetch all invoices
+      const allInvoices = await FetchInvoices(authUser);
+      let filteredInvoices = allInvoices;
+      const today = new Date();
+
+      if (filter === '7days') {
         
-        const overdueTotal = calculateOverdue(userInvoices, invoice => invoice.isOverdue == true);
-        const billedTotal = calculateTotal(userInvoices, invoice => invoice.status !== 'paid');
-        const paidTotal = calculatePaid(userInvoices, invoice => invoice.amountDue !== 0);
-        const outstandingTotal = billedTotal - paidTotal;
-       
+        today.setDate(today.getDate() - 7);
+        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= today);
+      } else if (filter === '30days') {
         
-        setTotals({ overdueTotal, outstandingTotal, paidTotal }); // Set the calculated totals in state
-      } catch (error) {
-        console.error("Error fetching or calculating totals:", error);
+        today.setDate(today.getDate() - 30);
+        filteredInvoices = allInvoices.filter(invoice => new Date(invoice.issueDate) >= today);
       }
-    };
 
-    fetchData(); // Call the fetchData function when the component mounts
-  }, [authUser]); // Run effect when authUser changes
+      // Calculate totals
+      const overdueTotal = calculateOverdue(filteredInvoices, invoice => invoice.isOverdue == true);
+      const billedTotal = calculateTotal(filteredInvoices, invoice => invoice.status !== 'paid');
+      const paidTotal = calculatePaid(filteredInvoices, invoice => invoice.amountDue !== 0);
+      const outstandingTotal = billedTotal - paidTotal;
 
-  // Dummy data array with the calculated totals
+      setTotals({ overdueTotal, outstandingTotal, paidTotal });
+    } catch (error) {
+      console.error("Error fetching or calculating totals:", error);
+    }
+  };
+
   const stats = [
     { name: 'Overdue invoices', value: Number(totals?.overdueTotal ?? 0) },
     { name: 'Outstanding invoices', value: Number(totals?.outstandingTotal ?? 0) },
@@ -50,7 +61,7 @@ const Stats = () => {
         >
           <dt className="text-sm font-medium leading-6 text-gray-500">{stat.name}</dt>
           <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-          <span className={`${stat.name === 'Paid' ? 'text-green-500': ''}`}><FormatNumber number={stat.value} /> </span>
+          <span className={`${stat.name === 'Paid' ? 'text-green-500': ''}`}>$<FormatNumber number={stat.value} /> </span>
           </dd>
         </div>
       ))}
@@ -59,3 +70,7 @@ const Stats = () => {
 };
 
 export default Stats;
+
+Stats.propTypes = {
+  filter: PropTypes.string.isRequired,
+};
