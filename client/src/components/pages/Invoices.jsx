@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { api } from "../../utils/apiHelper";
+import { FormatDate } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import {
   PlusIcon,
@@ -182,10 +183,10 @@ const Invoices = () => {
                           {invoice.customerName}
                         </td>
                         <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-900">
-                          {invoice.issueDate}
+                          {FormatDate(invoice.issueDate)}
                         </td>
                         <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          {invoice.dueDate}
+                          {FormatDate(invoice.dueDate)}
                         </td>
                         <td className="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
                           $

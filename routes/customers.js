@@ -42,6 +42,8 @@ router.get(
         "notes",
         "userId",
         "color",
+        "createdAt",
+        "updatedAt"
       ],
       include: [
         {
@@ -78,6 +80,9 @@ router.get(
         "phone",
         "address",
         "notes",
+        "color",
+        "createdAt",
+        "updatedAt",
         "userId",
       ],
       include: [

@@ -13,7 +13,7 @@ import {
 
 const statuses = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20",
-  Withdraw: "text-gray-600 bg-gray-50 ring-gray-500/10",
+  Sent: "text-cyan-700 bg-cyan-50 ring-cyan-600/20",
   Draft: "text-gray-600 bg-gray-50 ring-gray-500/10",
   Partial: "text-amber-700 bg-amber-100 ring-amber-600/10",
   Overdue: "text-red-700 bg-red-50 ring-red-600/10",
@@ -211,6 +211,8 @@ const RecentActivity = () => {
                                           ? "Partial"
                                           : transaction.status === "paid"
                                           ? "Paid"
+                                          : transaction.status === "sent"
+                                          ? "Sent"
                                           : "Draft"
                                       ],
                                       "capitalize rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
