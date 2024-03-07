@@ -62,7 +62,7 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
       },
       color: {
-        type: DataTypes.STRING, // Assuming color is a string
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "rgb(107 114 128 / 1)", // Default color
       }

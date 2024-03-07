@@ -3,9 +3,9 @@ import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 
 /**
- *  Logs out the authenticated user and redirect them to the courses list.
+ *  Logs out the authenticated user and redirect them to the invoices list.
  * 
- * @returns Navigation to the default route `Courses` Component.
+ * @returns Navigation to the default route `Invoices` Component.
  */
 
 const UserSignOut = () => {

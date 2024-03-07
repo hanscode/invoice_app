@@ -116,7 +116,8 @@ const Invoices = () => {
         </header>
       </div>
       <div className="lg:border-t lg:border-t-gray-900/5">
-        {invoices && invoices.invoices && (
+        {/* If there are invoices, render the table. Otherwise, don't render it. */}
+        {invoices && invoices.invoices ? (
           <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -289,6 +290,46 @@ const Invoices = () => {
                     </button>
                   )}
                 </nav>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // If there are no invoices, render the following message.
+          <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center py-12 mt-6 border rounded-lg">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1}
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
+                />
+              </svg>
+
+              <h2 className="mt-2 text-base font-semibold leading-6 text-gray-900">
+                Create an invoice
+              </h2>
+              <p className="mt-1 text-sm text-gray-500 text-center">
+                You haven&apos;t added any invoice to your account yet. <br />
+                Get started by creating a new invoice.
+              </p>
+              <div className="mt-6">
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  <PlusIcon
+                    className="-ml-0.5 mr-1.5 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                  New invoice
+                </button>
               </div>
             </div>
           </div>
