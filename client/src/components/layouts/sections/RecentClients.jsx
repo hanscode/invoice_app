@@ -1,6 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../../context/UserContext";
-import { FetchInvoices, FetchClients, FormatDate } from "../../../utils";
+import {
+  FetchInvoices,
+  FetchClients,
+  FormatDate,
+  FormatNumber,
+} from "../../../utils";
 
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
@@ -27,14 +32,13 @@ const RecentClients = () => {
       try {
         const allInvoices = await FetchInvoices(authUser);
         const allClients = await FetchClients(authUser);
-        console.log(allInvoices);
-        console.log(allClients);
 
         // Filter clients with at least one invoice
         const clientsWithInvoices = allClients.filter((client) =>
-          allInvoices.some((invoice) => invoice.customerId === client.customerId)
+          allInvoices.some(
+            (invoice) => invoice.customerId === client.customerId
+          )
         );
-        console.log(clientsWithInvoices);
 
         // Sort clients based on the issue date of their last invoice
         const sortedClients = clientsWithInvoices.sort((a, b) => {
@@ -51,29 +55,33 @@ const RecentClients = () => {
 
         // Take the first three clients
         const recentClients = sortedClients.slice(0, 3);
-        console.log(recentClients);
 
         // Get the last invoice for each recent client
-      const clientsInvoices = recentClients.map((client) => {
-        const clientInvoices = allInvoices.filter((invoice) => invoice.customerId === client.customerId);
-        const lastInvoice = clientInvoices.sort((a, b) => new Date(b.issueDate) - new Date(a.issueDate))[0];
-        return {
-          id: client.customerId,
-          name: client.name,
-          color: client.color,
-          lastInvoice: lastInvoice ? {
-            issueDate: FormatDate(lastInvoice.issueDate),
-            dueDate: lastInvoice.dueDate,
-            totalAmount: lastInvoice.amount,
-            status: lastInvoice.isOverdue ? "overdue" : lastInvoice.status,
-          } : null,
-        };
-      });
-
-      console.log(clientsInvoices)
+        const clientsInvoices = recentClients.map((client) => {
+          const clientInvoices = allInvoices.filter(
+            (invoice) => invoice.customerId === client.customerId
+          );
+          const lastInvoice = clientInvoices.sort(
+            (a, b) => new Date(b.issueDate) - new Date(a.issueDate)
+          )[0];
+          return {
+            id: client.customerId,
+            name: client.name,
+            color: client.color,
+            lastInvoice: lastInvoice
+              ? {
+                  issueDate: FormatDate(lastInvoice.issueDate),
+                  dueDate: lastInvoice.dueDate,
+                  totalAmount: lastInvoice.totalAmount,
+                  status: lastInvoice.isOverdue
+                    ? "overdue"
+                    : lastInvoice.status,
+                }
+              : null,
+          };
+        });
 
         setClients(clientsInvoices);
-
       } catch (error) {
         console.error("Error fetching the invoices:", error);
       }
@@ -93,7 +101,10 @@ const RecentClients = () => {
           className="overflow-hidden rounded-xl border border-gray-200"
         >
           <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-full" style={{backgroundColor: `${client.color}`}}>
+            <span
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full"
+              style={{ backgroundColor: `${client.color}` }}
+            >
               <span className="text-lg font-medium leading-none text-white">
                 {client.name.charAt(0).toUpperCase()}
               </span>
@@ -162,15 +173,14 @@ const RecentClients = () => {
               <dt className="text-gray-500">Amount</dt>
               <dd className="flex items-start gap-x-2">
                 <div className="font-medium text-gray-900">
-                  {client.lastInvoice.totalAmount}
+                  $<FormatNumber number={client.lastInvoice.totalAmount} />
                 </div>
                 <div
                   className={classNames(
                     statuses[
                       client.lastInvoice.status === "overdue"
                         ? "Overdue"
-                        : client.lastInvoice.status ===
-                          "partially paid"
+                        : client.lastInvoice.status === "partially paid"
                         ? "Partial"
                         : client.lastInvoice.status === "paid"
                         ? "Paid"
