@@ -1,5 +1,10 @@
 import md5 from 'md5';
 
+/**
+ * Get Gravatar
+ * @param {string} email - A user's email address
+ * @returns {string} - The Gravatar URL for the user's email
+ */
 const getGravatar = (email) => {
   if (!email) return '';
 

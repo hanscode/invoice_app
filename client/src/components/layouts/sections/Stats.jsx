@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { FetchInvoices, calculateTotal, calculatePaid, calculateOverdue, FormatNumber } from "../../../utils";
+import { FetchInvoices, calculateAmount, FormatNumber } from "../../../utils";
 import UserContext from "../../../context/UserContext";
 import PropTypes from 'prop-types';
 
@@ -33,9 +33,9 @@ const Stats = ({ filter }) => {
       }
 
       // Calculate totals
-      const overdueTotal = calculateOverdue(filteredInvoices, invoice => invoice.isOverdue == true);
-      const billedTotal = calculateTotal(filteredInvoices, invoice => invoice.status !== 'paid');
-      const paidTotal = calculatePaid(filteredInvoices, invoice => invoice.amountDue !== 0);
+      const overdueTotal = calculateAmount(filteredInvoices, 'amountDue', invoice => invoice.isOverdue === true);
+      const billedTotal = calculateAmount(filteredInvoices, 'totalAmount', invoice => invoice.status !== 'paid');
+      const paidTotal = calculateAmount(filteredInvoices, 'paid', invoice => invoice.amountDue !== 0);
       const outstandingTotal = billedTotal - paidTotal;
 
       setTotals({ overdueTotal, outstandingTotal, paidTotal });

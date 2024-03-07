@@ -1,3 +1,7 @@
+/**
+ * @param {string} dateString - A date string in the format "YYYY-MM-DD"
+ * @returns - A formatted date string in the format "Month Day, Year"
+ */
 const FormatDate = (dateString) => {
    // Parse the dateString into a Date object
    const date = new Date(dateString);

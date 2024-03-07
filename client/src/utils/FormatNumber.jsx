@@ -1,5 +1,10 @@
 import PropTypes from 'prop-types';
 
+/**
+ * Format a number to display with 2 decimal places
+ * @param {number} number - The number to format
+ * @returns {string} - The formatted number
+ */
 const FormatNumber = (props) => {
     return (
         <>
