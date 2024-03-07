@@ -66,17 +66,6 @@ const Dashboard = () => {
         {/* Recent client list*/}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold leading-7 text-gray-900">
-                Recent clients
-              </h2>
-              <a
-                href="#"
-                className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-              >
-                View all<span className="sr-only">, clients</span>
-              </a>
-            </div>
             <RecentClients />
           </div>
         </div>
