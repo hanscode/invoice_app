@@ -86,8 +86,14 @@ router.put(
       }
 
       // Check if a new password is provided and update it if necessary
-      if (req.body.password) {
-        user.password = req.body.password;
+      if (req.body.currentPassword && req.body.newPassword) {
+        // Check if the provided current password matches the password stored in the database
+        if (!bcrypt.compareSync(req.body.currentPassword, user.password)) {
+          return res.status(400).json({ message: "Current password is incorrect." });
+        }
+
+        // Update the password with the new password
+        user.password = bcrypt.hashSync(req.body.newPassword, 10);
       }
 
       // Save the updated user

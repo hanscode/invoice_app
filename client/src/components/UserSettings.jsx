@@ -1,4 +1,64 @@
+import { api } from "../utils/apiHelper";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ErrorsDisplay from "./ErrorsDisplay";
+
+import UserContext from "../context/UserContext";
+
 const UserSettings = () => {
+    const { authUser } = useContext(UserContext);
+    const [user, setUser] = useState();
+    const navigate = useNavigate();
+    const [errors, setErrors] = useState([]);
+
+    // Get the user details
+    useEffect(() => {
+     setUser(authUser);
+      }, [authUser]);
+
+// Refs
+const firstName = useRef(null);
+const lastName = useRef(null);
+const email = useRef(null);
+const currentPassword = useRef(null);
+const newPassword = useRef(null);
+
+const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const user = {
+      id: authUser.id,
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      emailAddress: email.current.value,
+      currentPassword: currentPassword.current.value,
+      NewPassword: newPassword.current.value, 
+    };
+
+    // PUT requets that will update the individual course.
+    try {
+      const response = await api(`/users/${user.id}`, "PUT", user, authUser);
+      if (response.status === 204) {
+        navigate(`/app/settings`);
+      } else if (response.status === 403) {
+        navigate(`/forbidden`);
+      } else if (response.status === 500) {
+        navigate(`/error`);
+      } else {
+        const data = await response.json();
+        setErrors(data.errors);
+      }
+    } catch (error) {
+      console.log(error);
+        navigate(`/error`);
+    }
+  };
+
+  const handleCancel = (event) => {
+    event.preventDefault();
+    navigate(`/app/`);
+  };
+
   return (
     <>
       <div className="relative isolate overflow-hidden">
@@ -37,7 +97,8 @@ const UserSettings = () => {
       <div className="lg:border-t lg:border-t-gray-900/5">
         <div className="relative mx-auto max-w-[40rem] space-y-16 divide-y divide-slate-100">
         <div className="mt-8 px-4 sm:px-6 lg:px-8">
-          <form>
+           <ErrorsDisplay errors={errors} />
+          <form onSubmit={handleSubmit}>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -60,6 +121,8 @@ const UserSettings = () => {
                         id="email"
                         name="email"
                         type="email"
+                        ref={email}
+                        defaultValue={user?.emailAddress}
                         autoComplete="email"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -73,7 +136,7 @@ const UserSettings = () => {
                   Personal Information
                 </h2>
                 <p className="mt-1 text-sm leading-6 text-gray-600">
-                  Use a permanent address where you can receive mail.
+                  Your full name or profile name is used in your invoices and receipts.
                 </p>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -89,6 +152,8 @@ const UserSettings = () => {
                         type="text"
                         name="first-name"
                         id="first-name"
+                        ref={firstName}
+                        defaultValue={user?.firstName}
                         autoComplete="given-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -107,6 +172,8 @@ const UserSettings = () => {
                         type="text"
                         name="last-name"
                         id="last-name"
+                        ref={lastName}
+                        defaultValue={user?.lastName}
                         autoComplete="family-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -134,10 +201,11 @@ const UserSettings = () => {
                         id="old_password"
                         name="old_password"
                         type="password"
+                        ref={currentPassword}
+                        defaultValue={user?.password}
                         autoComplete="current-password"
                         required
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        defaultValue=""
                       />
                     </div>
                   </div>
@@ -155,6 +223,7 @@ const UserSettings = () => {
                         id="new_password"
                         name="password"
                         type="password"
+                        ref={newPassword}
                         required
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         defaultValue=""
@@ -167,6 +236,7 @@ const UserSettings = () => {
 
             <div className="mt-6 flex items-center justify-end gap-x-4">
               <button
+                onClick={handleCancel}
                 type="button"
                 className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
