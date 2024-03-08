@@ -84,7 +84,7 @@ const RecentActivity = () => {
             newDays.push({
               date: "Last Week",
               dateTime: lastWeek.toISOString().slice(0, 10),
-              transactions: invoicesLastWeek,
+              transactions: filteredLastWeek,
             });
           }
         }

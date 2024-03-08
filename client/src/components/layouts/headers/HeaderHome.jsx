@@ -7,7 +7,7 @@ import Images from "../../Images";
 
 const navigation = [
   { name: "Dashboard", path: "/app" },
-  { name: "Account", path: "/app" },
+  { name: "Account Settings", path: "/app/settings" },
 ];
 
 const HeaderHome = () => {

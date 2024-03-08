@@ -12,6 +12,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import UserSignIn from "./components/UserSignIn";
 import UserSignUp from "./components/UserSignUp";
 import UserSignOut from "./components/UserSignOut";
+import UserSettings from "./components/UserSettings";
+
 import Footer from "./components/Footer";
 
 // Importing the App Error Components
@@ -49,6 +51,7 @@ function App() {
             <Route path="/app" element={<Dashboard />} />
             <Route path='/app/clients' element={<Clients />} />
             <Route path='/app/invoices' element={<Invoices />} />
+            <Route path='/app/settings' element={<UserSettings />} />
           </Route>
 
           {/** Error routes paths for displaying user-friendly messages when things go wrong. */}

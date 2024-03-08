@@ -50,4 +50,56 @@ router.post(
   })
 );
 
+// Route that updates an existing user.
+router.put(
+  "/users/:id",
+  authenticateUser,
+  asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const authenticatedUser = req.currentUser;
+
+    // Check if the authenticated user is the same as the user being updated
+    if (authenticatedUser.id !== parseInt(userId)) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to update this user." });
+    }
+
+    try {
+      // Find the user by ID
+      let user = await User.findByPk(userId);
+
+      // If the user is not found, return a 404 status code
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+
+      // Update user properties
+      if (req.body.firstName) {
+        user.firstName = req.body.firstName;
+      }
+      if (req.body.lastName) {
+        user.lastName = req.body.lastName;
+      }
+      if (req.body.emailAddress) {
+        user.emailAddress = req.body.emailAddress;
+      }
+
+      // Check if a new password is provided and update it if necessary
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+
+      // Save the updated user
+      await user.save();
+
+      // Return a 200 status code with the updated user
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      res.status(500).json({ message: "Internal Server Error." });
+    }
+  })
+);
+
 module.exports = router;
