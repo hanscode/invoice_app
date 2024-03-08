@@ -3,9 +3,9 @@ import { useContext, useEffect, useRef, useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import ErrorsDisplay from "./ErrorsDisplay";
 
-import { Transition } from '@headlessui/react'
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import { XMarkIcon } from '@heroicons/react/20/solid'
+import { Transition } from "@headlessui/react";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 import UserContext from "../context/UserContext";
 
@@ -15,13 +15,30 @@ const UserSettings = () => {
   const [prevUser, setPrevUser] = useState(); // eslint-disable-line
   const navigate = useNavigate();
   const [newPasswordValue, setNewPasswordValue] = useState("");
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
 
   // Get the user details
   useEffect(() => {
-    setUser(authUser);
-    setPrevUser(authUser); // Initialize prevUser with authUser
-  }, [authUser]);
+    const fetchUserInfo = async () => {
+      try {
+        const response = await api(`/users`, "GET", null, authUser);
+        const jsonData = await response.json();
+        if (response.status === 200) {
+          setUser(jsonData);
+          setPrevUser(jsonData); // Initialize prevUser with authUser
+        } else if (response.status === 500) {
+          navigate(`/error`);
+        }
+      } catch (error) {
+        console.log(`Error fetching and parsing the data`, error);
+        navigate("/error");
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate, authUser]);
+
+  console.log(user);
 
   // Function to handle changes in the new password field
   const handleNewPasswordChange = (event) => {
@@ -74,7 +91,7 @@ const UserSettings = () => {
           ...prevUser,
           ...updatedUser,
         }));
-        setSuccess(true)
+        setSuccess(true);
       } else if (response.status === 403) {
         navigate(`/forbidden`);
       } else if (response.status === 500) {
@@ -113,12 +130,14 @@ const UserSettings = () => {
             <div className="mt-4 flex md:ml-4 md:mt-0">
               <button
                 type="button"
+                onClick={handleCancel}
                 className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
-                type="button"
+                type="submit"
+                form="editUser"
                 className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Save
@@ -132,7 +151,7 @@ const UserSettings = () => {
         <div className="relative mx-auto max-w-[40rem] space-y-16 divide-y divide-slate-100">
           <div className="mt-8 px-4 sm:px-6 lg:px-8">
             <ErrorsDisplay errors={errors} />
-            <form onSubmit={handleSubmit}>
+            <form id="editUser" onSubmit={handleSubmit}>
               <div className="space-y-12">
                 <div className="border-b border-gray-900/10 pb-12">
                   <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -239,7 +258,6 @@ const UserSettings = () => {
                           name="old_password"
                           type="password"
                           ref={currentPassword}
-                          defaultValue={user?.password}
                           autoComplete="current-password"
                           required={newPasswordValue !== ""}
                           onChange={handleNewPasswordChange}
@@ -293,9 +311,8 @@ const UserSettings = () => {
         </div>
       </div>
 
-
-    {/* Global notification live region, render this permanently at the end of the document */}
-    <div
+      {/* Global notification live region, render this permanently at the end of the document */}
+      <div
         aria-live="assertive"
         className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
       >
@@ -315,18 +332,25 @@ const UserSettings = () => {
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
-                    <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
+                    <CheckCircleIcon
+                      className="h-6 w-6 text-green-400"
+                      aria-hidden="true"
+                    />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-gray-900">Successfully saved!</p>
-                    <p className="mt-1 text-sm text-gray-500">You account settings have been updated!.</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      Successfully saved!
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      You account settings have been updated!.
+                    </p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button
                       type="button"
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
-                        setSuccess(false)
+                        setSuccess(false);
                       }}
                     >
                       <span className="sr-only">Close</span>
@@ -339,8 +363,6 @@ const UserSettings = () => {
           </Transition>
         </div>
       </div>
-
-
     </>
   );
 };
