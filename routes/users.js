@@ -89,7 +89,9 @@ router.put(
       if (req.body.currentPassword && req.body.newPassword) {
         // Check if the provided current password matches the password stored in the database
         if (!bcrypt.compareSync(req.body.currentPassword, user.password)) {
-          return res.status(400).json({ message: "Current password is incorrect." });
+          return res
+            .status(400)
+            .json({ message: "Current password is incorrect." });
         }
 
         // Update the password with the new password
@@ -103,7 +105,19 @@ router.put(
       res.status(200).json(user);
     } catch (error) {
       console.error("Error updating user:", error);
-      res.status(500).json({ message: "Internal Server Error." });
+
+      // Log the error object to inspect its structure
+      console.log("Error object:", error);
+
+      if (
+        error.name === "SequelizeValidationError" ||
+        error.name === "SequelizeUniqueConstraintError"
+      ) {
+        const errors = error.errors.map((err) => err.message);
+        return res.status(400).json({ errors });
+      } else {
+        res.status(500).json({ message: "Internal Server Error." });
+      }
     }
   })
 );
