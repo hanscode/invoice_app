@@ -5,6 +5,7 @@ import ErrorsDisplay from "./ErrorsDisplay";
 
 import { Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
 import UserContext from "../context/UserContext";
@@ -15,7 +16,9 @@ const UserSettings = () => {
   const [prevUser, setPrevUser] = useState(); // eslint-disable-line
   const navigate = useNavigate();
   const [newPasswordValue, setNewPasswordValue] = useState("");
+  const [currentPasswordValue, setCurrentPasswordValue] = useState("");
   const [success, setSuccess] = useState(false);
+  const [danger, setDanger] = useState(false);
 
   // Get the user details
   useEffect(() => {
@@ -38,11 +41,14 @@ const UserSettings = () => {
     fetchUserInfo();
   }, [navigate, authUser]);
 
-  console.log(user);
-
   // Function to handle changes in the new password field
   const handleNewPasswordChange = (event) => {
     setNewPasswordValue(event.target.value);
+  };
+
+  // Function to handle changes in the current password field
+  const handleCurrentPasswordChange = (event) => {
+    setCurrentPasswordValue(event.target.value);
   };
 
   // Refs
@@ -55,6 +61,37 @@ const UserSettings = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validate form fields
+    const validationErrors = {};
+    if (!firstName.current.value.trim()) {
+      validationErrors.firstName = "First name is required";
+    }
+    if (!lastName.current.value.trim()) {
+      validationErrors.lastName = "Last name is required";
+    }
+    if (!email.current.value.trim()) {
+      validationErrors.email = "Email is required";
+    }
+
+    // provide a valid email address
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.current.value.trim())) {
+      validationErrors.email = "Please provide a valid email address";
+    }
+
+    if (newPasswordValue && !currentPasswordValue) {
+      validationErrors.currentPassword = "Current password is required";
+    }
+    if (currentPasswordValue && !newPasswordValue) {
+      validationErrors.newPassword = "New password field cannot be empty";
+    }
+
+    // If there are validation errors, set errors state and return
+    if (Object.keys(validationErrors).length > 0) {
+      setDanger(true);
+      setErrors(validationErrors);
+      return;
+    }
 
     // Create an object to hold the updated user fields
     const updatedUser = {
@@ -71,12 +108,12 @@ const UserSettings = () => {
     if (email.current.value !== user.emailAddress) {
       updatedUser.emailAddress = email.current.value;
     }
-    if (currentPassword.current.value && newPassword.current.value) {
-      updatedUser.currentPassword = currentPassword.current.value;
-      updatedUser.newPassword = newPassword.current.value;
+    if (currentPassword.current.value && newPasswordValue) {
+      updatedUser.currentPassword = currentPasswordValue;
+      updatedUser.newPassword = newPasswordValue;
     }
 
-    // PUT requets that will update the individual course.
+    // PUT requets that will update the individual user
     try {
       const response = await api(
         `/users/${user.id}`,
@@ -169,16 +206,30 @@ const UserSettings = () => {
                       >
                         Email address
                       </label>
-                      <div className="mt-2">
+                      <div className="relative mt-2">
                         <input
                           id="email"
                           name="email"
                           type="email"
                           ref={email}
                           defaultValue={user?.emailAddress}
+                          aria-invalid={errors.email ? "true" : "false"}
+                          aria-describedby={errors.email ? "email-error" : null}
                           autoComplete="email"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className={`${
+                            errors.email
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                          } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
+                        {errors.email && (
+                          <>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                            </div>
+                            <p className="mt-2 text-sm text-red-600" id="email-error">{errors.email}</p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -201,16 +252,30 @@ const UserSettings = () => {
                       >
                         First name
                       </label>
-                      <div className="mt-2">
+                      <div className="relative mt-2">
                         <input
                           type="text"
                           name="first-name"
                           id="first-name"
                           ref={firstName}
                           defaultValue={user?.firstName}
+                          aria-invalid={errors.firstName ? "true" : "false"}
+                          aria-describedby={ errors.firstName ? "firstName-error" : null}
                           autoComplete="given-name"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className={`${
+                            errors.firstName
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                          } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
+                        {errors.firstName && (
+                          <>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                            </div>
+                            <p className="mt-2 text-sm text-red-600" id="firstName-error">{errors.firstName}</p>
+                          </>
+                        )}
                       </div>
                     </div>
 
@@ -221,16 +286,30 @@ const UserSettings = () => {
                       >
                         Last name
                       </label>
-                      <div className="mt-2">
+                      <div className="relative mt-2">
                         <input
                           type="text"
                           name="last-name"
                           id="last-name"
                           ref={lastName}
                           defaultValue={user?.lastName}
+                          aria-invalid={errors.lastName ? "true" : "false"}
+                          aria-describedby={ errors.lastName ? "lastName-error" : null}
                           autoComplete="family-name"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className={`${
+                            errors.lastName
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                          } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
+                        {errors.lastName && (
+                          <>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                            </div>
+                            <p className="mt-2 text-sm text-red-600" id="lastName-error">{errors.lastName}</p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -252,21 +331,35 @@ const UserSettings = () => {
                       >
                         Current Password
                       </label>
-                      <div className="mt-2">
+                      <div className="relative mt-2">
                         <input
                           id="old_password"
                           name="old_password"
                           type="password"
                           ref={currentPassword}
+                          aria-invalid={errors.currentPassword ? "true" : "false"}
+                          aria-describedby={ errors.currentPassword ? "currentPassword-error" : null}
                           autoComplete="current-password"
                           required={newPasswordValue !== ""}
-                          onChange={handleNewPasswordChange}
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={handleCurrentPasswordChange}
+                          className={`${
+                            errors.currentPassword
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                          } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
+                        {errors.currentPassworde && (
+                          <>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                            </div>
+                            <p className="mt-2 text-sm text-red-600" id="currentPassword-error">{errors.currentPassword}</p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div className="mt-10">
+                  <div className="relative mt-10">
                     <div className="sm:col-span-4">
                       <label
                         htmlFor="new_password"
@@ -282,9 +375,22 @@ const UserSettings = () => {
                           ref={newPassword}
                           value={newPasswordValue}
                           onChange={handleNewPasswordChange}
-                          //required={currentPassword.current?.value !== ""}
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          aria-invalid={errors.newPassword ? "true" : "false"}
+                          aria-describedby={ errors.newPassword ? "newPassword-error" : null}
+                          className={`${
+                            errors.newPassword
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                          } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
+                         {errors.newPassword && (
+                          <>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                            </div>
+                            <p className="mt-2 text-sm text-red-600" id="newPassword-error">{errors.newPassword}</p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -312,6 +418,8 @@ const UserSettings = () => {
       </div>
 
       {/* Global notification live region, render this permanently at the end of the document */}
+
+      {/* Success notification */}
       <div
         aria-live="assertive"
         className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
@@ -351,6 +459,59 @@ const UserSettings = () => {
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={() => {
                         setSuccess(false);
+                      }}
+                    >
+                      <span className="sr-only">Close</span>
+                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </div>
+      </div>
+
+      {/* Danger notification */}
+      <div
+        aria-live="assertive"
+        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+      >
+        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+          {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+          <Transition
+            show={danger}
+            as={Fragment}
+            enter="transform ease-out duration-300 transition"
+            enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+            enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+              <div className="p-4">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <ExclamationCircleIcon
+                      className="h-6 w-6 text-red-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3 w-0 flex-1 pt-0.5">
+                    <p className="text-sm font-medium text-gray-900">
+                      Something went wrong!
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Please verify your information and try again.
+                    </p>
+                  </div>
+                  <div className="ml-4 flex flex-shrink-0">
+                    <button
+                      type="button"
+                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      onClick={() => {
+                        setDanger(false);
                       }}
                     >
                       <span className="sr-only">Close</span>
