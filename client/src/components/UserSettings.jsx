@@ -112,6 +112,12 @@ const UserSettings = () => {
       updatedUser.currentPassword = currentPasswordValue;
       updatedUser.newPassword = newPasswordValue;
     }
+    // If the user has not made any changes, set the danger state and return
+    if (Object.keys(updatedUser).length === 1) {
+      setDanger(true);
+      setErrors(["You have not made any changes to your account. Please update your information to save."]);
+      return;
+    }
 
     // PUT requets that will update the individual user
     try {
@@ -144,7 +150,7 @@ const UserSettings = () => {
 
   const handleCancel = (event) => {
     event.preventDefault();
-    navigate(`/app/`);
+    navigate(-1);
   };
 
   return (
@@ -340,7 +346,7 @@ const UserSettings = () => {
                           aria-invalid={errors.currentPassword ? "true" : "false"}
                           aria-describedby={ errors.currentPassword ? "currentPassword-error" : null}
                           autoComplete="current-password"
-                          required={newPasswordValue !== ""}
+                          //*required={newPasswordValue !== ""}
                           onChange={handleCurrentPasswordChange}
                           className={`${
                             errors.currentPassword
@@ -348,7 +354,7 @@ const UserSettings = () => {
                               : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
                           } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
-                        {errors.currentPassworde && (
+                        {errors.currentPassword && (
                           <>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
                               <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
@@ -503,7 +509,7 @@ const UserSettings = () => {
                       Something went wrong!
                     </p>
                     <p className="mt-1 text-sm text-gray-500">
-                      Please verify your information and try again.
+                      Please check the form for errors and try again.
                     </p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">

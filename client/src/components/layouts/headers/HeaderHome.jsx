@@ -7,7 +7,9 @@ import Images from "../../Images";
 
 const navigation = [
   { name: "Dashboard", path: "/app" },
-  { name: "Account Settings", path: "/app/settings" },
+  { name: "Invoices", path: "/app/invoices" },
+  { name: "Clients", path: "/app/clients" },
+  { name: "Settings", path: "/app/settings" },
 ];
 
 const HeaderHome = () => {
@@ -24,7 +26,7 @@ const HeaderHome = () => {
             <span className="sr-only">Satoshi Invoice</span>
             <img
               className="h-10 w-auto"
-              src={Images.logoDark}
+              src={Images.logoDarkBrand}
               alt=""
             />
           </Link>
@@ -92,7 +94,7 @@ const HeaderHome = () => {
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Satoshi Invoice</span>
               <img
-                className="h-8 w-auto"
+                className="h-10 w-auto"
                 src={Images.logoDarkBrand}
                 alt=""
               />

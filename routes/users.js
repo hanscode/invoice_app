@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { User } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const bcrypt = require("bcryptjs");
 
 // Construct a router instance.
 const router = express.Router();
@@ -85,17 +86,29 @@ router.put(
         user.emailAddress = req.body.emailAddress;
       }
 
-      // Check if a new password is provided and update it if necessary
-      if (req.body.currentPassword && req.body.newPassword) {
-        // Check if the provided current password matches the password stored in the database
-        if (!bcrypt.compareSync(req.body.currentPassword, user.password)) {
-          return res
-            .status(400)
-            .json({ message: "Current password is incorrect." });
-        }
+      /**
+       * Update the password if the user provides a new password (req.body.newPassword).
+       * Before updating the password, check if the current password (req.body.currentPassword)
+       * is correct or match the current authenticated user's password.
+       */
 
-        // Update the password with the new password
-        user.password = bcrypt.hashSync(req.body.newPassword, 10);
+      if (req.body.newPassword) {
+        const currentPassword = req.body.currentPassword;
+        const newPassword = req.body.newPassword;
+
+        // Compare the current password with the user's password
+        const passwordMatch = bcrypt.compareSync(
+          currentPassword,
+          authenticatedUser.password
+        );
+
+        // If the passwords match, update the user's password
+        if (passwordMatch) {
+          // Update the password with the new password
+          user.password = newPassword; // Set the new password directly
+        } else {
+          return res.status(403).json({ message: "Current password is incorrect." });
+        }
       }
 
       // Save the updated user
