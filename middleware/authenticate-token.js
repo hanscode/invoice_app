@@ -29,15 +29,6 @@ function authenticateToken(req, res, next) {
       } catch (error) {
         return res.status(403).json({ message: "Token not valid" });
       }
-    // jwt.verify(token, TOKEN_SECRET, (err, decodedToken) => {
-    //     if (err) {
-    //         return res.status(403).json({ message: 'Invalid token.' });
-    //     }
-        
-    //     // Attach the decoded token to the request object for further use
-    //     req.decodedToken = decodedToken;
-    //     next(); // Proceed to the next middleware
-    // });
 }
 
 module.exports = { generateToken, authenticateToken };

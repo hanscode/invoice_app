@@ -15,7 +15,7 @@ const Stats = ({ filter }) => {
   const fetchData = async (filter) => {
     try {
       // Fetch all invoices
-      const allInvoices = await FetchInvoices(authUser);
+      const allInvoices = await FetchInvoices(authUser.token);
       let filteredInvoices = allInvoices;
       const today = new Date();
       const dateLast7Days = new Date();

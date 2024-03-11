@@ -36,7 +36,7 @@ function classNames(...classes) {
 
 const Invoices = () => {
   const { authUser } = useContext(UserContext);
-  const [invoices, setInvoices] = useState([]);
+  const [invoices, setInvoices] = useState({ invoices: [], totalCount: 0 });
   const [page, setPage] = useState(1);
   const [limit] = useState(7);
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const Invoices = () => {
           `/invoices?page=${page}&limit=${limit}`,
           "GET",
           null,
-          authUser
+          authUser.token
         );
         const jsonData = await response.json();
         if (response.status === 200) {
@@ -65,7 +65,7 @@ const Invoices = () => {
     };
     // Call fetchInvoices to retrieve the list of invoices.
     fetchInvoices();
-  }, [authUser, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
+  }, [authUser.token, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
 
   const count = invoices?.totalCount;
   const paginationNumbers = [];
@@ -117,7 +117,7 @@ const Invoices = () => {
       </div>
       <div className="lg:border-t lg:border-t-gray-900/5">
         {/* If there are invoices, render the table. Otherwise, don't render it. */}
-        {invoices && invoices.invoices ? (
+        {invoices.invoices.length !== 0 ? (
           <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">

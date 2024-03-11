@@ -15,7 +15,7 @@ import UserContext from "../context/UserContext";
  */
 
 const UserSignIn = () => {
-  const { actions } = useContext(UserContext);
+  const { actions, token } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,15 +38,17 @@ const UserSignIn = () => {
     };
 
     try {
-      const user = await actions.signIn(credentials);
+      const user = await actions.signIn(credentials, token);
       if (user) {
         navigate(from);
       } else {
         setErrors(["Sign-in was unsuccessful"]);
       }
     } catch (error) {
-      console.log(error);
-      navigate("/error");
+      // console.log(error);
+      // navigate("/error");
+      console.error("An error occurred during sign-in:", error);
+    setErrors(["An unexpected error occurred. Please try again later."]);
     }
   };
 

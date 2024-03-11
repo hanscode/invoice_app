@@ -11,7 +11,7 @@ import {
 
 const Clients = () => {
   const { authUser } = useContext(UserContext);
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState({ customers: [], totalCount: 0 });
   const [page, setPage] = useState(1);
   const [limit] = useState(7);
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Clients = () => {
           `/customers?page=${page}&limit=${limit}`,
           "GET",
           null,
-          authUser
+          authUser.token
         );
         const jsonData = await response.json();
         if (response.status === 200) {
@@ -38,7 +38,7 @@ const Clients = () => {
     };
     // Call fetchClients to retrieve the list of clients.
     fetchClients();
-  }, [authUser, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
+  }, [authUser.token, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
 
   const count = clients?.totalCount;
   const paginationNumbers = [];
@@ -89,7 +89,8 @@ const Clients = () => {
         </header>
       </div>
       <div className="lg:border-t lg:border-t-gray-900/5">
-        {clients && clients.customers ? (
+    
+        {clients.customers.length !== 0 ? (
           <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">

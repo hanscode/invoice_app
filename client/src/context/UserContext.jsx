@@ -22,25 +22,33 @@ export const UserProvider = (props) => {
   const navigate = useNavigate();
 
   const signIn = async (credentials) => {
-    const response = await api("/users", "GET", null, credentials);
-    if (response.status === 200) {
-      const user = await response.json();
+    try {
+      const response = await api("/users", "GET", null, credentials);
+      if (response.status === 200) {
+        const data = await response.json();
 
-      // Store token in cookies
-      Cookies.set("token", user.token, { expires: 1 });
+        // Extract token and user data
+        const { token, user } = data;
 
-      // Store password with user object to be used when creating, updating, or deleting with the api
-      // Also, store the authenticated user data in browser cookies for 1 day.
-      user.password = credentials.password;
-      setAuthUser(user);
-      Cookies.set("authenticatedUser", JSON.stringify(user), { expires: 1 });
-      return user;
-    } else if (response.status === 401) {
-      return null;
-    } else if (response.status === 500) {
+        // Store token in cookies
+        Cookies.set("token", token, { expires: 1 });
+
+        // Store password with user object to be used when creating, updating, or deleting with the api
+        // Also, store the authenticated user data in browser cookies for 1 day.
+        user.password = credentials.password;
+        setAuthUser(user);
+        Cookies.set("authenticatedUser", JSON.stringify(user), { expires: 1 });
+        return user;
+      } else if (response.status === 401) {
+        return null;
+      } else if (response.status === 500) {
+        navigate("/error");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
       navigate("/error");
-    } else {
-      throw new Error();
     }
   };
 
@@ -55,6 +63,7 @@ export const UserProvider = (props) => {
     <UserContext.Provider
       value={{
         authUser,
+        token: Cookies.get("token"),
         actions: {
           signIn,
           signOut,

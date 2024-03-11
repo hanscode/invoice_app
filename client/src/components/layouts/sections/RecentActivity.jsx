@@ -30,7 +30,7 @@ const RecentActivity = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allInvoices = await FetchInvoices(authUser);
+        const allInvoices = await FetchInvoices(authUser.token);
 
         const today = new Date();
         const yesterday = new Date();

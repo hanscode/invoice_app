@@ -32,8 +32,8 @@ const RecentClients = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allInvoices = await FetchInvoices(authUser);
-        const allClients = await FetchClients(authUser);
+        const allInvoices = await FetchInvoices(authUser.token);
+        const allClients = await FetchClients(authUser.token);
 
         // Filter clients with at least one invoice
         const clientsWithInvoices = allClients.filter((client) =>
@@ -95,7 +95,6 @@ const RecentClients = () => {
   return (
     <>
     {clients.length === 0 ? (
-      <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="text-center py-12 mt-6 border rounded-lg">
         <svg
           className="mx-auto h-12 w-12 text-gray-400"
@@ -132,7 +131,6 @@ const RecentClients = () => {
           </button>
         </div>
       </div>
-    </div>
     ) : (
       <>
       <div className="flex items-center justify-between">

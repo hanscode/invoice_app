@@ -24,11 +24,11 @@ const UserSettings = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await api(`/users`, "GET", null, authUser);
+        const response = await api(`/users`, "GET", null, authUser.token);
         const jsonData = await response.json();
         if (response.status === 200) {
-          setUser(jsonData);
-          setPrevUser(jsonData); // Initialize prevUser with authUser
+          setUser(jsonData.user);
+          setPrevUser(jsonData.user); // Initialize prevUser with authUser
         } else if (response.status === 500) {
           navigate(`/error`);
         }
@@ -39,7 +39,7 @@ const UserSettings = () => {
     };
 
     fetchUserInfo();
-  }, [navigate, authUser]);
+  }, [navigate, authUser.token]);
 
   // Function to handle changes in the new password field
   const handleNewPasswordChange = (event) => {
