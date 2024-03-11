@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { Customer, User } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const { authenticateToken } = require("../middleware/authenticate-token");
 const { Op } = require("sequelize");
 
 // Construct a router instance.
@@ -24,6 +25,7 @@ function getRandomColor(value) {
 router.get(
   "/customers",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     const authenticatedUser = req.currentUser;
 
@@ -69,6 +71,7 @@ router.get(
 router.get(
   "/customers/:customerId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res, next) => {
     // retrieve the current authenticated user's information from the Request object's `currentUser` property:
     const user = req.currentUser;
@@ -112,6 +115,7 @@ router.get(
 router.post(
   "/customers",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     try {
       // Generate a random color for the new customer
@@ -148,6 +152,7 @@ router.post(
 router.put(
   "/customers/:customerId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let customer;
     // retrieve the current authenticated user's information from the Request object's `currentUser` property:
@@ -192,6 +197,7 @@ router.put(
 router.delete(
   "/customers/:customerId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let customer;
     // retrieve the current authenticated user's information from the Request object's `currentUser` property:

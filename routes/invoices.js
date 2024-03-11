@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { User, Invoice, Customer } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const { authenticateToken } = require("../middleware/authenticate-token");
 const { logHistory } = require("../utils/historyLogger");
 
 // Construct a router instance.
@@ -17,6 +18,7 @@ const router = express.Router();
 router.get(
   "/invoices",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     const authenticatedUser = req.currentUser;
 
@@ -75,6 +77,7 @@ router.get(
 router.get(
   "/invoices/:id",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res, next) => {
     const invoice = await Invoice.findOne({
       attributes: [
@@ -120,6 +123,7 @@ router.get(
 router.post(
   "/invoices",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     try {
       // retrieve the current authenticated user's information from the Request object's `currentUser` property:
@@ -178,6 +182,7 @@ router.post(
 router.put(
   "/invoices/:id",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let invoice;
     // retrieve the current authenticated user's information from the Request object's `currentUser` property:
@@ -234,6 +239,7 @@ router.put(
 router.delete(
   "/invoices/:id",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let invoice;
     // retrieve the current authenticated user's information from the Request object's `currentUser` property:

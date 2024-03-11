@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { Invoice, Payment } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const { authenticateToken } = require("../middleware/authenticate-token");
 const { logHistory } = require("../utils/historyLogger");
 const { sequelize } = require("../models/index");
 
@@ -18,6 +19,7 @@ const router = express.Router();
 router.post(
   "/payments/invoice/:invoiceId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let transaction;
     try {
@@ -138,6 +140,7 @@ router.post(
 router.get(
   "/payments/invoice/:invoiceId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     try {
       // Get the authenticated user
@@ -170,6 +173,7 @@ router.get(
 router.get(
   "/payments/invoice/:invoiceId/:paymentId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     try {
       // Get the authenticated user
@@ -206,6 +210,7 @@ router.get(
 router.put(
   "/payments/invoice/:invoiceId/:paymentId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let transaction;
     try {
@@ -247,6 +252,7 @@ router.put(
 router.delete(
   "/payments/invoice/:invoiceId/:paymentId",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     let transaction;
     try {

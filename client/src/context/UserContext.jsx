@@ -25,6 +25,10 @@ export const UserProvider = (props) => {
     const response = await api("/users", "GET", null, credentials);
     if (response.status === 200) {
       const user = await response.json();
+
+      // Store token in cookies
+      Cookies.set("token", user.token, { expires: 1 });
+
       // Store password with user object to be used when creating, updating, or deleting with the api
       // Also, store the authenticated user data in browser cookies for 1 day.
       user.password = credentials.password;
@@ -41,6 +45,8 @@ export const UserProvider = (props) => {
   };
 
   const signOut = () => {
+    // Remove token from cookies
+    Cookies.remove("token");
     setAuthUser(null);
     Cookies.remove("authenticatedUser");
   };

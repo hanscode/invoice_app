@@ -4,6 +4,7 @@ const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
 const { User } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
+const {generateToken, authenticateToken} = require('../middleware/authenticate-token');
 const bcrypt = require("bcryptjs");
 
 // Construct a router instance.
@@ -24,7 +25,10 @@ router.get(
       attributes: ["id", "firstName", "lastName", "emailAddress"],
       where: { id: authenticatedUser.id },
     });
-    res.status(200).json(userProperties);
+    // Generate a token
+    const token = generateToken(authenticatedUser.id);
+    // Respond with the token and user information
+    res.status(200).json({ token, user: userProperties });
   })
 );
 
@@ -33,8 +37,13 @@ router.post(
   "/users",
   asyncHandler(async (req, res) => {
     try {
-      await User.create(req.body);
-      res.status(201).setHeader("Location", "/").end();
+      // create a new user
+     const newUser = await User.create(req.body);
+     // Generate a token for the new user
+     const token = generateToken(newUser.id);
+
+     // Respond with the token and user information
+      res.status(201).json({ token, user: newUser }).setHeader("Location", "/").end();
     } catch (error) {
       console.log("ERROR: ", error);
 
@@ -55,6 +64,7 @@ router.post(
 router.put(
   "/users/:id",
   authenticateUser,
+  authenticateToken,
   asyncHandler(async (req, res) => {
     const userId = req.params.id;
     const authenticatedUser = req.currentUser;

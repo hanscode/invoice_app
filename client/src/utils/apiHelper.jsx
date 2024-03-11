@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export const api = (
     path,
     method = "GET",
@@ -11,6 +13,12 @@ export const api = (
       method,
       headers: {}
     };
+
+    // Retrieve token from cookies
+    const token = Cookies.get("token");
+    if (token) {
+      options.headers.Authorization = `Bearer ${token}`;
+    }
   
     if (body) {
       options.body = JSON.stringify(body);
