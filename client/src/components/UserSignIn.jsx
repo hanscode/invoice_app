@@ -15,7 +15,7 @@ import UserContext from "../context/UserContext";
  */
 
 const UserSignIn = () => {
-  const { actions, token } = useContext(UserContext);
+  const { actions } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,7 +38,7 @@ const UserSignIn = () => {
     };
 
     try {
-      const user = await actions.signIn(credentials, token);
+      const user = await actions.signIn(credentials);
       if (user) {
         navigate(from);
       } else {

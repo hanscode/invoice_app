@@ -6,6 +6,7 @@ const { User } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
 const {generateToken, authenticateToken} = require('../middleware/authenticate-token');
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
 
 // Construct a router instance.
 const router = express.Router();
@@ -25,10 +26,13 @@ router.get(
       attributes: ["id", "firstName", "lastName", "emailAddress"],
       where: { id: authenticatedUser.id },
     });
-    // Generate a token
+    // Generate a token with a dynamic expiration time
     const token = generateToken(authenticatedUser.id);
-    // Respond with the token and user information
-    res.status(200).json({ token, user: userProperties });
+    // Extract the expiration time from the generated token
+    const decodedToken = jwt.decode(token);
+    const expiration = decodedToken.exp * 1000; // Convert seconds to milliseconds
+    // Respond with the token, expiration time, and user information
+    res.status(200).json({ token, expiration, user: userProperties });
   })
 );
 

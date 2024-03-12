@@ -1,8 +1,9 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 import { api } from "../utils/apiHelper";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const UserContext = createContext(null);
 
@@ -17,8 +18,7 @@ const UserContext = createContext(null);
  */
 
 export const UserProvider = (props) => {
-  const cookie = Cookies.get("authenticatedUser");
-  const [authUser, setAuthUser] = useState(cookie ? JSON.parse(cookie) : null);
+  const [authUser, setAuthUser] = useState(null);
   const navigate = useNavigate();
 
   const signIn = async (credentials) => {
@@ -28,16 +28,16 @@ export const UserProvider = (props) => {
         const data = await response.json();
 
         // Extract token and user data
-        const { token, user } = data;
+        const { token, user, expiration } = data;
 
-        // Store token in cookies
-        Cookies.set("token", token, { expires: 1 });
+        // Store token in cookies with dynamic expiration time
+        const expirationTime = new Date(expiration); // Convert expiration to Date object
+        const expiresInMs = expirationTime.getTime() - Date.now(); // Calculate expiration time in milliseconds
+        Cookies.set("token", token, { expires: expiresInMs }); // Set expiration time in milliseconds
 
         // Store password with user object to be used when creating, updating, or deleting with the api
-        // Also, store the authenticated user data in browser cookies for 1 day.
         user.password = credentials.password;
         setAuthUser(user);
-        Cookies.set("authenticatedUser", JSON.stringify(user), { expires: 1 });
         return user;
       } else if (response.status === 401) {
         return null;
@@ -56,8 +56,26 @@ export const UserProvider = (props) => {
     // Remove token from cookies
     Cookies.remove("token");
     setAuthUser(null);
-    Cookies.remove("authenticatedUser");
   };
+
+  // Function to check if the token is expired
+  const isTokenExpired = () => {
+    const token = Cookies.get("token");
+    if (!token) return true; // Token is not present
+
+    const decodedToken = jwtDecode(token);
+    const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+    const currentTime = Date.now();
+
+    return currentTime > expirationTime;
+  };
+
+  useEffect(() => {
+    if (isTokenExpired()) {
+      // Token has expired, clear authentication state
+      signOut();
+    }
+  }, [navigate]);
 
   return (
     <UserContext.Provider
