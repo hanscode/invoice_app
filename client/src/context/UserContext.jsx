@@ -18,7 +18,8 @@ const UserContext = createContext(null);
  */
 
 export const UserProvider = (props) => {
-  const [authUser, setAuthUser] = useState(null);
+  const cookie = Cookies.get("authenticatedUser");
+  const [authUser, setAuthUser] = useState(cookie ? JSON.parse(cookie) : null);
   const navigate = useNavigate();
 
   const signIn = async (credentials) => {
@@ -38,6 +39,7 @@ export const UserProvider = (props) => {
         // Store password with user object to be used when creating, updating, or deleting with the api
         user.password = credentials.password;
         setAuthUser(user);
+        Cookies.set("authenticatedUser", JSON.stringify(user), { expires: expiresInMs }); // Set expiration time in milliseconds
         return user;
       } else if (response.status === 401) {
         return null;
@@ -56,6 +58,7 @@ export const UserProvider = (props) => {
     // Remove token from cookies
     Cookies.remove("token");
     setAuthUser(null);
+    Cookies.remove("authenticatedUser");
   };
 
   // Function to check if the token is expired
@@ -70,12 +73,15 @@ export const UserProvider = (props) => {
     return currentTime > expirationTime;
   };
 
+  console.log(isTokenExpired());
+
   useEffect(() => {
+    // Check if token has expired on component mount
     if (isTokenExpired()) {
       // Token has expired, clear authentication state
       signOut();
     }
-  }, [navigate]);
+  }, []);
 
   return (
     <UserContext.Provider
@@ -86,6 +92,7 @@ export const UserProvider = (props) => {
           signIn,
           signOut,
         },
+        isTokenExpired,
       }}
     >
       {props.children}

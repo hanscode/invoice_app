@@ -12,11 +12,11 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
  * @returns Navigation to allowed paths.
  */
 const PrivateRoute = () => {
-  const { authUser } = useContext(UserContext);
+  const { isTokenExpired } = useContext(UserContext);
   // Save the location object of the current URL in an variable called `Location`.
   const location = useLocation();
 
-  if (authUser) {
+  if (isTokenExpired() === false){
     return <Outlet />
   } else {
     // Redirects the user to the /signin route if there's not an authenticated user.

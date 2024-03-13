@@ -3,7 +3,7 @@ import UserContext from "../../../context/UserContext";
 import { PlusIcon } from "@heroicons/react/20/solid";
 
 const HeroHome = () => {
-  const { authUser } = useContext(UserContext);
+  const { isTokenExpired } = useContext(UserContext);
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -29,7 +29,7 @@ const HeroHome = () => {
               The most amazing and simplest invoice system for real people!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              {authUser === null ? (
+              {isTokenExpired() === true? (
                 <>
                   <a
                     href="/signup"

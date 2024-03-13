@@ -5,7 +5,7 @@ require('dotenv').config(); // Load environment variables from .env file
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 function generateToken(userId) {
-    const token = jwt.sign({ userId }, TOKEN_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId }, TOKEN_SECRET, { expiresIn: '1m' });
     return token;
 }
 

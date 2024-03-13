@@ -125,7 +125,7 @@ const UserSettings = () => {
         `/users/${user.id}`,
         "PUT",
         updatedUser,
-        authUser
+        authUser.token
       );
       if (response.status === 200 || response.status === 204) {
         navigate(`/app/settings`);

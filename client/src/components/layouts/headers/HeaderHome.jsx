@@ -14,7 +14,7 @@ const navigation = [
 
 const HeaderHome = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { authUser } = useContext(UserContext);
+  const { isTokenExpired } = useContext(UserContext);
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav
@@ -42,7 +42,7 @@ const HeaderHome = () => {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {authUser === null
+          {isTokenExpired() === true
             ? ""
             : navigation.map((item) => (
                 <Link
@@ -55,7 +55,7 @@ const HeaderHome = () => {
               ))}
         </div>
         <div className="hidden lg:flex gap-4 lg:flex-1 items-center lg:justify-end">
-          {authUser === null ? (
+          {isTokenExpired() === true ? (
             <>
               <Link
                 to="/signin"
@@ -122,7 +122,7 @@ const HeaderHome = () => {
                 ))}
               </div>
               <div className="py-6">
-              {authUser === null ? (
+              {isTokenExpired() === true ? (
                 <>
                 <a
                   href="/signin"

@@ -7,13 +7,13 @@ import HeaderApp from "./layouts/headers/HeaderApp";
 
 const Header = () => {
   const { pathname } = useLocation();
-  const { authUser } = useContext(UserContext);
+  const { isTokenExpired} = useContext(UserContext);
 
   return pathname === "/" ? (
     <HeaderHome />
   ) : (
     <>
-      {authUser === null ||
+      {isTokenExpired() === true ||
       pathname === "/signin" ||
       pathname === "/signup" ? (
         ""
