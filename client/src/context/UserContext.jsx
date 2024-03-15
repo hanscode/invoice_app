@@ -73,7 +73,7 @@ export const UserProvider = (props) => {
     return currentTime > expirationTime;
   };
 
-  console.log(isTokenExpired());
+  // console.log("isTokenExpired", isTokenExpired());
 
   useEffect(() => {
     // Check if token has expired on component mount

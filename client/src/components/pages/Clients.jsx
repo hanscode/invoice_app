@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { api } from "../../utils/apiHelper";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
+import CreateClient from "./CreateClient";
+import EditClient from "./EditClient";
 
 import {
   PlusIcon,
@@ -12,6 +14,9 @@ import {
 const Clients = () => {
   const { authUser } = useContext(UserContext);
   const [clients, setClients] = useState({ customers: [], totalCount: 0 });
+  const [isCreateClientOpen, setIsCreateClientOpen] = useState(false);
+  const [isEditClientOpen, setIsEditClientOpen] = useState(false);
+  const [editingClientId, setEditingClientId] = useState('');
   const [page, setPage] = useState(1);
   const [limit] = useState(7);
   const navigate = useNavigate();
@@ -69,6 +74,14 @@ const Clients = () => {
     setPage(Math.max(page - 1, 1));
   };
 
+  const handleEditClientClick = (clientId) => {
+    // Set the editing client ID
+  setEditingClientId(clientId);
+  // Open the edit client panel
+  setIsEditClientOpen(true);
+  };
+  
+
   return (
     <>
       <div className="relative isolate overflow-hidden">
@@ -78,18 +91,17 @@ const Clients = () => {
             <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900">
               Clients
             </h1>
-            <a
-              href="#"
+            <button
+              onClick={() => setIsCreateClientOpen(true)}
               className="ml-auto flex items-center gap-x-1 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               <PlusIcon className="-ml-1.5 h-5 w-5" aria-hidden="true" />
               Add Client
-            </a>
+            </button>
           </div>
         </header>
       </div>
       <div className="lg:border-t lg:border-t-gray-900/5">
-    
         {clients.customers.length !== 0 ? (
           <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -158,15 +170,17 @@ const Clients = () => {
                           {client.address}
                         </td>
                         <td className="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a
-                            href="#"
+                          <button
+                            onClick={() =>
+                              handleEditClientClick(client.customerId.toString())
+                            }
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             Edit
                             <span className="sr-only">
                               , {client.customerId}
                             </span>
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -249,6 +263,7 @@ const Clients = () => {
               </p>
               <div className="mt-6">
                 <button
+                  onClick={() => setIsCreateClientOpen(true)}
                   type="button"
                   className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
@@ -263,6 +278,19 @@ const Clients = () => {
           </div>
         )}
       </div>
+
+      {/* Create Client */}
+      <CreateClient open={isCreateClientOpen} setOpen={setIsCreateClientOpen} />
+
+      {/* Edit Client */}
+      {/* Render EditClient only when editingClientId is not null */}
+      {editingClientId !== null && (
+        <EditClient
+          edit={isEditClientOpen}
+          setEdit={setIsEditClientOpen}
+          clientId={editingClientId}
+        />
+      )}
     </>
   );
 };
