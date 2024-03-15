@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { api } from "../../utils/apiHelper";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
@@ -21,29 +21,32 @@ const Clients = () => {
   const [limit] = useState(7);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchClients = async () => {
-      try {
-        const response = await api(
-          `/customers?page=${page}&limit=${limit}`,
-          "GET",
-          null,
-          authUser.token
-        );
-        const jsonData = await response.json();
-        if (response.status === 200) {
-          setClients(jsonData);
-        } else if (response.status === 500) {
-          navigate(`/error`);
-        }
-      } catch (error) {
-        console.log(`Error fetching and parsing the data`, error);
-        navigate("/error");
+  
+  const fetchClients = useCallback(async () => {
+    try {
+      const response = await api(
+        `/customers?page=${page}&limit=${limit}`,
+        "GET",
+        null,
+        authUser.token
+      );
+      const jsonData = await response.json();
+      if (response.status === 200) {
+        setClients(jsonData);
+      } else if (response.status === 500) {
+        navigate(`/error`);
       }
-    };
+    } catch (error) {
+      console.log(`Error fetching and parsing the data`, error);
+      navigate("/error");
+    }
+  }, [authUser.token, page, limit, navigate]); // useCallback dependencies
+
+  useEffect(() => {
     // Call fetchClients to retrieve the list of clients.
     fetchClients();
-  }, [authUser.token, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
+  }, [fetchClients]);
+
 
   const count = clients?.totalCount;
   const paginationNumbers = [];
@@ -79,6 +82,12 @@ const Clients = () => {
   setEditingClientId(clientId);
   // Open the edit client panel
   setIsEditClientOpen(true);
+  };
+
+  // Function to update clients state after new client creation
+  const updateClients = async () => {
+    // Call fetchClients to update the list of clients after creating a new client.
+    await fetchClients();
   };
   
 
@@ -280,7 +289,7 @@ const Clients = () => {
       </div>
 
       {/* Create Client */}
-      <CreateClient open={isCreateClientOpen} setOpen={setIsCreateClientOpen} />
+      <CreateClient open={isCreateClientOpen} setOpen={setIsCreateClientOpen} updateClients={updateClients} />
 
       {/* Edit Client */}
       {/* Render EditClient only when editingClientId is not null */}

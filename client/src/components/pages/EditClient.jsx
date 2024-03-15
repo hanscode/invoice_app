@@ -49,7 +49,7 @@ const EditClient = ({ edit, setEdit, clientId }) => {
     fetchClient();
   }, [id, navigate, authUser.token]);
 
-  // State
+  // Refs for form inputs and errors
   const name = useRef(null);
   const email = useRef(null);
   const phone = useRef(null);
@@ -91,6 +91,17 @@ const EditClient = ({ edit, setEdit, clientId }) => {
   return (
     <Transition.Root show={edit} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setEdit}>
+      <Transition.Child
+          as={Fragment}
+          enter="ease-in-out duration-500"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in-out duration-500"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-75 transition-opacity" />
+        </Transition.Child>
         <div className="fixed inset-0" />
 
         <div className="fixed inset-0 overflow-hidden">
