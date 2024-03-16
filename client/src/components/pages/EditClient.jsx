@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 
 import UserContext from "../../context/UserContext";
 import ErrorsDisplay from "../ErrorsDisplay";
@@ -18,9 +18,10 @@ import NotFound from "../NotFound";
  * @returns - The EditClient component
  */
 
-const EditClient = ({ edit, setEdit, clientId }) => {
+const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
   const { authUser } = useContext(UserContext);
   const [client, setClient] = useState();
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   // GET individual client detail.
@@ -70,9 +71,12 @@ const EditClient = ({ edit, setEdit, clientId }) => {
 
     // PUT requets that will update the individual client
     try {
-      const response = await api(`/customers/${clientId}`, "PUT", client, authUser);
+      const response = await api(`/customers/${clientId}`, "PUT", client, authUser.token);
       if (response.status === 204) {
-        navigate(`/clients/`);
+        navigate(`/app/clients/`);
+        setSuccess(true);
+        setEdit(false);
+        updateClients(); // Call updateClients function passed from Clients component
       } else if (response.status === 403) {
         navigate(`/forbidden`);
       } else if (response.status === 500) {
@@ -90,10 +94,13 @@ const EditClient = ({ edit, setEdit, clientId }) => {
   const handleCancel = (event) => {
     event.preventDefault();
     setEdit(false);
+    if (errors.length > 0) {
+      setErrors([]);
+    }
   };
-
   if (!client) return <NotFound />;
   return (
+    <>
     <Transition.Root show={edit} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setEdit}>
       <Transition.Child
@@ -122,7 +129,6 @@ const EditClient = ({ edit, setEdit, clientId }) => {
                 leaveTo="translate-x-full"
               >
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                  <ErrorsDisplay errors={errors} />
                   <form
                     onSubmit={handleSubmit}
                     className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
@@ -136,7 +142,7 @@ const EditClient = ({ edit, setEdit, clientId }) => {
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="relative rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                              className="relative rounded-md bg-indigo-700 text-indigo-200 hover:text-white"
                               onClick={handleCancel}
                             >
                               <span className="absolute -inset-2.5" />
@@ -155,6 +161,11 @@ const EditClient = ({ edit, setEdit, clientId }) => {
                           </p>
                         </div>
                       </div>
+                      {errors.length > 0 && (
+                          <div className="px-4 pt-4">
+                            <ErrorsDisplay errors={errors} />
+                          </div>
+                        )}
                       <div className="flex flex-1 flex-col justify-between">
                         <div className="divide-y divide-gray-200 px-4 sm:px-6">
                           <div className="space-y-6 pb-5 pt-6">
@@ -276,6 +287,60 @@ const EditClient = ({ edit, setEdit, clientId }) => {
         </div>
       </Dialog>
     </Transition.Root>
+
+    {/* Success notification */}
+    <div
+        aria-live="assertive"
+        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+      >
+        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+          {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+          <Transition
+            show={success}
+            as={Fragment}
+            enter="transform ease-out delay-700 duration-300 transition"
+            enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+            enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+              <div className="p-4">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <CheckCircleIcon
+                      className="h-6 w-6 text-green-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3 w-0 flex-1 pt-0.5">
+                    <p className="text-sm font-medium text-gray-900">
+                      Successfully saved!
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      The client have been updated!.
+                    </p>
+                  </div>
+                  <div className="ml-4 flex flex-shrink-0">
+                    <button
+                      type="button"
+                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      onClick={() => {
+                        setSuccess(false);
+                      }}
+                    >
+                      <span className="sr-only">Close</span>
+                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -285,4 +350,5 @@ EditClient.propTypes = {
   edit: PropTypes.bool,
   setEdit: PropTypes.func,
   clientId: PropTypes.string,
+  updateClients: PropTypes.func,
 };

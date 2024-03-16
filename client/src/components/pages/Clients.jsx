@@ -99,7 +99,7 @@ const Clients = () => {
   setIsEditClientOpen(true);
   };
 
-  // Function to update clients state after new client creation
+  // Function to update clients state after new client creation or after new client update.
   const updateClients = async () => {
     // Call fetchClients to update the list of clients after creating a new client.
     await fetchClients();
@@ -313,6 +313,7 @@ const Clients = () => {
           edit={isEditClientOpen}
           setEdit={setIsEditClientOpen}
           clientId={editingClientId}
+          updateClients={updateClients}
         />
       )}
     </>
