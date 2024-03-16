@@ -22,14 +22,13 @@ const EditClient = ({ edit, setEdit, clientId }) => {
   const { authUser } = useContext(UserContext);
   const [client, setClient] = useState();
   const navigate = useNavigate();
-  const id = clientId;
 
   // GET individual client detail.
   useEffect(() => {
     const fetchClient = async () => {
       try {
         const response = await api(
-          `/customers/${id}`,
+          `/customers/${clientId}`,
           "GET",
           null,
           authUser.token
@@ -47,7 +46,7 @@ const EditClient = ({ edit, setEdit, clientId }) => {
     };
 
     fetchClient();
-  }, [id, navigate, authUser.token]);
+  }, [clientId, navigate, authUser.token]);
 
   // Refs for form inputs and errors
   const name = useRef(null);
@@ -71,9 +70,9 @@ const EditClient = ({ edit, setEdit, clientId }) => {
 
     // PUT requets that will update the individual client
     try {
-      const response = await api(`/customers/${id}`, "PUT", client, authUser);
+      const response = await api(`/customers/${clientId}`, "PUT", client, authUser);
       if (response.status === 204) {
-        navigate(`/customers/`);
+        navigate(`/clients/`);
       } else if (response.status === 403) {
         navigate(`/forbidden`);
       } else if (response.status === 500) {
@@ -87,6 +86,12 @@ const EditClient = ({ edit, setEdit, clientId }) => {
       navigate("/error");
     }
   };
+
+  const handleCancel = (event) => {
+    event.preventDefault();
+    setEdit(false);
+  };
+
   if (!client) return <NotFound />;
   return (
     <Transition.Root show={edit} as={Fragment}>
@@ -132,7 +137,7 @@ const EditClient = ({ edit, setEdit, clientId }) => {
                             <button
                               type="button"
                               className="relative rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                              onClick={() => setEdit(false)}
+                              onClick={handleCancel}
                             >
                               <span className="absolute -inset-2.5" />
                               <span className="sr-only">Close panel</span>
@@ -252,7 +257,7 @@ const EditClient = ({ edit, setEdit, clientId }) => {
                       <button
                         type="button"
                         className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        onClick={() => setEdit(false)}
+                        onClick={handleCancel}
                       >
                         Cancel
                       </button>

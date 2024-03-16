@@ -43,6 +43,12 @@ const Clients = () => {
   }, [authUser.token, page, limit, navigate]); // useCallback dependencies
 
   useEffect(() => {
+    if (!isEditClientOpen) {
+      setEditingClientId('');
+    }
+  }, [isEditClientOpen]); // cleanup editingClientId
+
+  useEffect(() => {
     // Call fetchClients to retrieve the list of clients.
     fetchClients();
   }, [fetchClients]);
