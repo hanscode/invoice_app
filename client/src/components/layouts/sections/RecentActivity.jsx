@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../../context/UserContext";
 import { FetchInvoices } from "../../../utils";
+import Spinner from "../loaders/Spinner";
 
 import { Fragment } from "react";
 import {
@@ -26,6 +27,7 @@ function classNames(...classes) {
 const RecentActivity = () => {
   const { authUser } = useContext(UserContext);
   const [days, setDays] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,11 +94,18 @@ const RecentActivity = () => {
         setDays(newDays);
       } catch (error) {
         console.error("Error fetching the invoices:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
     fetchData();
   }, [authUser]);
+
+  // Render spinner if loading
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div>

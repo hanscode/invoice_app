@@ -2,11 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { FetchInvoices, calculateAmount, FormatNumber } from "../../../utils";
 import UserContext from "../../../context/UserContext";
 import PropTypes from 'prop-types';
+import Spinner from "../loaders/Spinner";
 
 // Stats component
 const Stats = ({ filter }) => {
   const { authUser } = useContext(UserContext);
   const [totals, setTotals] = useState(null); // State to store the calculated totals
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData(filter);
@@ -41,8 +43,15 @@ const Stats = ({ filter }) => {
       setTotals({ overdueTotal, outstandingTotal, paidTotal });
     } catch (error) {
       console.error("Error fetching or calculating totals:", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   };
+
+  // Render spinner if loading
+  if (loading) {
+    return <Spinner />;
+  }
 
   const stats = [
     { name: 'Overdue invoices', value: Number(totals?.overdueTotal ?? 0) },

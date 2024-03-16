@@ -9,6 +9,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
 import UserContext from "../context/UserContext";
+import Spinner from "./layouts/loaders/Spinner";
 
 const UserSettings = () => {
   const { authUser } = useContext(UserContext);
@@ -19,6 +20,7 @@ const UserSettings = () => {
   const [currentPasswordValue, setCurrentPasswordValue] = useState("");
   const [success, setSuccess] = useState(false);
   const [danger, setDanger] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Get the user details
   useEffect(() => {
@@ -35,6 +37,8 @@ const UserSettings = () => {
       } catch (error) {
         console.log(`Error fetching and parsing the data`, error);
         navigate("/error");
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
@@ -58,6 +62,11 @@ const UserSettings = () => {
   const currentPassword = useRef(null);
   const newPassword = useRef(null);
   const [errors, setErrors] = useState([]);
+
+  // Render spinner if loading
+  if (loading) {
+    return <Spinner />;
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();

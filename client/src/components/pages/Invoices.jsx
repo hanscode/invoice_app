@@ -10,6 +10,7 @@ import {
 
 import UserContext from "../../context/UserContext";
 import FormatNumber from "../../utils/FormatNumber";
+import Spinner from "../layouts/loaders/Spinner";
 
 const statuses = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20",
@@ -37,6 +38,7 @@ function classNames(...classes) {
 const Invoices = () => {
   const { authUser } = useContext(UserContext);
   const [invoices, setInvoices] = useState({ invoices: [], totalCount: 0 });
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit] = useState(7);
   const navigate = useNavigate();
@@ -61,11 +63,18 @@ const Invoices = () => {
       } catch (error) {
         console.log(`Error fetching and parsing the data`, error);
         navigate("/error");
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
     // Call fetchInvoices to retrieve the list of invoices.
     fetchInvoices();
   }, [authUser.token, page, limit, navigate]); // Indicates that useEffect should run when 'navigate' changes.
+
+  // Render spinner if loading
+  if (loading) {
+    return <Spinner />;
+  }
 
   const count = invoices?.totalCount;
   const paginationNumbers = [];

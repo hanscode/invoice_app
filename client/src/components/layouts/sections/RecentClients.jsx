@@ -12,6 +12,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
+import Spinner from "../loaders/Spinner";
 
 const statuses = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20",
@@ -28,6 +29,7 @@ function classNames(...classes) {
 const RecentClients = () => {
   const { authUser } = useContext(UserContext);
   const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,11 +88,18 @@ const RecentClients = () => {
         setClients(clientsInvoices);
       } catch (error) {
         console.error("Error fetching the invoices:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
     fetchData();
   }, [authUser]);
+
+  // Render spinner if loading
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>

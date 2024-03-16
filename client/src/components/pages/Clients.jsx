@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import CreateClient from "./CreateClient";
 import EditClient from "./EditClient";
+import Spinner from "../layouts/loaders/Spinner";
 
 import {
   PlusIcon,
@@ -17,6 +18,7 @@ const Clients = () => {
   const [isCreateClientOpen, setIsCreateClientOpen] = useState(false);
   const [isEditClientOpen, setIsEditClientOpen] = useState(false);
   const [editingClientId, setEditingClientId] = useState('');
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit] = useState(7);
   const navigate = useNavigate();
@@ -39,6 +41,8 @@ const Clients = () => {
     } catch (error) {
       console.log(`Error fetching and parsing the data`, error);
       navigate("/error");
+    } finally {
+      setLoading(false); // Set loading to false after fetching
     }
   }, [authUser.token, page, limit, navigate]); // useCallback dependencies
 
@@ -52,6 +56,11 @@ const Clients = () => {
     // Call fetchClients to retrieve the list of clients.
     fetchClients();
   }, [fetchClients]);
+
+  // Render spinner if loading
+  if (loading) {
+    return <Spinner />;
+  }
 
 
   const count = clients?.totalCount;
