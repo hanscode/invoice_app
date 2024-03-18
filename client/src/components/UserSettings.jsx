@@ -205,7 +205,7 @@ const UserSettings = () => {
             <ErrorsDisplay errors={errors} />
             <form id="editUser" onSubmit={handleSubmit}>
               <div className="space-y-12">
-                <div className="border-b border-gray-900/10 pb-12">
+                <div className="border-b border-gray-900/10 pb-12 dark:border-gray-800">
                   <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     Email address
                   </h2>
@@ -250,7 +250,7 @@ const UserSettings = () => {
                   </div>
                 </div>
 
-                <div className="border-b border-gray-900/10 pb-12">
+                <div className="border-b border-gray-900/10 pb-12 dark:border-gray-800">
                   <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     Personal Information
                   </h2>
@@ -330,7 +330,7 @@ const UserSettings = () => {
                   </div>
                 </div>
 
-                <div className="border-b border-gray-900/10 pb-12">
+                <div className="border-b border-gray-900/10 pb-12 dark:border-gray-800">
                   <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     Password
                   </h2>
