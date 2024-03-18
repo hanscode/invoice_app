@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Bars3Icon, XMarkIcon, ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/outline";
 import UserContext from "../../../context/UserContext";
 import Images from "../../Images";
+import ThemeSwitcher from "../../ThemeSwitcher";
 
 const navigation = [
   { name: "Dashboard", path: "/app" },
@@ -55,6 +56,8 @@ const HeaderHome = () => {
               ))}
         </div>
         <div className="hidden lg:flex gap-4 lg:flex-1 items-center lg:justify-end">
+           {/* Theme switcher */}
+           <ThemeSwitcher />
           {isTokenExpired() === true ? (
             <>
               <Link

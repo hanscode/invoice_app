@@ -37,6 +37,7 @@ function App() {
 
   return (
     <>
+    <div className={`h-full bg-white dark:bg-gray-900`}>
    <Header />
       <main>
       <ScrollToTop />
@@ -62,6 +63,7 @@ function App() {
         </Routes>
       </main>
     <Footer />
+    </div>
     </>
   );
 }

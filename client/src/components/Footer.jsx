@@ -8,7 +8,7 @@ const Footer = () => {
   return pathname === "/signin" || pathname === "/signup" ? null : (
     <>
       <footer className="mx-auto mt-16 w-full max-w-container px-4 sm:px-6 lg:px-8">
-        <div className="border-t border-slate-900/5 py-10">
+        <div className="border-t border-slate-900/5 py-10 dark:border-gray-800">
           <img className="mx-auto h-8 w-auto hidden dark:block" src={Images.logoDarkBrand} alt="" />
           <img className="mx-auto h-8 w-auto block dark:hidden" src={Images.logoLightBrand} alt="" />
           <p className="mt-5 text-center text-sm leading-6 text-slate-500 dark:text-slate-400">

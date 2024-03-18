@@ -180,7 +180,7 @@ const Clients = () => {
                               <div className="font-medium text-gray-900 dark:text-white">
                                 {client.name}
                               </div>
-                              <div className="mt-1 text-gray-500 dark:text-gray-300">
+                              <div className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-400">
                                 {client.email}
                               </div>
                             </div>

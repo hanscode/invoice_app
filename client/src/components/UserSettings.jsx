@@ -169,11 +169,11 @@ const UserSettings = () => {
         <header className="pb-4 pt-6 sm:pb-6">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
             <div className="min-w-0 flex-1">
-              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-slate-300">
                 Account Settings
               </h2>
               <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
-                <div className="mt-2 flex items-center text-sm text-gray-500">
+                <div className="mt-2 flex items-center text-sm text-gray-500 dark:text-slate-400">
                   Manage the email address and password associated with your
                   account.
                 </div>
@@ -183,7 +183,7 @@ const UserSettings = () => {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-700"
               >
                 Cancel
               </button>
@@ -199,17 +199,17 @@ const UserSettings = () => {
         </header>
       </div>
 
-      <div className="lg:border-t lg:border-t-gray-900/5">
+      <div className="lg:border-t lg:border-t-gray-900/5 dark:lg:border-t-gray-800">
         <div className="relative mx-auto max-w-[40rem] space-y-16 divide-y divide-slate-100">
           <div className="mt-8 px-4 sm:px-6 lg:px-8">
             <ErrorsDisplay errors={errors} />
             <form id="editUser" onSubmit={handleSubmit}>
               <div className="space-y-12">
                 <div className="border-b border-gray-900/10 pb-12">
-                  <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     Email address
                   </h2>
-                  <p className="mt-1 text-sm leading-6 text-gray-600">
+                  <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                     Update your email address associated with your account.
                   </p>
 
@@ -217,7 +217,7 @@ const UserSettings = () => {
                     <div className="sm:col-span-4">
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                       >
                         Email address
                       </label>
@@ -233,16 +233,16 @@ const UserSettings = () => {
                           autoComplete="email"
                           className={`${
                             errors.email
-                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
-                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                           } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
                         {errors.email && (
                           <>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
-                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500 dark:text-red-400" aria-hidden="true"/>
                             </div>
-                            <p className="mt-2 text-sm text-red-600" id="email-error">{errors.email}</p>
+                            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="email-error">{errors.email}</p>
                           </>
                         )}
                       </div>
@@ -251,10 +251,10 @@ const UserSettings = () => {
                 </div>
 
                 <div className="border-b border-gray-900/10 pb-12">
-                  <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     Personal Information
                   </h2>
-                  <p className="mt-1 text-sm leading-6 text-gray-600">
+                  <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                     Your full name or profile name is used in your invoices and
                     receipts.
                   </p>
@@ -263,7 +263,7 @@ const UserSettings = () => {
                     <div className="sm:col-span-3">
                       <label
                         htmlFor="first-name"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                       >
                         First name
                       </label>
@@ -279,16 +279,16 @@ const UserSettings = () => {
                           autoComplete="given-name"
                           className={`${
                             errors.firstName
-                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
-                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                           } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
                         {errors.firstName && (
                           <>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
-                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500 dark:text-red-400" aria-hidden="true"/>
                             </div>
-                            <p className="mt-2 text-sm text-red-600" id="firstName-error">{errors.firstName}</p>
+                            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="firstName-error">{errors.firstName}</p>
                           </>
                         )}
                       </div>
@@ -297,7 +297,7 @@ const UserSettings = () => {
                     <div className="sm:col-span-3">
                       <label
                         htmlFor="last-name"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                       >
                         Last name
                       </label>
@@ -313,16 +313,16 @@ const UserSettings = () => {
                           autoComplete="family-name"
                           className={`${
                             errors.lastName
-                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
-                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                           } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
                         {errors.lastName && (
                           <>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
-                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500 dark:text-red-400" aria-hidden="true"/>
                             </div>
-                            <p className="mt-2 text-sm text-red-600" id="lastName-error">{errors.lastName}</p>
+                            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="lastName-error">{errors.lastName}</p>
                           </>
                         )}
                       </div>
@@ -331,10 +331,10 @@ const UserSettings = () => {
                 </div>
 
                 <div className="border-b border-gray-900/10 pb-12">
-                  <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                     Password
                   </h2>
-                  <p className="mt-1 text-sm leading-6 text-gray-600">
+                  <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                     Update your password associated with your account.
                   </p>
 
@@ -342,7 +342,7 @@ const UserSettings = () => {
                     <div className="sm:col-span-4">
                       <label
                         htmlFor="old_password"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                       >
                         Current Password
                       </label>
@@ -359,16 +359,16 @@ const UserSettings = () => {
                           onChange={handleCurrentPasswordChange}
                           className={`${
                             errors.currentPassword
-                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
-                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                           } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
                         {errors.currentPassword && (
                           <>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
-                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500 dark:text-red-400" aria-hidden="true"/>
                             </div>
-                            <p className="mt-2 text-sm text-red-600" id="currentPassword-error">{errors.currentPassword}</p>
+                            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="currentPassword-error">{errors.currentPassword}</p>
                           </>
                         )}
                       </div>
@@ -378,7 +378,7 @@ const UserSettings = () => {
                     <div className="sm:col-span-4">
                       <label
                         htmlFor="new_password"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                       >
                         New Password
                       </label>
@@ -394,16 +394,16 @@ const UserSettings = () => {
                           aria-describedby={ errors.newPassword ? "newPassword-error" : null}
                           className={`${
                             errors.newPassword
-                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500"
-                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600"
+                              ? "text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20"
+                              : "text-gray-900 shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-600 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                           } block pr-10 w-full rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
                         />
                          {errors.newPassword && (
                           <>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 h-9">
-                              <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true"/>
+                              <ExclamationCircleIcon className="h-5 w-5 text-red-500 dark:text-red-400" aria-hidden="true"/>
                             </div>
-                            <p className="mt-2 text-sm text-red-600" id="newPassword-error">{errors.newPassword}</p>
+                            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="newPassword-error">{errors.newPassword}</p>
                           </>
                         )}
                       </div>
@@ -416,7 +416,7 @@ const UserSettings = () => {
                 <button
                   onClick={handleCancel}
                   type="button"
-                  className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-700"
                 >
                   Cancel
                 </button>
