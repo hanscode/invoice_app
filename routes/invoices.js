@@ -22,10 +22,19 @@ router.get(
   asyncHandler(async (req, res) => {
     const authenticatedUser = req.currentUser;
 
+    // Retrieve the customer ID from the query parameters
+    const customerId = req.query.customerId;
+
     // Define pagination parameters
     const page = req.query.page ? parseInt(req.query.page, 10) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
     const offset = page ? limit * (page - 1) : 0;
+
+    // Define the where clause for filtering invoices by customer ID
+    const whereClause = { userId: authenticatedUser.id };
+    if (customerId) {
+      whereClause.customerId = customerId;
+    }
 
     const invoices = await Invoice.findAll({
       attributes: [
@@ -52,7 +61,7 @@ router.get(
           attributes: ["id", "firstName", "lastName", "emailAddress"],
         },
       ],
-      where: { userId: authenticatedUser.id },
+      where: whereClause,
       offset,
       limit,
       order: [["issueDate", "DESC"]],
@@ -60,7 +69,7 @@ router.get(
 
     // Query total count of invoices (without pagination)
     const totalCount = await Invoice.count({
-      where: { userId: authenticatedUser.id }
+      where: whereClause
     });
 
     // Prepare the response with customer names added to each invoice

@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../../context/UserContext";
-import { FetchInvoices } from "../../../utils";
+import { FetchInvoices, FormatNumber } from "../../../utils";
 import Spinner from "../loaders/Spinner";
+import EmptyState from "./EmptyState";
 
 import { Fragment } from "react";
 import {
@@ -13,11 +14,14 @@ import {
 } from "@heroicons/react/20/solid";
 
 const statuses = {
-  Paid: "text-green-700 bg-green-50 ring-green-600/20",
-  Sent: "text-cyan-700 bg-cyan-50 ring-cyan-600/20",
-  Draft: "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Partial: "text-amber-700 bg-amber-100 ring-amber-600/10",
-  Overdue: "text-red-700 bg-red-50 ring-red-600/10",
+  Paid: "text-green-700 bg-green-50 ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20",
+  Sent: "text-cyan-700 bg-cyan-50 ring-cyan-600/20 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/30",
+  Draft:
+    "text-gray-600 bg-gray-50 ring-gray-500/10 dark:bg-gray-400/10 dark:text-gray-400 dark:ring-gray-400/20",
+  Partial:
+    "text-amber-700 bg-amber-100 ring-amber-600/10 dark:bg-yellow-400/10 dark:text-yellow-500 dark:ing-yellow-400/20",
+  Overdue:
+    "text-red-700 bg-red-50 ring-red-600/10 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20",
 };
 
 function classNames(...classes) {
@@ -110,39 +114,37 @@ const RecentActivity = () => {
   return (
     <div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mx-auto max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none">
+        <h2 className="mx-auto max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none dark:text-slate-300">
           Recent activity
         </h2>
       </div>
-      <div className="mt-6 overflow-hidden border-t border-gray-100">
+      <div className="mt-6 overflow-hidden border-t border-gray-100 dark:border-slate-700">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
             {days.length === 0 ? (
-              <div className="text-center py-12 mt-6 border rounded-lg">
-                <svg
-                  className="mx-auto h-12 w-12 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1}
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
-                  />
-                </svg>
-
-                <h3 className="mt-2 text-sm font-semibold text-gray-900">
-                  No recent activity
-                </h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Get started by creating a new invoice.
-                </p>
-                <div className="mt-6">
-                  <button
+              <EmptyState
+                svg={
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1}
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
+                    />
+                  </svg>
+                }
+                title="No recent activity"
+                description={<>Get started by creating a new invoice.</>}
+                action={
+                  <a
                     type="button"
+                    href="#"
                     className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     <PlusIcon
@@ -150,9 +152,9 @@ const RecentActivity = () => {
                       aria-hidden="true"
                     />
                     New Invoice
-                  </button>
-                </div>
-              </div>
+                  </a>
+                }
+              />
             ) : (
               <table className="w-full text-left">
                 <thead className="sr-only">
@@ -165,15 +167,15 @@ const RecentActivity = () => {
                 <tbody>
                   {days.map((day) => (
                     <Fragment key={day.dateTime}>
-                      <tr className="text-sm leading-6 text-gray-900">
+                      <tr className="text-sm leading-6 text-gray-900 dark:text-white">
                         <th
                           scope="colgroup"
                           colSpan={3}
                           className="relative isolate py-2 font-semibold"
                         >
                           <time dateTime={day.dateTime}>{day.date}</time>
-                          <div className="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50" />
-                          <div className="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50" />
+                          <div className="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50 dark:bg-slate-800 dark:border-slate-700" />
+                          <div className="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50 dark:bg-slate-800 dark:border-slate-700" />
                         </th>
                       </tr>
                       {/* start of day.transactions.map */}
@@ -207,8 +209,8 @@ const RecentActivity = () => {
 
                               <div className="flex-auto">
                                 <div className="flex items-start gap-x-3">
-                                  <div className="text-sm font-medium leading-6 text-gray-900">
-                                    {transaction.totalAmoun}
+                                  <div className="text-sm font-medium leading-6 text-gray-900 dark:text-slate-300">
+                                    <FormatNumber number={transaction.totalAmount} />
                                   </div>
                                   <div
                                     className={classNames(
@@ -239,14 +241,14 @@ const RecentActivity = () => {
                                 ) : null}
                               </div>
                             </div>
-                            <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100" />
-                            <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100" />
+                            <div className="absolute bottom-0 right-full h-px w-screen bg-gray-100 dark:bg-slate-700" />
+                            <div className="absolute bottom-0 left-0 h-px w-screen bg-gray-100 dark:bg-slate-700" />
                           </td>
                           <td className="hidden py-5 pr-6 sm:table-cell">
-                            <div className="text-sm leading-6 text-gray-900">
+                            <div className="text-sm leading-6 text-gray-900 dark:text-slate-300">
                               {transaction.customerName}
                             </div>
-                            <div className="mt-1 text-xs leading-5 text-gray-500">
+                            <div className="mt-1 text-xs leading-5 text-gray-500 dark:text-slate-400">
                               {transaction.items[0].description}
                             </div>
                           </td>
@@ -254,7 +256,7 @@ const RecentActivity = () => {
                             <div className="flex justify-end">
                               <a
                                 href={transaction.id}
-                                className="text-sm font-medium leading-6 text-indigo-600 hover:text-indigo-500"
+                                className="text-sm font-medium leading-6 text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
                               >
                                 View
                                 <span className="hidden sm:inline">
@@ -267,9 +269,9 @@ const RecentActivity = () => {
                                 </span>
                               </a>
                             </div>
-                            <div className="mt-1 text-xs leading-5 text-gray-500">
+                            <div className="mt-1 text-xs leading-5 text-gray-500 dark:text-slate-500">
                               Invoice{" "}
-                              <span className="text-gray-900">
+                              <span className="text-gray-900 dark:text-slate-300">
                                 #{transaction.invoiceNumber}
                               </span>
                             </div>

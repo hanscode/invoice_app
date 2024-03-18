@@ -131,7 +131,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <form
                     onSubmit={handleSubmit}
-                    className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
+                    className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl dark:bg-gray-900 dark:divide-gray-800"
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
                       <div className="bg-indigo-700 px-4 py-6 sm:px-6">
@@ -172,7 +172,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                             <div>
                               <label
                                 htmlFor="client-name"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                               >
                                 Name
                               </label>
@@ -183,14 +183,14 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   id="client-name"
                                   ref={name}
                                   defaultValue={client.name}
-                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                 />
                               </div>
                             </div>
                             <div>
                               <label
                                 htmlFor="client-email"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                               >
                                 Email Address
                               </label>
@@ -201,14 +201,14 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   id="client-email"
                                   ref={email}
                                   defaultValue={client.email}
-                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                 />
                               </div>
                             </div>
                             <div>
                               <label
                                 htmlFor="client-phone"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                               >
                                 Phone Number
                               </label>
@@ -219,7 +219,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   id="client-phone"
                                   ref={phone}
                                   defaultValue={client.phone}
-                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                   placeholder="+1 (555) 987-6543"
                                 />
                               </div>
@@ -227,7 +227,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                             <div>
                               <label
                                 htmlFor="address"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                               >
                                 Address
                               </label>
@@ -238,14 +238,14 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   rows={3}
                                   ref={address}
                                   defaultValue={client.address}
-                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                 />
                               </div>
                             </div>
                             <div>
                               <label
                                 htmlFor="notes"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                               >
                                 Notes
                               </label>
@@ -254,7 +254,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   id="notes"
                                   name="notes"
                                   rows={4}
-                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                   ref={notes}
                                   defaultValue={client.notes}
                                 />
@@ -267,7 +267,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                     <div className="flex flex-shrink-0 justify-end px-4 py-4">
                       <button
                         type="button"
-                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-700"
                         onClick={handleCancel}
                       >
                         Cancel

@@ -3,3 +3,4 @@ export { default as Product } from './Product';
 export { default as Stats } from './Stats';
 export { default as RecentActivity } from './RecentActivity';
 export { default as RecentClients } from './RecentClients';
+export { default as EmptyState } from './EmptyState';

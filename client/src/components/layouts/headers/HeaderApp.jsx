@@ -20,14 +20,14 @@ const HeaderApp = () => {
   const { authUser } = useContext(UserContext);
   const { pathname } = useLocation();
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-white dark:bg-gray-800 shadow">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 justify-between">
+            <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button */}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-white">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -41,13 +41,19 @@ const HeaderApp = () => {
                 <div className="flex flex-shrink-0 items-center">
                   <Link to="/app">
                     <img
-                      className="h-10 w-auto"
+                      className="h-10 w-auto hidden dark:block"
                       src={Images.logoDarkBrand}
+                      alt="Satoshi Invoice"
+                    />
+                    <img
+                      className="h-10 w-auto block dark:hidden"
+                      src={Images.logoLightBrand}
                       alt="Satoshi Invoice"
                     />
                   </Link>
                 </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                <div className="hidden sm:ml-6 sm:block">
+                <div className="flex space-x-4">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   {navigation.map((item, itemIdx) => (
                     <Link
@@ -55,15 +61,16 @@ const HeaderApp = () => {
                       to={item.path}
                       className={classNames(
                         item.path === pathname
-                          ? "border-indigo-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                        "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
+                          ? "bg-indigo-50 border-none text-indigo-700 dark:text-white dark:bg-gray-900"
+                          : "border-transparent text-gray-500 hover:bg-gray-100 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white dark:hover:bg-gray-700",
+                        "rounded-md px-3 py-2 text-sm font-medium"
                       )}
                       aria-current={item.path === pathname ? "page" : undefined}
                     >
                       {item.name}
                     </Link>
                   ))}
+                  </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -157,7 +164,7 @@ const HeaderApp = () => {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 pb-4 pt-2">
+            <div className="space-y-1 px-2 pb-3 pt-2">
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               {navigation.map((item, itemIdx) => (
                 <Disclosure.Button
@@ -166,9 +173,9 @@ const HeaderApp = () => {
                   href={item.path}
                   className={classNames(
                     item.path === pathname
-                      ? "bg-indigo-50 border-indigo-500 text-indigo-700"
-                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700",
-                    "block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
+                      ? "bg-indigo-50 border-none text-indigo-700 dark:bg-gray-900 dark:text-white"
+                      : "border-transparent text-gray-500 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white",
+                    "block rounded-md py-2 px-3 text-base font-medium"
                   )}
                 >
                   {item.name}

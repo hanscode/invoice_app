@@ -61,14 +61,14 @@ const Stats = ({ filter }) => {
 
   // Render the stats using the fetched and calculated totals
   return (
-    <dl className="mx-auto max-w-7xl grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-1 lg:grid-cols-3">
+    <dl className="mx-auto max-w-7xl grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-1 lg:grid-cols-3 dark:bg-gray-800">
       {stats.map((stat) => (
         <div
           key={stat.name}
-          className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8"
+          className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8 dark:bg-gray-900"
         >
-          <dt className="text-sm font-medium leading-6 text-gray-500">{stat.name}</dt>
-          <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+          <dt className="text-sm font-medium leading-6 text-gray-500 dark:text-slate-300">{stat.name}</dt>
+          <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900 dark:text-slate-300">
           <span className={`${stat.name === 'Paid' ? 'text-green-500': ''}`}>$<FormatNumber number={stat.value} /> </span>
           </dd>
         </div>

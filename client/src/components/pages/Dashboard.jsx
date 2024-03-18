@@ -25,18 +25,18 @@ const Dashboard = () => {
         {/* Secondary navigation */}
         <header className="pb-4 pt-6 sm:pb-6">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
-            <h1 className="text-base font-semibold leading-7 text-gray-900">
+            <h1 className="text-base font-semibold leading-7 text-gray-900 dark:text-slate-300">
               Cashflow
             </h1>
-            <div className="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7">
+            <div className="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7 dark:sm:border-slate-700">
               {secondaryNavigation.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => handleFilter(item.tab)}
                   className={
                     filter == item.tab
-                      ? "text-indigo-600"
-                      : "text-gray-700 hover:text-indigo-600"
+                      ? "text-indigo-600 dark:text-indigo-400"
+                      : "text-gray-700 hover:text-indigo-600 dark:hover:text-indigo-300 dark:text-slate-300"
                   }
                 >
                   {item.name === "Current Year" ? currentYear : item.name}
@@ -54,7 +54,7 @@ const Dashboard = () => {
         </header>
       </div>
 
-      <div className="relative mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 border-b border-b-gray-900/10 border-t lg:border-t lg:border-t-gray-900/5">
+      <div className="relative mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 border-b border-b-gray-900/10 border-t lg:border-t lg:border-t-gray-900/5 dark:lg:border-t-gray-800 dark:lg:border-b-slate-700">
         {/* Stats */}
         <Stats filter={filter} />
       </div>

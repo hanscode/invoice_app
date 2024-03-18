@@ -9,14 +9,15 @@ const Footer = () => {
     <>
       <footer className="mx-auto mt-16 w-full max-w-container px-4 sm:px-6 lg:px-8">
         <div className="border-t border-slate-900/5 py-10">
-          <img className="mx-auto h-8 w-auto" src={Images.logoDarkBrand} alt="" />
-          <p className="mt-5 text-center text-sm leading-6 text-slate-500">
+          <img className="mx-auto h-8 w-auto hidden dark:block" src={Images.logoDarkBrand} alt="" />
+          <img className="mx-auto h-8 w-auto block dark:hidden" src={Images.logoLightBrand} alt="" />
+          <p className="mt-5 text-center text-sm leading-6 text-slate-500 dark:text-slate-400">
             {currentYear} &copy; Pricode. All rights reserved.
           </p>
-          <div className="mt-5 flex items-center justify-center space-x-4 text-sm font-semibold leading-6 text-slate-700">
-            <a href="/privacy-policy">Privacy policy</a>
-            <div className="h-4 w-px bg-slate-500/20"></div>
-            <a href="/changelog">Changelog</a>
+          <div className="mt-5 flex items-center justify-center space-x-4 text-sm font-semibold leading-6 text-slate-700 dark:text-slate-400">
+            <a className="dark:hover:text-indigo-300" href="/privacy-policy">Privacy policy</a>
+            <div className="h-4 w-px bg-slate-500/20 dark:bg-slate-700"></div>
+            <a className="dark:hover:text-indigo-300" href="/changelog">Changelog</a>
           </div>
         </div>
       </footer>

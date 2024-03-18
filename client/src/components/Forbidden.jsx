@@ -10,11 +10,11 @@ const Forbidden = () => {
     return (
       <>
           <div className="text-center grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
-            <p className="text-base font-semibold text-indigo-600">Oh My Goodness!</p>
-            <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <p className="text-base font-semibold text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300">Oh My Goodness!</p>
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-slate-300">
             Forbidden
             </h1>
-            <p className="mt-6 text-base leading-7 text-gray-600">
+            <p className="mt-6 text-base leading-7 text-gray-600 dark:text-slate-400">
             You don&apos;t have permission to access this resource.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -26,7 +26,7 @@ const Forbidden = () => {
               </a>
               <a
                 href="https://pricode.io/contact"
-                className="text-sm font-semibold text-gray-900"
+                className="text-sm font-semibold text-gray-900 dark:text-indigo-400 dark:hover:text-indigo-300"
               >
                 Contact support <span aria-hidden="true">&rarr;</span>
               </a>

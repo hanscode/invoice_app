@@ -26,7 +26,7 @@ const HeaderHome = () => {
             <span className="sr-only">Satoshi Invoice</span>
             <img
               className="h-10 w-auto"
-              src={Images.logoDarkBrand}
+              src={Images.logoLightBrand}
               alt=""
             />
           </Link>

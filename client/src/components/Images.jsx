@@ -4,6 +4,7 @@ const Images = {
     logoDark: new URL('../assets/logo-dark.svg', import.meta.url).href,
     logoLight: new URL('../assets/logo-light.svg', import.meta.url).href,
     logoDarkBrand: new URL('../assets/logo-dark-brand.svg', import.meta.url).href,
+    logoLightBrand: new URL('../assets/logo-light-brand.svg', import.meta.url).href,
 }
 
 export default Images
