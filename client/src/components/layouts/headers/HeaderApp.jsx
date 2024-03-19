@@ -99,12 +99,12 @@ const HeaderApp = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item className="border-b-[1px]">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-slate-700">
+                      <Menu.Item className="border-b-[1px] dark:border-slate-700">
                         <p className={classNames("truncate px-3.5 py-3")}>
                           <span
                             className={classNames(
-                              "block text-xs text-gray-500"
+                              "block text-xs text-gray-500 dark:text-slate-400"
                             )}
                             role="none"
                           >
@@ -112,7 +112,7 @@ const HeaderApp = () => {
                           </span>
                           <span
                             className={classNames(
-                              "mt-0.5 font-semibold text-sm"
+                              "mt-0.5 font-semibold text-sm dark:text-slate-300"
                             )}
                             role="none"
                           >
@@ -125,8 +125,8 @@ const HeaderApp = () => {
                           <Link
                             to="app/settings"
                             className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              active ? "bg-gray-100 dark:bg-gray-700" : "",
+                              "block px-4 py-2 text-sm text-gray-700 dark:text-slate-300"
                             )}
                           >
                             Account Settings
@@ -138,8 +138,8 @@ const HeaderApp = () => {
                           <Link
                             to="/"
                             className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              active ? "bg-gray-100 dark:bg-gray-700" : "",
+                              "block px-4 py-2 text-sm text-gray-700 dark:text-slate-300"
                             )}
                           >
                             Home
@@ -151,8 +151,8 @@ const HeaderApp = () => {
                           <a
                             href="/signout"
                             className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              active ? "bg-gray-100 dark:bg-gray-700" : "",
+                              "block px-4 py-2 text-sm text-gray-700 dark:text-slate-300"
                             )}
                           >
                             Sign out

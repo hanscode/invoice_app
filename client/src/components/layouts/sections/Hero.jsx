@@ -5,16 +5,16 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 const HeroHome = () => {
   const { isTokenExpired } = useContext(UserContext);
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-gray-900">
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 dark:text-gray-300 dark:ring-gray-800 dark:hover:ring-slate-700">
               Powered by Pricode.{" "}
               <a
                 href="https://pricode.io"
                 target="_blank"
-                className="font-semibold text-indigo-600"
+                className="font-semibold text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300"
               >
                 <span className="absolute inset-0" aria-hidden="true" />
                 Read more <span aria-hidden="true">&rarr;</span>
@@ -22,10 +22,10 @@ const HeroHome = () => {
             </div>
           </div>
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
               Satoshi Invoice
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-slate-300">
               The most amazing and simplest invoice system for real people!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">

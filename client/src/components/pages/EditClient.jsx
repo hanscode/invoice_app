@@ -206,6 +206,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   type="text"
                                   name="client-name"
                                   id="client-name"
+                                  placeholder="A business or person's name"
                                   ref={name}
                                   defaultValue={client.name}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
@@ -224,6 +225,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   type="email"
                                   name="client-email"
                                   id="client-email"
+                                  placeholder="name@email.com"
                                   ref={email}
                                   defaultValue={client.email}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
@@ -245,7 +247,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   ref={phone}
                                   defaultValue={client.phone}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
-                                  placeholder="+1 (555) 987-6543"
+                                  placeholder="(123) 456-7890"
                                 />
                               </div>
                             </div>
@@ -263,6 +265,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   rows={3}
                                   ref={address}
                                   defaultValue={client.address}
+                                  placeholder="1234 Main St, Suite 200, City, State, Zip Code"
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                 />
                               </div>
@@ -281,6 +284,7 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
                                   rows={4}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                   ref={notes}
+                                  placeholder="Additional information about the client."
                                   defaultValue={client.notes}
                                 />
                               </div>

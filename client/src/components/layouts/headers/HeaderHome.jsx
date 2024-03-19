@@ -1,7 +1,11 @@
 import { useState, useContext } from "react";
 import { Dialog } from "@headlessui/react";
 import { Link } from "react-router-dom";
-import { Bars3Icon, XMarkIcon, ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  ArrowLeftEndOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import UserContext from "../../../context/UserContext";
 import Images from "../../Images";
 import ThemeSwitcher from "../../ThemeSwitcher";
@@ -26,9 +30,14 @@ const HeaderHome = () => {
           <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Satoshi Invoice</span>
             <img
-              className="h-10 w-auto"
+              className="h-10 w-auto hidden dark:block"
+              src={Images.logoDarkBrand}
+              alt="Satoshi Invoice"
+            />
+            <img
+              className="h-10 w-auto block dark:hidden"
               src={Images.logoLightBrand}
-              alt=""
+              alt="Satoshi Invoice"
             />
           </Link>
         </div>
@@ -49,26 +58,30 @@ const HeaderHome = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="text-sm font-semibold leading-6 text-gray-900"
+                  className="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-300 dark:hover:text-indigo-300"
                 >
                   {item.name}
                 </Link>
               ))}
         </div>
         <div className="hidden lg:flex gap-4 lg:flex-1 items-center lg:justify-end">
-           {/* Theme switcher */}
-           <ThemeSwitcher />
+          {/* Theme switcher */}
+          <ThemeSwitcher />
           {isTokenExpired() === true ? (
             <>
               <Link
                 to="/signin"
-                className="text-sm flex items-center gap-1 font-semibold leading-6 text-gray-900"
+                className="text-sm flex items-center gap-1 font-semibold leading-6 text-gray-900 dark:text-white dark:hover:text-indigo-300"
               >
-                <ArrowLeftEndOnRectangleIcon className="h-4 w-4" aria-hidden="true" /> Sign In
+                <ArrowLeftEndOnRectangleIcon
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />{" "}
+                Sign In
               </Link>
               <Link
                 to="/signup"
-                className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-white dark:hover:text-indigo-300"
               >
                 Get access <span aria-hidden="true">&rarr;</span>
               </Link>
@@ -77,7 +90,7 @@ const HeaderHome = () => {
             <>
               <a
                 href="/signout"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                className="text-sm font-semibold leading-6 text-gray-900 dark:text-white dark:hover:text-indigo-300"
               >
                 Sign Out <span aria-hidden="true">&rarr;</span>
               </a>
@@ -96,11 +109,7 @@ const HeaderHome = () => {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Satoshi Invoice</span>
-              <img
-                className="h-10 w-auto"
-                src={Images.logoDarkBrand}
-                alt=""
-              />
+              <img className="h-10 w-auto" src={Images.logoDarkBrand} alt="" />
             </a>
             <button
               type="button"
@@ -125,29 +134,29 @@ const HeaderHome = () => {
                 ))}
               </div>
               <div className="py-6">
-              {isTokenExpired() === true ? (
-                <>
-                <a
-                  href="/signin"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Sign in
-                </a>
-                <a
-                href="/signup"
-                className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-              >
-                Sign up
-              </a>
-              </>
-              ):(
-                <a
-                  href="/signout"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Sign out
-                </a>
-              )}
+                {isTokenExpired() === true ? (
+                  <>
+                    <a
+                      href="/signin"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Sign in
+                    </a>
+                    <a
+                      href="/signup"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Sign up
+                    </a>
+                  </>
+                ) : (
+                  <a
+                    href="/signout"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Sign out
+                  </a>
+                )}
               </div>
             </div>
           </div>
