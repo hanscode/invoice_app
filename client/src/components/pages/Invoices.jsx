@@ -192,7 +192,7 @@ const Invoices = () => {
                   <tbody className="divide-y divide-gray-200 bg-white dark:bg-gray-900 dark:divide-gray-800">
                     {invoices.invoices.map((invoice) => (
                       <tr key={invoice.id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0 dark:text-indigo-400 dark:hover:text-indigo-300">
+                        <td className="whitespace-nowrap font-semibold py-4 pl-4 pr-3 text-sm text-indigo-600 hover:text-indigo-500 sm:pl-0 dark:text-indigo-400 dark:hover:text-indigo-300 dark:font-normal">
                           <Link to={`/app/invoices/${invoice.id}`}>{invoice.invoiceNumber} </Link>
                         </td>
                         <td className="whitespace-nowrap px-2 py-4 text-sm font-medium text-gray-900 dark:text-white">

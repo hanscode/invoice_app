@@ -57,7 +57,7 @@ const InvoiceDetails = () => {
           authUser.token
         );
         const clientData = await clientResponse.json();
-        console.log(clientData);
+        //console.log(invoiceData);
         if (invoiceResponse.status === 200) {
           setInvoice(invoiceData);
           setActivity(invoiceData.Histories);
@@ -115,13 +115,13 @@ const InvoiceDetails = () => {
               <div className="flex items-center gap-x-4 sm:gap-x-6">
                 <button
                   type="button"
-                  className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block dark:text-indigo-400 dark:hover:text-indigo-300"
+                  className="hidden text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500 sm:block dark:text-indigo-400 dark:hover:text-indigo-300"
                 >
                   Record Payment
                 </button>
                 <a
                   href="#"
-                  className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block dark:text-indigo-400 dark:hover:text-indigo-300"
+                  className="hidden text-sm font-semibold leading-6 text-gray-900 hover:text-gray-600 sm:block dark:text-white dark:hover:text-slate-400"
                 >
                   Edit
                 </a>
@@ -254,7 +254,7 @@ const InvoiceDetails = () => {
                       />
                     </dt>
                     <dd className="text-sm leading-6 text-gray-500 dark:text-slate-400">
-                      {<DaysOld dueDate={new Date(invoice.dueDate)} />}
+                      {<DaysOld isClosed={invoice.status === "paid" ? true : false} dueDate={new Date(invoice.dueDate)} />}
                     </dd>
                   </div>
                 </dl>
@@ -437,7 +437,7 @@ const InvoiceDetails = () => {
                     >
                       Paid
                     </th>
-                    <td className="pb-0 pl-8 pr-0 pt-4 text-right tabular-nums font-semibold text-green-600 dark:text-green-400">
+                    <td className={`pb-0 pl-8 pr-0 pt-4 text-right tabular-nums ${invoice.paid == 0 ? 'text-gray-900 dark:text-slate-300': 'text-green-600 dark:text-green-400 font-semibold'}`}>
                       $<FormatNumber number={invoice.paid} />
                     </td>
                   </tr>

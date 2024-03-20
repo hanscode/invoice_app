@@ -1,10 +1,10 @@
 import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../utils/apiHelper";
-import Images from "./Images";
+import { api } from "../../utils/apiHelper";
+import Images from "../Images";
 
-import ErrorsDisplay from "./ErrorsDisplay";
-import UserContext from "../context/UserContext";
+import ErrorsDisplay from "../ErrorsDisplay";
+import UserContext from "../../context/UserContext";
 
 /**
  * This component provides the "Sign Up" screen by rendering a

@@ -1,9 +1,9 @@
 import { useContext, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Images from "./Images";
+import Images from "../Images";
 
-import ErrorsDisplay from "./ErrorsDisplay";
-import UserContext from "../context/UserContext";
+import ErrorsDisplay from "../ErrorsDisplay";
+import UserContext from "../../context/UserContext";
 
 /**
  * This component provides the "Sign In" screen by rendering a form that allows

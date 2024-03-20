@@ -1,6 +1,6 @@
 import propTypes from "prop-types";
 
-const DaysOld = ({ dueDate }) => {
+const DaysOld = ({ dueDate, isClosed }) => {
   // Current date
   const currentDate = new Date();
 
@@ -22,14 +22,20 @@ const DaysOld = ({ dueDate }) => {
 
   return (
     <div>
-      {currentDate <= dueDateObj ? (
+      {!isClosed && currentDate <= dueDateObj ? (
         <span>{`${daysRemaining} day${
           daysRemaining !== 1 ? "s" : ""
         } remaining until due date.`}</span>
       ) : (
-        <span>{`Invoice is ${daysOld} day${
-          daysOld !== 1 ? "s" : ""
-        } old.`}</span>
+        <>
+          {isClosed ? (
+            <span>{`Invoice is ${daysOld} day${
+              daysOld !== 1 ? "s" : ""
+            } old.`}</span>
+          ) : (
+            <span>{`Invoice is overdue and pending payment.`}</span>
+          )}
+        </>
       )}
     </div>
   );
@@ -40,4 +46,5 @@ export default DaysOld;
 // set propTypes for DaysOld for the dueDate prop
 DaysOld.propTypes = {
   dueDate: propTypes.instanceOf(Date).isRequired,
+  isClosed: propTypes.bool.isRequired,
 };

@@ -39,8 +39,8 @@ const EditClient = ({ edit, setEdit, clientId, updateClients }) => {
         if (response.status === 200) {
           setClient(clientData);
           setClientInvoices(invoicesData);
-          console.log('Client:', clientData);
-          console.log('Invoices:', invoicesData);
+          //console.log('Client:', clientData);
+          //console.log('Invoices:', invoicesData);
         } else if (response.status === 404) {
           // Redirect users to the /notfound path if the requested client isn't returned from the REST API.
           navigate(`/notfound`);

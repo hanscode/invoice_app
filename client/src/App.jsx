@@ -2,20 +2,20 @@ import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 // Import App components
-import Home from "./components/Home";
-import Header from "./components/Header";
+import Home from "./components/pages/Home";
+import Header from "./components/layouts/headers/Header";
 import Dashboard from "./components/pages/Dashboard";
 import Clients from "./components/pages/Clients";
 import Invoices from "./components/pages/Invoices";
 import InvoiceDetails from "./components/pages/InvoiceDetails";
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/auth/PrivateRoute";
 
-import UserSignIn from "./components/UserSignIn";
-import UserSignUp from "./components/UserSignUp";
-import UserSignOut from "./components/UserSignOut";
-import UserSettings from "./components/UserSettings";
+import UserSignIn from "./components/auth/UserSignIn";
+import UserSignUp from "./components/auth/UserSignUp";
+import UserSignOut from "./components/auth/UserSignOut";
+import UserSettings from "./components/pages/UserSettings";
 
-import Footer from "./components/Footer";
+import Footer from "./components/layouts/footers/Footer";
 
 // Importing the App Error Components
 import UnhandledError from "./components/UnhandledError";

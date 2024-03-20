@@ -1,15 +1,15 @@
-import { api } from "../utils/apiHelper";
+import { api } from "../../utils/apiHelper";
 import { useContext, useEffect, useRef, useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorsDisplay from "./ErrorsDisplay";
+import ErrorsDisplay from "../ErrorsDisplay";
 
 import { Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
-import UserContext from "../context/UserContext";
-import Spinner from "./layouts/loaders/Spinner";
+import UserContext from "../../context/UserContext";
+import Spinner from "../layouts/loaders/Spinner";
 
 const UserSettings = () => {
   const { authUser } = useContext(UserContext);

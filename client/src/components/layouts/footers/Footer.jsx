@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import Images from "./Images";
+import Images from "../../Images";
 
 const Footer = () => {
   const { pathname } = useLocation();
