@@ -2,7 +2,7 @@
 
 const express = require("express");
 const { asyncHandler } = require("../middleware/async-handler");
-const { User, Invoice, Customer } = require("../models");
+const { User, Invoice, Customer, History } = require("../models");
 const { authenticateUser } = require("../middleware/auth-user");
 const { authenticateToken } = require("../middleware/authenticate-token");
 const { logHistory } = require("../utils/historyLogger");
@@ -45,7 +45,7 @@ router.get(
         "issueDate",
         "dueDate",
         "totalAmount",
-        'amountDue',
+        "amountDue",
         "paid",
         "items",
         "tax",
@@ -69,13 +69,14 @@ router.get(
 
     // Query total count of invoices (without pagination)
     const totalCount = await Invoice.count({
-      where: whereClause
+      where: whereClause,
     });
 
     // Prepare the response with customer names added to each invoice
     const responseInvoices = invoices.map((invoice) => ({
       ...invoice.dataValues,
-      isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
+      isOverdue:
+        new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
     }));
 
     res.status(200).json({ invoices: responseInvoices, totalCount });
@@ -97,7 +98,8 @@ router.get(
         "issueDate",
         "dueDate",
         "totalAmount",
-        "dueBalance",
+        "paid",
+        "amountDue",
         "items",
         "tax",
         "discount",
@@ -111,6 +113,9 @@ router.get(
           model: User,
           attributes: ["id", "firstName", "lastName", "emailAddress"],
         },
+        {
+          model: History, // Include the History model
+        },
       ],
       where: { id: req.params.id },
     });
@@ -119,7 +124,8 @@ router.get(
       // Prepare the response with isOverdue checker added to the invoice
       const responseInvoice = {
         ...invoice.dataValues,
-        isOverdue: new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
+        isOverdue:
+          new Date(invoice.dueDate) < new Date() && invoice.status !== "paid",
       };
       res.status(200).json(responseInvoice);
     } else {
@@ -160,7 +166,7 @@ router.post(
         customerName: customer.name, // Include customerName in the invoice
       });
       // Log history for creating an invoice
-      await logHistory('Created', authenticatedUser.id, invoice.id, null);
+      await logHistory("Created", authenticatedUser.id, invoice.id, null);
 
       res
         .status(201)
@@ -218,7 +224,7 @@ router.put(
           });
 
           // Log history for updating an invoice
-          await logHistory('Updated', invoiceOwner, invoice.id, null);
+          await logHistory("Updated", invoiceOwner, invoice.id, null);
 
           // Send status 204 (meaning no content == everything went OK but there's nothing to send back)
           res.status(204).end();

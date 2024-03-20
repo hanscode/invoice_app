@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Dashboard from "./components/pages/Dashboard";
 import Clients from "./components/pages/Clients";
 import Invoices from "./components/pages/Invoices";
+import InvoiceDetails from "./components/pages/InvoiceDetails";
 import PrivateRoute from "./components/PrivateRoute";
 
 import UserSignIn from "./components/UserSignIn";
@@ -52,6 +53,7 @@ function App() {
             <Route path="/app" element={<Dashboard />} />
             <Route path='/app/clients' element={<Clients />} />
             <Route path='/app/invoices' element={<Invoices />} />
+            <Route path='/app/invoices/:id' element={<InvoiceDetails />} />
             <Route path='/app/settings' element={<UserSettings />} />
           </Route>
 

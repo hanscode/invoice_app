@@ -147,6 +147,15 @@ module.exports = (sequelize) => {
 
       },
     });
+    // Tells Sequelize that a invoice can be associated with one or more history records
+    Invoice.hasMany(models.History, {
+      foreignKey: {
+        fieldName: "invoiceId",
+        allowNull: false, // Ensure that invoiceId cannot be null
+        onDelete: "CASCADE", // Optionally define the behavior on deletion
+      },
+    });
+
   };
 
   return Invoice;

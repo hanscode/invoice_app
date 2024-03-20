@@ -1,24 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, Fragment } from "react";
 import { api } from "../../utils/apiHelper";
 import { FormatDate } from "../../utils";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   PlusIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  EllipsisHorizontalIcon
 } from "@heroicons/react/20/solid";
 
 import UserContext from "../../context/UserContext";
 import FormatNumber from "../../utils/FormatNumber";
 import Spinner from "../layouts/loaders/Spinner";
 import { EmptyState } from "../layouts/sections";
+import { Menu, Transition } from "@headlessui/react";
 
 const statuses = {
   Paid: "text-green-700 bg-green-50 ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20",
   Sent: "text-cyan-700 bg-cyan-50 ring-cyan-600/20 dark:bg-blue-400/10 dark:text-blue-400 dark:ring-blue-400/30",
-  Draft: "text-gray-600 bg-gray-50 ring-gray-500/10 dark:bg-gray-400/10 dark:text-gray-400 dark:ring-gray-400/20",
-  Partial: "text-amber-700 bg-amber-100 ring-amber-600/10 dark:bg-yellow-400/10 dark:text-yellow-500 dark:ing-yellow-400/20",
-  Overdue: "text-red-700 bg-red-50 ring-red-600/10 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20",
+  Draft:
+    "text-gray-600 bg-gray-50 ring-gray-500/10 dark:bg-gray-400/10 dark:text-gray-400 dark:ring-gray-400/20",
+  Partial:
+    "text-amber-700 bg-amber-100 ring-amber-600/10 dark:bg-yellow-400/10 dark:text-yellow-500 dark:ing-yellow-400/20",
+  Overdue:
+    "text-red-700 bg-red-50 ring-red-600/10 dark:bg-red-400/10 dark:text-red-400 dark:ring-red-400/20",
 };
 
 function classNames(...classes) {
@@ -187,8 +192,8 @@ const Invoices = () => {
                   <tbody className="divide-y divide-gray-200 bg-white dark:bg-gray-900 dark:divide-gray-800">
                     {invoices.invoices.map((invoice) => (
                       <tr key={invoice.id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0 dark:text-gray-300">
-                          {invoice.invoiceNumber}
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0 dark:text-indigo-400 dark:hover:text-indigo-300">
+                          <Link to={`/app/invoices/${invoice.id}`}>{invoice.invoiceNumber} </Link>
                         </td>
                         <td className="whitespace-nowrap px-2 py-4 text-sm font-medium text-gray-900 dark:text-white">
                           {invoice.customerName}
@@ -241,13 +246,60 @@ const Invoices = () => {
                             {invoice.isOverdue ? "Overdue" : invoice.status}
                           </div>
                         </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a
-                            href="#"
-                            className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
-                          >
-                            Edit<span className="sr-only">, {invoice.id}</span>
-                          </a>
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-0">
+                          <Menu as="div" className="relative ml-auto">
+                            <Menu.Button className="-m-2.5 block p-1 text-gray-400 hover:text-gray-500 dark:text-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:rounded">
+                              <span className="sr-only">Open options</span>
+                              <EllipsisHorizontalIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            </Menu.Button>
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <Menu.Items className="absolute right-0 z-10 mt-3.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none dark:bg-slate-800 dark:ring-slate-700">
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <a
+                                      href={"/app/invoices/" + invoice.id}
+                                      className={classNames(
+                                        active ? "bg-gray-50 dark:bg-slate-700 dark:text-white" : "",
+                                        "block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-slate-300"
+                                      )}
+                                    >
+                                      View
+                                      <span className="sr-only">
+                                        , {invoice.customerName}
+                                      </span>
+                                    </a>
+                                  )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <a
+                                    href={"/app/invoices/" + invoice.id}
+                                      className={classNames(
+                                        active ? "bg-gray-50 dark:bg-slate-700 dark:text-white" : "",
+                                        "block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-slate-300"
+                                      )}
+                                    >
+                                      Edit
+                                      <span className="sr-only">
+                                        , {invoice.customerName}
+                                      </span>
+                                    </a>
+                                  )}
+                                </Menu.Item>
+                              </Menu.Items>
+                            </Transition>
+                          </Menu>
                         </td>
                       </tr>
                     ))}
@@ -279,7 +331,7 @@ const Invoices = () => {
                       className={`${
                         page === number
                           ? "relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500"
-                          : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:bg-slate-800 dark:ring-slate-700 dark:hover:bg-slate-700 dark:focus-visible:outline-slate-700"
+                          : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-slate-300 dark:bg-slate-800 dark:ring-slate-700 dark:hover:bg-slate-700 dark:focus-visible:outline-slate-700"
                       }`}
                     >
                       {number}
@@ -306,35 +358,44 @@ const Invoices = () => {
         ) : (
           // If there are no invoices, render the following message.
           <div className="mt-8 flow-root mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <EmptyState 
-            title="Create an invoice"
-            description={<> You haven&apos;t added any invoice to your account yet. <br />
-            Get started by creating a new invoice.</>}
-            svg={<svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1}
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
-              />
-            </svg>}
-            action={<button
-              type="button"
-              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              <PlusIcon
-                className="-ml-0.5 mr-1.5 h-5 w-5"
-                aria-hidden="true"
-              />
-              New invoice
-            </button>}
-          />
+            <EmptyState
+              title="Create an invoice"
+              description={
+                <>
+                  {" "}
+                  You haven&apos;t added any invoice to your account yet. <br />
+                  Get started by creating a new invoice.
+                </>
+              }
+              svg={
+                <svg
+                  className="mx-auto h-12 w-12 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
+                  />
+                </svg>
+              }
+              action={
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  <PlusIcon
+                    className="-ml-0.5 mr-1.5 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                  New invoice
+                </button>
+              }
+            />
           </div>
         )}
       </div>
