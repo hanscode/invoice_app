@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../utils/apiHelper";
 
@@ -10,7 +10,7 @@ const CreateInvoice = () => {
   const navigate = useNavigate();
 
   const [itemFields, setItemFields] = useState([
-    { description: "", hours: "", rate: "", taxRate: "", amount: "" },
+    { description: "", hours: "", rate: "", amount: "" },
   ]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -20,20 +20,48 @@ const CreateInvoice = () => {
   const [dueDate, setDueDate] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [taxRate, setTaxRate] = useState(0);
+  // Define state for subtotal, total with tax, and amount due
+  const [subtotal, setSubtotal] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [amountDue, setAmountDue] = useState(0);
+  const [paid, setPaid] = useState(0);
+
+  // Calculate subtotal, total with tax, and amount due
+  useEffect(() => {
+    let newSubtotal = itemFields.reduce(
+      (total, item) => total + parseFloat(item.amount || 0),
+      0
+    );
+    let taxValue = 0;
+    if (taxRate > 0) {
+      taxValue = newSubtotal * (taxRate / 100);
+    }
+    
+    let newTotal = newSubtotal + taxValue;
+    let newPaid = 0; // Initially, paid is 0
+    let newAmountDue = newTotal - paid ; // Initially, amount due is the same as total
+
+    setSubtotal(newSubtotal);
+    setTotal(newTotal);
+    setPaid(newPaid);
+    setAmountDue(newAmountDue);
+
+  }, [itemFields, taxRate, paid]);
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...itemFields];
     newItems[index][field] = value;
     setItemFields(newItems);
     // Recalculate amount only if hours or rate is changed
-  if (field === 'hours' || field === 'rate') {
-    if (!newItems[index].hours || !newItems[index].rate) {
-      newItems[index].amount = 0;
-      setItemFields(newItems);
-    } else {
-      handleAmountChange(index);
+    if (field === "hours" || field === "rate") {
+      if (!newItems[index].hours || !newItems[index].rate) {
+        newItems[index].amount = 0;
+        setItemFields(newItems);
+      } else {
+        handleAmountChange(index);
+      }
     }
-  }
   };
 
   const handleAmountChange = (index) => {
@@ -51,7 +79,7 @@ const CreateInvoice = () => {
   const handleAddItem = () => {
     setItemFields((prevState) => [
       ...prevState,
-      { description: "", hours: "", rate: "", taxRate: "", amount: "" },
+      { description: "", hours: "", rate: "", amount: "" },
     ]);
   };
 
@@ -73,15 +101,12 @@ const CreateInvoice = () => {
       dueDate,
       from,
       to,
-      items: itemFields.map(
-        ({ description, hours, rate, taxRate, amount }) => ({
-          description,
-          hours: parseFloat(hours),
-          rate: parseFloat(rate),
-          taxRate: parseFloat(taxRate) || 0,
-          amount: parseFloat(amount) || 0,
-        })
-      ),
+      items: itemFields.map(({ description, hours, rate, amount }) => ({
+        description,
+        hours: parseFloat(hours),
+        rate: parseFloat(rate),
+        amount: parseFloat(amount) || 0,
+      })),
     };
 
     try {
@@ -108,20 +133,6 @@ const CreateInvoice = () => {
       setLoading(false);
     }
   };
-
-  // Calculate totals
-  const subtotal = itemFields.reduce(
-    (total, item) => total + parseFloat(item.amount),
-    0
-  );
-  const taxTotal = itemFields.reduce(
-    (total, item) =>
-      total + parseFloat(item.amount) * (parseFloat(item.taxRate) / 100),
-    0
-  );
-  const total = subtotal + taxTotal;
-  const paid = 0; // Initially, no amount is paid
-  const amountDue = total - paid;
 
   return (
     <>
@@ -190,14 +201,6 @@ const CreateInvoice = () => {
             />
             <input
               type="number"
-              value={item.taxRate}
-              onChange={(e) =>
-                handleItemChange(index, "taxRate", e.target.value)
-              }
-              placeholder="Item Tax Rate"
-            />
-            <input
-              type="number"
               value={item.amount}
               readOnly
               placeholder="Item Amount"
@@ -212,10 +215,16 @@ const CreateInvoice = () => {
         <button type="button" onClick={handleAddItem}>
           Add Item
         </button>
+        <br />
+        <input
+          type="number"
+          value={taxRate || ""}
+          onChange={(e) => setTaxRate(parseFloat(e.target.value))}
+          placeholder="Tax Rate (%)"
+        />
 
         {/* Totals */}
         <p>SubTotal: {subtotal.toFixed(2)}</p>
-        <p>Tax Total: {taxTotal.toFixed(2)}</p>
         <p>Total: {total.toFixed(2)}</p>
         <p>Paid: {paid.toFixed(2)}</p>
         <p>Amount Due: {amountDue.toFixed(2)}</p>
