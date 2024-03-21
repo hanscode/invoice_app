@@ -8,6 +8,7 @@ import Dashboard from "./components/pages/Dashboard";
 import Clients from "./components/pages/Clients";
 import Invoices from "./components/pages/Invoices";
 import InvoiceDetails from "./components/pages/InvoiceDetails";
+import CreateInvoice from "./components/pages/CreateInvoice";
 import PrivateRoute from "./components/auth/PrivateRoute";
 
 import UserSignIn from "./components/auth/UserSignIn";
@@ -53,6 +54,7 @@ function App() {
             <Route path="/app" element={<Dashboard />} />
             <Route path='/app/clients' element={<Clients />} />
             <Route path='/app/invoices' element={<Invoices />} />
+            <Route path='/app/invoices/create' element={<CreateInvoice />} />
             <Route path='/app/invoices/:id' element={<InvoiceDetails />} />
             <Route path='/app/settings' element={<UserSettings />} />
           </Route>
