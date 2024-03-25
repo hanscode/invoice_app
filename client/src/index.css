@@ -11,3 +11,9 @@ main {
 .react-datepicker-wrapper {
     width: 100%;
 }
+.narrow-cell {
+    width: 20%;
+}
+.narrow-cell-description {
+    width: 40%;
+}

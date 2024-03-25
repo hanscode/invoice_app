@@ -10,7 +10,9 @@ import {
   EllipsisVerticalIcon,
   CheckIcon,
   ChevronUpDownIcon,
+  PlusIcon,
 } from "@heroicons/react/20/solid";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { Combobox } from "@headlessui/react";
 
 import ErrorsDisplay from "../ErrorsDisplay";
@@ -75,7 +77,9 @@ const CreateInvoice = () => {
     let newTotal = newSubtotal + taxValue;
     let newPaid = 0; // Initially, paid is 0
     let newAmountDue = newTotal - paid; // Initially, amount due is the same as total
-    const userFrom = authUser ? `${authUser.firstName} ${authUser.lastName}` : "";
+    const userFrom = authUser
+      ? `${authUser.firstName} ${authUser.lastName}`
+      : "";
     const userEmail = authUser ? `${authUser.emailAddress}` : "";
 
     setFromName(userFrom);
@@ -255,16 +259,21 @@ const CreateInvoice = () => {
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="-mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 dark:ring-slate-700 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-            <div>
-            <h2 className="text-base font-semibold leading-7 text-gray-900">{fromName}</h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-             {fromEmail}
-            </p>
-            </div>
+          <ErrorsDisplay errors={errors} />
+          <form onSubmit={handleSubmit}>
+            {/* Invoice Header */}
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 pb-12 md:grid-cols-3">
+              <div>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  {fromName}
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  {fromEmail}
+                </p>
+              </div>
 
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-            <div className="sm:col-span-6">
+              <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                <div className="sm:col-span-6">
                   <Combobox
                     as="div"
                     value={selectedCustomer}
@@ -344,7 +353,7 @@ const CreateInvoice = () => {
                     Issue Date
                   </label>
                   <DatePicker
-                  id="issueDate"
+                    id="issueDate"
                     placeholder="Issue Date"
                     selected={issueDate}
                     onChange={(date) => setIssueDate(date)}
@@ -386,89 +395,162 @@ const CreateInvoice = () => {
                     required
                   />
                 </div>
+              </div>
+            </div>
+            {/* End of Invoice Header */}
+
+            <div className="mt-8 flow-root pb-5">
+              <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                  <table className="min-w-full divide-y divide-gray-300">
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          className="narrow-cell-description py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                        >
+                          Description
+                        </th>
+                        <th
+                          scope="col"
+                          className="narrow-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Total hours (qty)
+                        </th>
+                        <th
+                          scope="col"
+                          className="narrow-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Unit price
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Amount
+                        </th>
+                        <th
+                          scope="col"
+                          className="relative py-3.5 pl-3 pr-4 sm:pr-0"
+                        >
+                          <span className="sr-only">Remove</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {/* Input fields for invoice items */}
+                      {itemFields.map((item, index) => (
+                        <tr key={index}>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                            <input
+                              type="text"
+                              value={item.description}
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              onChange={(e) =>
+                                handleItemChange(
+                                  index,
+                                  "description",
+                                  e.target.value
+                                )
+                              }
+                              placeholder="Item Description"
+                            />
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={item.hours}
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              onChange={(e) =>
+                                handleItemChange(index, "hours", e.target.value)
+                              }
+                              placeholder="Qty"
+                            />
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            <div className="relative rounded-md shadow-sm">
+                              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span className="text-gray-500 sm:text-sm">
+                                  $
+                                </span>
+                              </div>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                name="price"
+                                value={item.rate}
+                                onChange={(e) =>
+                                  handleItemChange(
+                                    index,
+                                    "rate",
+                                    e.target.value
+                                  )
+                                }
+                                className="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="0.00"
+                                aria-describedby="price-currency"
+                              />
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span
+                                  className="text-gray-500 sm:text-sm"
+                                  id="price-currency"
+                                >
+                                  USD
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {item.amount ? `$${item.amount}` : "$0.00"}
+                          </td>
+                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                            {index > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveItem(index)}
+                              >
+                                <TrashIcon
+                                  className="-ml-1.5 h-5 w-5"
+                                  aria-hidden="true"
+                                />{" "}
+                                <span className="sr-only">Remove</span>
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                      {/* End of input fields for invoice items */}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
-        </div>
-
-          <h1>Create Invoice</h1>
-
-          <ErrorsDisplay errors={errors} />
-          <form onSubmit={handleSubmit}>
-            {/* Display initial inputs */}
-
-            {/* end of initial inputs */}
-
-            {/* Input fields for invoice data */}
-            {/* <input
-              type="text"
-              value={invoiceNumber}
-              onChange={(e) => setInvoiceNumber(e.target.value)}
-              placeholder="Invoice Number"
-              required
-            /> */}
-            {/* <input
-              type="date"
-              value={issueDate}
-              onChange={(e) => setIssueDate(e.target.value)}
-              placeholder="Issue Date"
-              required
-            />
-            <input
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              placeholder="Due Date"
-              required
-            /> */}
-            {/* <input
-              type="text"
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              placeholder="To"
-              required
-            /> */}
-
-            {/* Input fields for invoice items */}
-            {itemFields.map((item, index) => (
-              <div key={index}>
-                <input
-                  type="text"
-                  value={item.description}
-                  onChange={(e) =>
-                    handleItemChange(index, "description", e.target.value)
-                  }
-                  placeholder="Item Description"
-                />
-                <input
-                  type="number"
-                  value={item.hours}
-                  onChange={(e) =>
-                    handleItemChange(index, "hours", e.target.value)
-                  }
-                  placeholder="Item Hours"
-                />
-                <input
-                  type="number"
-                  value={item.rate}
-                  onChange={(e) =>
-                    handleItemChange(index, "rate", e.target.value)
-                  }
-                  placeholder="Item Rate"
-                />
-                <input
-                  type="number"
-                  value={item.amount}
-                  readOnly
-                  placeholder="Item Amount"
-                />
-                {index > 0 && (
-                  <button type="button" onClick={() => handleRemoveItem(index)}>
-                    Remove
-                  </button>
-                )}
+            <div className="relative mb-2">
+              <div
+                className="absolute inset-0 flex items-center"
+                aria-hidden="true"
+              >
+                <div className="w-full border-t border-gray-300" />
               </div>
-            ))}
-            <button type="button" onClick={handleAddItem}>
+              <div className="relative flex justify-center">
+                <span className="bg-white px-2 text-gray-500">
+                  <button type="button" onClick={handleAddItem}>
+                    <PlusIcon
+                      className="h-5 w-5 text-gray-500"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddItem}
+              className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
               Add Item
             </button>
             <br />
