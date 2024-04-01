@@ -5,7 +5,7 @@ import { api } from "../../utils/apiHelper";
 import { Menu, Transition } from "@headlessui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FormatNumber } from "../../utils";
+import { FormatNumber, FetchClients  } from "../../utils";
 
 import {
   EllipsisVerticalIcon,
@@ -23,21 +23,33 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const customers = [
-  { id: 1, name: "Marketing Done Right, LLC" },
-  { id: 2, name: "Hidden Forces, LLC" },
-  { id: 3, name: "Chella Industries, Inc." },
-  { id: 4, name: "Permalink, Inc." },
-  { id: 5, name: "Numeric Computer Systems, Inc." },
-  { id: 6, name: "The Design Booth, LLC." },
-];
-
 const CreateInvoice = () => {
   const { authUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
+  const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  // Fetch clients dynamically
+  useEffect(() => {
+    const fetchClients = async () => {
+      setLoading(true);
+      try {
+        const fetchedCustomers = await FetchClients(authUser.token);
+        setCustomers(fetchedCustomers);
+      } catch (error) {
+        console.error("Failed to fetch clients:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, [authUser.token]); // Re-run the effect only if authUser.token changes
+
+  console.log(customers);
+
   const filteredCustomers =
     query === ""
       ? customers
@@ -300,7 +312,7 @@ const CreateInvoice = () => {
                         <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                           {filteredCustomers.map((client) => (
                             <Combobox.Option
-                              key={client.id}
+                              key={client.customerId}
                               value={client}
                               className={({ active }) =>
                                 classNames(
