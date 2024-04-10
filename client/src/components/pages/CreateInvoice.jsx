@@ -48,8 +48,6 @@ const CreateInvoice = () => {
     fetchClients();
   }, [authUser.token]); // Re-run the effect only if authUser.token changes
 
-  console.log(customers);
-
   const filteredCustomers =
     query === ""
       ? customers
@@ -277,10 +275,10 @@ const CreateInvoice = () => {
             {/* Invoice Header */}
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 pb-12 md:grid-cols-3">
               <div>
-                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
                   {fromName}
                 </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+                <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                   {fromEmail}
                 </p>
               </div>
@@ -292,12 +290,12 @@ const CreateInvoice = () => {
                     value={selectedCustomer}
                     onChange={setSelectedCustomer}
                   >
-                    <Combobox.Label className="block text-sm font-medium leading-6 text-gray-900">
+                    <Combobox.Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300">
                       Client
                     </Combobox.Label>
                     <div className="relative mt-2">
                       <Combobox.Input
-                        className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                         onChange={(event) => setQuery(event.target.value)}
                         displayValue={(customer) => customer?.name}
                       />
@@ -361,7 +359,7 @@ const CreateInvoice = () => {
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="issueDate"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                   >
                     Issue Date
                   </label>
@@ -370,7 +368,7 @@ const CreateInvoice = () => {
                     placeholder="Issue Date"
                     selected={issueDate}
                     onChange={(date) => setIssueDate(date)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                     required
                   />
                 </div>
@@ -378,7 +376,7 @@ const CreateInvoice = () => {
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="dueDate"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                   >
                     Due Date
                   </label>
@@ -387,14 +385,14 @@ const CreateInvoice = () => {
                     placeholder="Due Date"
                     selected={dueDate}
                     onChange={(date) => setDueDate(date)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                     required
                   />
                 </div>
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="invoiceNumber"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 text-gray-900 dark:text-slate-300"
                   >
                     Invoice Number
                   </label>
@@ -404,7 +402,7 @@ const CreateInvoice = () => {
                     value={invoiceNumber}
                     onChange={(e) => setInvoiceNumber(e.target.value)}
                     placeholder="Enter the invoice's number"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                     required
                   />
                 </div>
@@ -415,30 +413,30 @@ const CreateInvoice = () => {
             <div className="mt-8 flow-root pb-5">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <table className="min-w-full divide-y divide-gray-300">
+                  <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                     <thead>
                       <tr>
                         <th
                           scope="col"
-                          className="narrow-cell-description py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                          className="narrow-cell-description py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 dark:text-white"
                         >
                           Description
                         </th>
                         <th
                           scope="col"
-                          className="narrow-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          className="narrow-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                         >
                           Total hours (qty)
                         </th>
                         <th
                           scope="col"
-                          className="narrow-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          className="narrow-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                         >
                           Unit price
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                         >
                           Amount
                         </th>
@@ -450,7 +448,7 @@ const CreateInvoice = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                       {/* Input fields for invoice items */}
                       {itemFields.map((item, index) => (
                         <tr key={index}>
@@ -458,7 +456,7 @@ const CreateInvoice = () => {
                             <input
                               type="text"
                               value={item.description}
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                               onChange={(e) =>
                                 handleItemChange(
                                   index,
@@ -474,7 +472,7 @@ const CreateInvoice = () => {
                               type="text"
                               inputMode="numeric"
                               value={item.hours}
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                               onChange={(e) =>
                                 handleItemChange(index, "hours", e.target.value)
                               }
@@ -500,7 +498,7 @@ const CreateInvoice = () => {
                                     e.target.value
                                   )
                                 }
-                                className="block w-full rounded-md border-0 py-1.5 pl-7 lg:pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 py-1.5 pl-7 lg:pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                                 placeholder="0.00"
                                 aria-describedby="price-currency"
                               />
@@ -514,20 +512,20 @@ const CreateInvoice = () => {
                               </div>
                             </div>
                           </td>
-                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                             $
                             <FormatNumber
                               number={item.amount ? `${item.amount}` : 0}
                             />
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                            {index > 0 && (
+                            {index >= 0 && (
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(index)}
                               >
                                 <TrashIcon
-                                  className="-ml-1.5 h-5 w-5"
+                                  className="-ml-1.5 h-5 w-5 text-red-500 dark:text-red-400"
                                   aria-hidden="true"
                                 />{" "}
                                 <span className="sr-only">Remove</span>
@@ -549,13 +547,13 @@ const CreateInvoice = () => {
                 className="absolute inset-0 flex items-center"
                 aria-hidden="true"
               >
-                <div className="w-full border-t border-gray-300" />
+                <div className="w-full border-t border-gray-300 dark:border-gray-700" />
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-white px-2 text-gray-500">
+                <span className="bg-white px-2 text-gray-500 dark:bg-gray-900">
                   <button type="button" onClick={handleAddItem}>
                     <PlusIcon
-                      className="h-5 w-5 text-gray-500"
+                      className="h-5 w-5 text-gray-500 dark:text-gray-400"
                       aria-hidden="true"
                     />
                   </button>
@@ -568,48 +566,48 @@ const CreateInvoice = () => {
                 <button
                   type="button"
                   onClick={handleAddItem}
-                  className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-700"
                 >
                   Add Item
                 </button>
               </aside>
 
               <div className="px-4 sm:px-6 lg:flex-auto lg:px-0">
-                <table className="flex justify-end divide-y divide-gray-300">
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="lg:border-t lg:border-gray-200">
+                <table className="flex justify-end divide-y divide-gray-300 dark:divide-gray-800">
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                    <tr className="lg:border-t lg:border-gray-200 dark:lg:border-gray-700">
                       <th
                         scope="row"
-                        className="px-0 py-4 font-normal text-gray-700 sm:hidden"
+                        className="px-0 py-4 font-normal text-gray-700 sm:hidden  dark:text-slate-300"
                       >
                         Subtotal
                       </th>
                       <th
                         scope="row"
                         colSpan={3}
-                        className="hidden px-0 py-4 text-left font-normal text-gray-700 sm:table-cell"
+                        className="hidden px-0 py-4 text-left font-normal text-gray-700 sm:table-cell  dark:text-slate-300"
                       >
                         Subtotal
                       </th>
-                      <td className="py-4 pl-8 pr-0 text-left tabular-nums text-gray-900">
+                      <td className="py-4 pl-8 pr-0 text-left tabular-nums text-gray-900  dark:text-gray-400">
                         $<FormatNumber number={subtotal} />
                       </td>
                     </tr>
                     <tr>
                       <th
                         scope="row"
-                        className="py-4 font-normal text-gray-700 sm:hidden"
+                        className="py-4 font-normal text-gray-700 sm:hidden dark:text-slate-300"
                       >
                         Tax
                       </th>
                       <th
                         scope="row"
                         colSpan={3}
-                        className="hidden py-4 text-left font-normal text-gray-700 sm:table-cell"
+                        className="hidden py-4 text-left font-normal text-gray-700 sm:table-cell dark:text-slate-300"
                       >
                         Tax
                       </th>
-                      <td className="pl-8 pr-0 py-4 text-left tabular-nums text-gray-900">
+                      <td className="pl-8 pr-0 py-4 text-left tabular-nums text-gray-900 dark:text-gray-400">
                         <input
                           type="text"
                           inputMode="numeric"
@@ -617,7 +615,7 @@ const CreateInvoice = () => {
                           onChange={(e) =>
                             setTaxRate(parseFloat(e.target.value))
                           }
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 dark:ring-white/10 dark:focus:ring-indigo-500"
                           placeholder="Enter tax %"
                         />
                       </td>
@@ -625,18 +623,18 @@ const CreateInvoice = () => {
                     <tr>
                       <th
                         scope="row"
-                        className="py-4 font-semibold text-gray-900 sm:hidden"
+                        className="py-4 font-semibold text-gray-900 sm:hidden  dark:text-white"
                       >
                         Grand Total
                       </th>
                       <th
                         scope="row"
                         colSpan={3}
-                        className="hidden py-4 text-left font-semibold text-gray-900 sm:table-cell"
+                        className="hidden py-4 text-left font-semibold text-gray-900 sm:table-cell dark:text-white"
                       >
                         Grand Total
                       </th>
-                      <td className="py-4 pl-8 pr-0 text-left font-semibold tabular-nums text-gray-900">
+                      <td className="py-4 pl-8 pr-0 text-left font-semibold tabular-nums text-gray-900 dark:text-white">
                         $<FormatNumber number={total} />
                       </td>
                     </tr>
